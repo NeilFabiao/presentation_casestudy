@@ -175,8 +175,8 @@ for segment in top_CLTVs.index:
     segment_data = churned_data[churned_data['CLTV'] == segment]
     fig_CLTVs.add_trace(
         go.Scattermapbox(
-            lat=segment_data['latitude'],
-            lon=segment_data['longitude'],
+            lat=segment_data['Latitude'],
+            lon=segment_data['Longitude'],
             mode='markers',
             marker=dict(size=9, color=color_discrete_map[segment]),
             name=f"CLTV Segment {segment}"
@@ -189,7 +189,7 @@ fig_CLTVs.update_layout(
     mapbox=dict(
         style="carto-positron",
         zoom=4,
-        center=dict(lat=churned_data['latitude'].mean(), lon=churned_data['longitude'].mean())
+        center=dict(lat=churned_data['Latitude'].mean(), lon=churned_data['longitude'].mean())
     ),
     margin={"r": 0, "t": 0, "l": 0, "b": 0},
     legend_title_text='CLTV Segment'
