@@ -15,7 +15,7 @@ st.set_page_config(
 # ----------------------------------------------------
 # 2. Load and Clean the Dataset
 # ----------------------------------------------------
-@st.cache_data
+@st.cache_data  # Use st.cache_data for caching (ensure Streamlit version supports this)
 def load_data(file_path: str) -> pd.DataFrame:
     """
     Loads the telco dataset from a CSV file and fills specified columns' NaN with 'Unknown'.
@@ -24,9 +24,8 @@ def load_data(file_path: str) -> pd.DataFrame:
     
     # Replace NaN with 'Unknown' in certain categorical columns
     cols_to_change = ['Churn Reason', 'Churn Category', 'Internet Type', 'Offer']
-    for col in cols_to_change:
-        if col in df_.columns:
-            df_[col] = df_[col].fillna('Unknown')
+    df_[cols_to_change] = df_[cols_to_change].fillna('Unknown')
+
     return df_
 
 df = load_data('telco.csv')  # Adjust path if needed
@@ -45,32 +44,23 @@ with st.sidebar:
     st.header("Select Filters")
     
     # Gender filter
-    gender_filter = st.radio(
-        "Select Gender",
-        options=["All", "Male", "Female"],
-        index=0
-    )
+    gender_filter = st.radio("Select Gender", options=["All", "Male", "Female"], index=0)
     
-    # Churn status filter (now includes "All")
-    churn_filter = st.radio(
-        "Select Churn Status",
-        options=["All", "Yes", "No"],  # Provide the "All" option
-        index=0
-    )
+    # Churn status filter (Only 'Yes' or 'No')
+    churn_filter = st.radio("Select Churn Status", options=["Yes", "No"], index=0)
 
 # ----------------------------------------------------
 # 5. Filter the Data Based on Sidebar Selections
 # ----------------------------------------------------
-df_filtered = df.copy()
 
 # 5.1 Filter by Gender
+df_filtered = df.copy()  # Work with a copy to avoid modifying the original dataset
+
 if gender_filter != "All":
-    df_filtered = df_filtered[df_filtered["Gender"] == gender_filter]
+    df_filtered = df_filtered[df_filtered["Gender"] == gender_filter].copy()
 
 # 5.2 Filter by Churn Status
-if churn_filter != "All":
-    # Keep only rows whose "Churn Label" matches the chosen filter
-    df_filtered = df_filtered[df_filtered["Churn Label"] == churn_filter]
+df_filtered = df_filtered[df_filtered["Churn Label"] == churn_filter].copy()
 
 # ----------------------------------------------------
 # 6. Section 1: Which Services Tend to Have High Churn?
@@ -90,12 +80,12 @@ service_churn_dict = {}
 
 # Calculate churn % for each service among the filtered data
 for service in service_columns:
-    # Subset: rows that have this service == 'Yes'
+    # Subset of customers who have the service = 'Yes'
     service_users = df_filtered[df_filtered[service] == 'Yes']
     
-    # Among those service users, count how many are churned ("Churn Label" == "Yes")
-    churn_count = service_users[service_users['Churn Label'] == "Yes"].shape[0]
-    total_users = service_users.shape[0]
+    # Among those service users, count how many are churned
+    churn_count = service_users.shape[0]  # Since df_filtered is already filtered by churn = "Yes"
+    total_users = df[df[service] == 'Yes'].shape[0]  # Get the total users for the service
     
     # Compute percentage (avoid division by zero)
     churn_percentage = (churn_count / total_users * 100) if total_users > 0 else 0
@@ -120,6 +110,10 @@ with col2:
     st.markdown("### Churn Percentage by Service")
     
     if not service_churn_df.empty:
+        # Get min and max churn percentage for better y-axis scaling
+        min_churn_percentage = service_churn_df["Churn Percentage"].min()
+        max_churn_percentage = service_churn_df["Churn Percentage"].max()
+
         fig = px.bar(
             service_churn_df,
             x=service_churn_df.index,
@@ -129,9 +123,12 @@ with col2:
             labels={"x": "Service", "Churn Percentage": "Churn %"},
         )
         fig.update_layout(
+            xaxis_title="Service",
+            yaxis_title="Churn Percentage (%)",
             xaxis_tickangle=-45,
+            yaxis_range=[min_churn_percentage - 5, max_churn_percentage + 5],  # Dynamic range
             margin=dict(l=10, r=10, t=40, b=50),
-            coloraxis_showscale=False
+            coloraxis_showscale=False  # Hide the color bar
         )
         st.plotly_chart(fig, use_container_width=True)
     else:
