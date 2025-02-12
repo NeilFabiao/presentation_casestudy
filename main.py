@@ -1,4 +1,4 @@
-import streamlit as st 
+import streamlit as st
 import pandas as pd
 import plotly.express as px
 
@@ -71,25 +71,13 @@ top_5_services = service_churn_percentage_df.sort_values(by="Churn Percentage", 
 # Create two columns for displaying the table and the plot
 col1, col2 = st.columns(2)
 
-# Column 1: Display pie chart for the top 5 services
+# Column 1: Display raw churn counts for the top 5 services in a cute, styled way
 with col1:
-    st.markdown("### Churn Percentage for Top 5 Services")
-    
-    # Prepare data for Plotly pie chart
-    top_5_services = top_5_services.reset_index()
-    top_5_services.columns = ['Service', 'Churn Percentage']
-    
-    # Create the pie chart using Plotly
-    fig = px.pie(top_5_services, names='Service', values='Churn Percentage',
-                 title="Top 5 Services with Highest Churn Percentage",
-                 color='Service', 
-                 color_discrete_map={'Phone Service': 'red', 'Internet Service': 'blue', 'Multiple Lines': 'green', 'Streaming TV': 'purple', 'Streaming Movies': 'orange'},
-                 labels={'Churn Percentage': 'Churn Percentage (%)', 'Service': 'Service'})
+    st.markdown("### Raw Churn Counts for Top 5 Services")
+    top_5_services = service_churn_percentage_df.sort_values(by="Churn Percentage", ascending=False).head(5)
+    st.dataframe(top_5_services)  # Display the top 5 services table
 
-    # Display the pie chart
-    st.plotly_chart(fig)
-
-# Column 2: Display churn percentage bar chart using Plotly
+# Column 2: Display churn percentage graph using Plotly
 with col2:
     st.markdown("### Churn Percentage Comparison by Service")
     
