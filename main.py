@@ -136,9 +136,6 @@ grouped_churn_data = churned_data.groupby(['AgeGroup', 'Contract', 'Gender', 'Cu
 grouped_churn_data['AvgTenure'] = grouped_churn_data['AvgTenure'].round(2)
 grouped_churn_data['AvgMonthlyCharge'] = grouped_churn_data['AvgMonthlyCharge'].round(2)
 
-# Part 3: Show pie charts for Age Group, Contract, and Gender
-st.write('### Churn Distribution by Age Group, Contract Type, and Gender')
-
 
 
 # Here you can insert your suggestions or strategies, e.g.:
