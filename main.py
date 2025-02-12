@@ -152,15 +152,36 @@ with col2:
     
     # Geographical distribution of churned customers (assuming you have latitude and longitude in your dataset)
 if 'Latitude' in churned_data.columns and 'Longitude' in churned_data.columns:
-    # Create a map with Plotly
+    # Calculate the center of the churned customer data (mean latitude and longitude)
+    lat_center = churned_data['Latitude'].mean()
+    lon_center = churned_data['Longitude'].mean()
+
+    # Calculate the zoom level based on the spread of the data
+    max_lat = churned_data['Latitude'].max()
+    min_lat = churned_data['Latitude'].min()
+    max_lon = churned_data['Longitude'].max()
+    min_lon = churned_data['Longitude'].min()
+
+    # Calculate the spread and adjust zoom level
+    lat_diff = max_lat - min_lat
+    lon_diff = max_lon - min_lon
+    zoom_level = 10 - max(lat_diff, lon_diff)  # You can tweak this formula for better zoom levels
+
+    # Create the map with Plotly, using the dynamic center and zoom level
     fig_map = px.scatter_mapbox(churned_data, lat="Latitude", lon="Longitude", color="AgeGroup", 
                                 hover_name="Customer ID", hover_data=["Age", "Contract"],
-                                color_continuous_scale="Viridis", zoom=3)
+                                color_continuous_scale="Viridis", zoom=zoom_level)
 
-    fig_map.update_layout(mapbox_style="carto-positron", title="Geographical Distribution of Churned Customers")
+    # Update the layout with dynamic center and zoom level
+    fig_map.update_layout(
+        mapbox_style="carto-positron", 
+        title="Geographical Distribution of Churned Customers",
+        mapbox_center={"lat": lat_center, "lon": lon_center},  # Center the map on the average coordinates
+    )
     st.plotly_chart(fig_map)
 
 else:
     st.write("Geographical data (Latitude and Longitude) not found in the dataset.")
+
 
 st.write('---')
