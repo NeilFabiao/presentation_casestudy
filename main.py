@@ -78,4 +78,10 @@ with col1:
 with col2:
     st.markdown("### Churn Percentage Comparison by Service")
     
+    # Create the bar chart for churn percentages
+    fig, ax = plt.subplots(figsize=(10, 6))
+
+    # Plot churn percentage
+    service_churn_percentage_df.plot(kind='bar', ax=ax, width=0.8, color='salmon')
+
    
