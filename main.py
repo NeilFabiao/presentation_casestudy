@@ -90,7 +90,7 @@ with col2:
     ax.set_title('Churn Percentage Comparison by Service')
 
     # Set X-axis labels with rotation
-    ax.set_xticklabels(service_churn_percentage_df.columns, rotation=45, ha='right')
+    #ax.set_xticklabels(service_churn_percentage_df.columns, rotation=45, ha='right')
 
     # Apply tight layout to prevent overlap of labels
     plt.tight_layout()
