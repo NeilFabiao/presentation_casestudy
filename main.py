@@ -18,7 +18,7 @@ st.write('---')
 # Sidebar for gender and churn status selection
 with st.sidebar:
     st.title("Telco Customer Churn Dashboard")
-    st.write("In this section, we can select the different filters we wish to see.")
+    st.write("In this section we can select the different filters we wish to see.")
     
     # Gender selection using radio buttons
     gender_filter = st.radio("Select Gender", options=["All", "Male", "Female"], index=0)
@@ -50,12 +50,15 @@ service_churn_rates = {}
 df_clean_ = df_updated.copy()
 
 # Check for unique values in 'Churn Label' to ensure clean data
-st.write(f"Unique values in 'Churn Label': {df_clean_['Churn Label'].unique()}")
+st.write("Unique values in 'Churn Label':", df_clean_['Churn Label'].unique())
 
-# Convert 'Churn Label' to numeric (if not already)
-df_clean_['Churn Label'] = df_clean_['Churn Label'].map({'Yes': 1, 'No': 0})
+# Convert 'Churn Label' to numeric (if not already) based on user's selection
+if churn_filter == "Yes":
+    df_clean_['Churn Label'] = df_clean_['Churn Label'].map({'Yes': 1, 'No': 0})
+elif churn_filter == "No":
+    df_clean_['Churn Label'] = df_clean_['Churn Label'].map({'Yes': 0, 'No': 1})
 
-# Calculate raw churn counts and churn rates for each service
+# Calculate raw churn counts and churn percentages for each service
 for service in service_columns:
     # Raw churn counts: Count churned customers (Churn Label == 1)
     churned_customers = df_clean_[df_clean_[service] == 'Yes']  # Customers who used this service
