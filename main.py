@@ -112,3 +112,4 @@ with col2:
 
     # Display the plot in Streamlit
     st.pyplot(fig)
+
