@@ -153,15 +153,15 @@ with col2:
 st.write('---')
 
 # Geographical distribution of churned customers (assuming you have latitude and longitude in your dataset)
-    if 'Latitude' in churned_data.columns and 'Longitude' in churned_data.columns:
-        # Create a map with Plotly
-        fig_map = px.scatter_mapbox(churned_data, lat="Latitude", lon="Longitude", color="AgeGroup", 
-                                    hover_name="Customer ID", hover_data=["Age", "Contract"],
-                                    color_continuous_scale="Viridis", zoom=4)
-    
-        fig_map.update_layout(mapbox_style="carto-positron", title="Geographical Distribution of Churned Customers")
-        st.plotly_chart(fig_map)
-    
-    else:
-        st.write("Geographical data (Latitude and Longitude) not found in the dataset.")
+if 'Latitude' in churned_data.columns and 'Longitude' in churned_data.columns:
+    # Create a map with Plotly
+    fig_map = px.scatter_mapbox(churned_data, lat="Latitude", lon="Longitude", color="AgeGroup", 
+                                hover_name="Customer ID", hover_data=["Age", "Contract"],
+                                color_continuous_scale="Viridis", zoom=4)
+
+    fig_map.update_layout(mapbox_style="carto-positron", title="Geographical Distribution of Churned Customers")
+    st.plotly_chart(fig_map)
+
+else:
+    st.write("Geographical data (Latitude and Longitude) not found in the dataset.")
 
