@@ -142,7 +142,8 @@ st.write('### Churn Distribution by Age Group, Contract Type, and Gender')
 # Pie chart for Age Group distribution of churned customers
 age_group_counts = churned_data['AgeGroup'].value_counts().reset_index()
 age_group_counts.columns = ['AgeGroup', 'Count']  # Rename columns for clarity
-fig_age = px.pie(age_group_counts, names='AgeGroup', values='Count', title="Churned Customers by Age Group", color_discrete_sequence=px.colors.pastel)st.plotly_chart(fig_age)
+fig_age = px.pie(age_group_counts, names='AgeGroup', values='Count', title="Churned Customers by Age Group", color_discrete_sequence=px.colors.pastel)
+st.plotly_chart(fig_age)
 
 
 
