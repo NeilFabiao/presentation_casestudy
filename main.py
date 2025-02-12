@@ -88,4 +88,13 @@ with col2:
         color_continuous_scale="viridis" # Use a nice color scale
     )
 
+    fig.update_layout(
+        xaxis_title="Service",
+        yaxis_title="Churn Percentage (%)",
+        xaxis_tickangle=-45,  # Rotate x-axis labels
+        yaxis_range=[0, 100]  # Set y-axis range from 0 to 100 for percentage
+    )
+    
+    st.plotly_chart(fig)
+
 
