@@ -6,8 +6,9 @@ import matplotlib.pyplot as plt
 
 # Carregar o conjunto de dados telco a partir de um arquivo CSV
 telco_data_raw = pd.read_csv('telco.csv')
+df = telco_data_raw.copy()
 
-# Definir as colunas a serem alteradas
+# Definir as colunas a serem alteradas (estas colunas foram identificadas no jupyter notebook desta repo)
 cols_to_change = ['Churn Reason', 'Churn Category', 'Internet Type', 'Offer']
 
 # Substituir valores NaN por 'Unknown' (Desconhecido)
