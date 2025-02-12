@@ -114,5 +114,34 @@ st.write('### Question 2: What would we do to reduce churn?')
 # Filter the churned data based on the churn_filter
 churned_data = df_clean_[df_clean_['Churn Label'] == 1]
 
-# Show the filtered churned data in Streamlit
-st.write(churned_data)
+# Create age categories for churned customers
+def age_category(age):
+    if age < 30:
+        return 'Young Adults'
+    elif 30 <= age < 50:
+        return 'Middle-Aged Adults'
+    else:
+        return 'Seniors'
+
+churned_data['AgeGroup'] = churned_data['Age'].apply(age_category)
+
+# Pie chart for Age Group distribution of churned customers
+age_group_counts = churned_data['AgeGroup'].value_counts()
+
+# Pie chart for Contract distribution of churned customers
+contract_counts = churned_data['Contract'].value_counts()
+
+# Create a Streamlit layout with two pie charts
+st.markdown("### Churned Customers Distribution")
+
+# Pie chart for Age Group distribution
+fig1, ax1 = plt.subplots(figsize=(8, 6))
+ax1.pie(age_group_counts, labels=age_group_counts.index, autopct='%1.1f%%', colors=['#ff9999','#66b3ff','#99ff99'], startangle=90)
+ax1.set_title('Churned Customers by Age Group')
+st.pyplot(fig1)
+
+# Pie chart for Contract distribution
+fig2, ax2 = plt.subplots(figsize=(8, 6))
+ax2.pie(contract_counts, labels=contract_counts.index, autopct='%1.1f%%', colors=['#ffcc99','#ff6666','#66b3ff'], startangle=90)
+ax2.set_title('Churned Customers by Contract Type')
+st.pyplot(fig2)
