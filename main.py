@@ -61,50 +61,52 @@ df_clean_ = df.copy()
 # Convert 'Churn Label' to numeric (if not already)
 df_clean_['Churn Label'] = df_clean_['Churn Label'].map({'Yes': 1, 'No': 0})
 
-# Calculate raw counts and percentages for each service
-for service in service_columns:
-    churned_customers = df_clean_[df_clean_[service] == 'Yes']  # Get the customers who used this service and churned
-    churn_count = churned_customers[churned_customers['Churn Label'] == 1].shape[0]  # Count churned customers
-    service_counts[service] = churn_count
-    
-    # Calculate percentage of churned customers for each service
-    total_service_users = df_clean_[df_clean_[service] == 'Yes'].shape[0]
-    churn_percentage = (churn_count / total_service_users) * 100 if total_service_users > 0 else 0
-    service_percentages[service] = churn_percentage
+st.title("Churn Analysis by Service")
 
-# Convert the service counts and percentages dictionaries to DataFrames for better visualization
-service_counts_df = pd.DataFrame(service_counts, index=['Churned Count']).T
-service_percentages_df = pd.DataFrame(service_percentages, index=['Churn Percentage']).T
+# Column layout
+col1, col2, col3 = st.columns([1, 2, 1])  # Adjust column widths as needed
 
-# Streamlit UI setup with 3 columns
-col1, col2, col3 = st.columns(3)
-
-# Column 1: Raw counts table
+# --- Column 1: Counts Table ---
 with col1:
-    st.markdown("### Raw Counts of Churned Customers")
-    st.write(service_counts_df.sort_values(by="Churned Count", ascending=False))
+    st.subheader("Churn Counts")
 
-# Column 2: Churn rate as percentages visualized in a bar chart
+    churned_customers = df_clean_[df_clean_['Churn Label'] == 1]
+    service_counts = {}
+    for service in service_columns:
+        churn_yes = churned_customers[churned_customers[service] == 'Yes'].shape[0]
+        service_counts[service] = churn_yes
+
+    service_counts_df = pd.DataFrame(service_counts, index=['Count']).T
+    st.dataframe(service_counts_df)  # Display as a Streamlit DataFrame
+
+# --- Column 2: Percentage Visualization ---
 with col2:
-    st.markdown("### Churn Percentage Comparison")
-    # Plotting churn percentage for each service
+    st.subheader("Churn Percentage Visualization")
+
+    total_churned = churned_customers.shape[0]
+    service_percentages = {}
+
+    for service, count in service_counts.items():
+        percentage = (count / total_churned) * 100 if total_churned > 0 else 0
+        service_percentages[service] = percentage
+
+    service_percentages_df = pd.DataFrame(service_percentages, index=['Percentage']).T
+
+    #Plotting
     fig, ax = plt.subplots(figsize=(10, 6))
-    service_percentages_df.T.plot(kind='bar', ax=ax, width=0.8, color='salmon')
+    service_percentages_df.sort_values(by="Percentage", ascending=False).plot(kind='bar', ax=ax, color='skyblue')
+    ax.set_ylabel('Percentage of Churned Customers')
+    ax.set_title('Service Association with Churn')
+    ax.set_xticklabels(service_percentages_df.sort_values(by="Percentage", ascending=False).index, rotation=45, ha='right')
 
-    # Add labels and title
-    ax.set_xlabel('Service')
-    ax.set_ylabel('Churn Percentage (%)')
-    ax.set_title('Churn Percentage Comparison by Service')
-
-    # Set X-axis labels with rotation
-    ax.set_xticklabels(service_percentages_df.columns, rotation=45, ha='right')
-
-    # Display the plot in Streamlit
     st.pyplot(fig)
 
-# Column 3: Short explanation
+
+# --- Column 3: Explanation ---
 with col3:
-    st.markdown("### Short Explanation")
-    st.write("""
-    In the churn analysis, we examined how various services contribute to churn. The **raw counts** show how many customers who used each service have churned. Meanwhile, the **churn percentage** provides insight into the proportion of customers who churned for each service, helping to identify which services have higher churn rates. Services with higher churn percentages may indicate areas where customer retention strategies could be improved.
-    """)
+    st.subheader("Interpretation")
+    st.write("This analysis shows the relationship between different services and customer churn.")
+    st.write("The table on the left shows the raw counts of churned customers who used each service.")
+    st.write("The bar chart visualizes the *percentage* of churned customers associated with each service, sorted from highest to lowest.")
+    st.write("A high percentage on the chart indicates that a service is strongly associated with churn, even if the raw count is not very high.  Focus on these services for further investigation.")
+    st.write("For Example: If 'Online Security' has a high percentage, it means customers with 'Online Security' are more likely to churn.")
