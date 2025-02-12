@@ -34,9 +34,9 @@ else:
     df_updated = df.copy()
 
 if churn_filter != "All":
-    df_updated = df[df['Churn'] == churn_filter].copy()
+    df_updated = df_updated[df_updated['Churn'] == churn_filter].copy()
 else:
-    df_updated = df.copy()
+    df_updated = df_updated.copy()
 
 
 
