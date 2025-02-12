@@ -50,64 +50,32 @@ service_columns = ['Phone Service', 'Internet Service', 'Multiple Lines',
 
 # Initialize dictionaries to store churn counts and percentages
 service_counts = {}
-service_churn_rates_yes = {}
-service_churn_rates_no = {}
 
-# Calculate raw churn counts and churn percentages for each service
+# Calculate raw churn counts for each service
 for service in service_columns:
     # Raw churn counts: Count churned customers (Churn Label == 1)
     churned_customers = df_clean_[df_clean_[service] == 'Yes']  # Customers who used this service
-    churn_count_yes = churned_customers[churned_customers['Churn Label'] == 1].shape[0]  # Count churned customers (Yes)
-    churn_count_no = churned_customers[churned_customers['Churn Label'] == 0].shape[0]  # Count non-churned customers (No)
-    service_counts[service] = churn_count_yes + churn_count_no  # Total customers who used this service
-    
-    # Calculate churn percentage for each service (only for churned customers)
-    total_service_users = df_clean_[df_clean_[service] == 'Yes'].shape[0]
-    churn_percentage_yes = (churn_count_yes / total_service_users) * 100 if total_service_users > 0 else 0
-    churn_percentage_no = (churn_count_no / total_service_users) * 100 if total_service_users > 0 else 0
+    churn_count = churned_customers[churned_customers['Churn Label'] == 1].shape[0]  # Count churned customers
+    service_counts[service] = churn_count
 
-    service_churn_rates_yes[service] = churn_percentage_yes
-    service_churn_rates_no[service] = churn_percentage_no
+# Convert the service counts dictionary to a DataFrame for better visualization
+service_counts_df = pd.DataFrame(service_counts, index=['Churned Count']).T
 
-# Convert the service counts and churn rates dictionaries to DataFrames for better visualization
-service_counts_df = pd.DataFrame(service_counts, index=['Total Count']).T
-service_churn_rates_yes_df = pd.DataFrame(service_churn_rates_yes, index=['Yes Churn Percentage']).T
-service_churn_rates_no_df = pd.DataFrame(service_churn_rates_no, index=['No Churn Percentage']).T
+# Sort and get the top 5 services with the highest churn counts
+top_5_services = service_counts_df.sort_values(by="Churned Count", ascending=False).head(5)
 
 # Create two columns for displaying the table and the plot
 col1, col2 = st.columns(2)
 
-# Column 1: Display raw churn counts table
+# Column 1: Display raw churn counts for the top 5 services in a cute, styled way
 with col1:
-    st.markdown("### Raw Churn Counts by Service")
-    st.write(service_counts_df.sort_values(by="Total Count", ascending=False))
-
-# Column 2: Display churn percentage graph
-with col2:
-    st.markdown("### Churn Percentage Comparison")
-
-    # Combine both churn percentages (Yes and No) into a single DataFrame for plotting
-    churn_data = pd.concat([service_churn_rates_no_df, service_churn_rates_yes_df], axis=0)
-
-    # Create the plot
-    fig, ax = plt.subplots(figsize=(10, 6))
-
-    # Plot the churn rates for "No" and "Yes" categories with different colors
-    churn_data.T.plot(kind='bar', ax=ax, width=0.8, position=0, color=['skyblue', 'salmon'])
-
-    # Add labels and title
-    ax.set_xlabel('Service')
-    ax.set_ylabel('Churn Percentage (%)')
-    ax.set_title('Churn Rate Comparison by Service')
-
-    # Set X-axis labels with rotation
-    ax.set_xticklabels(churn_data.columns, rotation=45, ha='right')
-
-    # Add legend with clear labels
-    ax.legend(['No Churn', 'Yes Churn'], loc='upper left')
-
-    # Apply tight layout to prevent overlap of labels
-    plt.tight_layout()
-
-    # Display the plot in Streamlit
-    st.pyplot(fig)
+    st.markdown("### Top 5 Services with Highest Churn Counts")
+    
+    # Use markdown to make the table more attractive
+    for idx, row in top_5_services.iterrows():
+        service_name = idx
+        churn_count = row['Churned Count']
+        
+        # Add cute badge or label depending on the churn count
+        st.markdown(f"**{service_name}:** :blue[{churn_count}] churned customers")
+        st.write("")  # Adding a line break to separate each entry
