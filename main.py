@@ -79,6 +79,11 @@ with col1:
 with col2:
     st.markdown("### Churn Percentage Comparison by Service (Plotly)")
 
+    # Get the maximum and minimum churn percentages for dynamic y-axis range
+    min_churn_percentage = service_churn_percentage_df["Churn Percentage"].min()
+    max_churn_percentage = service_churn_percentage_df["Churn Percentage"].max()
+
+    # Create the bar chart using Plotly
     fig = px.bar(
         service_churn_percentage_df,
         x=service_churn_percentage_df.index,
@@ -92,7 +97,12 @@ with col2:
         xaxis_title="Service",
         yaxis_title="Churn Percentage (%)",
         xaxis_tickangle=-45,  # Rotate x-axis labels
-        yaxis_range=[0, 100]  # Set y-axis range from 0 to 100 for percentage
+        yaxis_range=[min_churn_percentage - 5, max_churn_percentage + 5],  # Dynamic range based on data
+        margin=dict(l=10, r=10, t=40, b=50),  # Set margins to ensure no clipping
+        title_x=0.5,  # Center the title
+        title_font=dict(size=16),  # Title font size
+        xaxis=dict(showgrid=True),  # Show gridlines on x-axis for better readability
+        yaxis=dict(showgrid=True)   # Show gridlines on y-axis
     )
     
     st.plotly_chart(fig)
