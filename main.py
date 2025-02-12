@@ -90,20 +90,19 @@ with col2:
         y="Churn Percentage",
         color="Churn Percentage",  # Color bars by churn percentage
         color_continuous_scale="viridis", # Use a nice color scale
-        title=None
+        title=None  # Hide the title directly here
     )
 
     fig.update_layout(
-    xaxis_title="Service",
-    yaxis_title="Churn Percentage (%)",
-    xaxis_tickangle=-45,  # Rotate x-axis labels
-    yaxis_range=[min_churn_percentage - 5, max_churn_percentage + 5],  # Dynamic range based on data
-    margin=dict(l=10, r=10, t=40, b=50),  # Set margins to ensure no clipping
-    title=None,  # Hide the title
-    xaxis=dict(showgrid=True),  # Show gridlines on x-axis for better readability
-    yaxis=dict(showgrid=True),  # Show gridlines on y-axis
-    coloraxis_showscale=False  # Hide the color bar (right bar)
-)
+        xaxis_title="Service",
+        yaxis_title="Churn Percentage (%)",
+        xaxis_tickangle=-45,  # Rotate x-axis labels
+        yaxis_range=[min_churn_percentage - 5, max_churn_percentage + 5],  # Dynamic range based on data
+        margin=dict(l=10, r=10, t=40, b=50),  # Set margins to ensure no clipping
+        xaxis=dict(showgrid=True),  # Show gridlines on x-axis for better readability
+        yaxis=dict(showgrid=True),  # Show gridlines on y-axis
+        coloraxis_showscale=False  # Hide the color bar (right bar)
+    )
     
     st.plotly_chart(fig)
 
