@@ -25,8 +25,10 @@ with st.sidebar:
     # Gender selection using radio buttons
     gender_filter = st.radio("Select Gender", options=["All", "Male", "Female"], index=0)
 
-# Filter the DataFrame based on selected gender
-df = df[df['Gender'] == gender_filter]
+if gender_filter != "All":
+    df = df[df['Gender'] == gender_filter]
+else:
+    df = df
 
 # Display filtered data
 st.markdown(f"### Filtered Data: Gender = {gender_filter}")
