@@ -52,14 +52,22 @@ service_columns = ['Phone Service', 'Internet Service', 'Multiple Lines',
                    'Online Security', 'Online Backup','Device Protection Plan',
                    'Premium Tech Support','Unlimited Data']
 
-# Initialize an empty dictionary to store raw counts of churned customers
-service_counts = {}
-service_percentages = {}
-
+#control point for dataset
 df_clean_ = df.copy()
 
 # Convert 'Churn Label' to numeric (if not already)
 df_clean_['Churn Label'] = df_clean_['Churn Label'].map({'Yes': 1, 'No': 0})
 
+# Calculate churn rate for each service
+churn_rates = {}
 
-st.write(df_clean_)
+for service in service_columns:
+    # Group by the service column and calculate the churn rate (mean of 'Churn Label')
+    churn_rate = df_clean_.groupby(service)['Churn Label'].mean() * 100  # Churn rate as percentage
+    churn_rates[service] = churn_rate
+
+# Convert the churn rates dictionary to a DataFrame for better visualization
+churn_rates_df = pd.DataFrame(churn_rates)
+
+# Display the churn rates for each service
+st.write(churn_rates_df.T)
