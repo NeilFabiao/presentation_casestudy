@@ -113,44 +113,7 @@ st.write('---')
 # Part 2: What would we do to reduce churn?
 st.write('### Question 2: What would we do to reduce churn?')
 
-# Filter the churned data based on the churn_filter
-churned_data = df_clean_[df_clean_['Churn Label'] == 1]
-
-# Create age categories for churned customers
-def age_category(age):
-    if age < 30:
-        return 'Young Adults'
-    elif 30 <= age < 50:
-        return 'Middle-Aged Adults'
-    else:
-        return 'Seniors'
-
-churned_data['AgeGroup'] = churned_data['Age'].apply(age_category)
-
-# Pie chart for Age Group distribution of churned customers
-age_group_counts = churned_data['AgeGroup'].value_counts()
-
-# Pie chart for Contract distribution of churned customers
-contract_counts = churned_data['Contract'].value_counts()
-
-# Create a Streamlit layout with two columns
-col1, col2 = st.columns(2)
-
-# Pie chart for Age Group distribution in the first column
-with col1:
-    fig1 = go.Figure(go.Pie(labels=age_group_counts.index, values=age_group_counts, 
-                            marker=dict(colors=['#ff9999','#66b3ff','#99ff99'])))
-    fig1.update_layout(title='Churned Customers by Age Group')
-    st.plotly_chart(fig1)
-
-# Pie chart for Contract distribution in the second column
-with col2:
-    fig2 = go.Figure(go.Pie(labels=contract_counts.index, values=contract_counts, 
-                            marker=dict(colors=['#ffcc99','#ff6666','#66b3ff'])))
-    fig2.update_layout(title='Churned Customers by Contract Type')
-    st.plotly_chart(fig2)
-    
-st.write('---')
+# --- CHURN Reason SECTION ---
 
 # Remove 'Unknown' churn reasons from analysis to avoid skewed data
 churned_data_filtered = churned_data[churned_data['Churn Reason'] != 'Unknown']
@@ -201,4 +164,98 @@ with col2:
         st.plotly_chart(fig_map, use_container_width=True)
     else:
         st.write("ℹ️ No geographical data available for mapping.")
+
+# --- ADD CHURN CATEGORY SECTION ---
+
+st.write('---')
+
+# Filter the churned data based on the churn_filter
+churned_data = df_clean_[df_clean_['Churn Label'] == 1]
+
+# Part 2: Identify the top 5 churn categories
+top_churn_categories = churned_data_filtered['Churn Category'].value_counts().head(5)
+
+# Create two columns for displaying churn categories and their geographical distribution
+col1, col2 = st.columns(2)
+
+# Column 1: Display the top 5 churn categories (Formatted DataFrame)
+with col1:
+    st.markdown("### 🏆 Top 5 Churn Categories")
+    
+    # Convert Series to DataFrame and properly rename columns
+    df_top_categories = top_churn_categories.reset_index()
+    df_top_categories.columns = ['Churn Category', 'Count']  # Correct column renaming
+    
+    # Display clean DataFrame without index column
+    st.dataframe(df_top_categories, hide_index=True)
+
+# Column 2: Display the geographical distribution of churned customers for the top 5 churn categories
+with col2:
+    st.markdown("### 🌍 Geographical Distribution of Top 5 Churn Categories")
+    
+    if 'Latitude' in churned_data.columns and 'Longitude' in churned_data.columns:
+        # Filter churned data for only the top 5 churn categories
+        top_category_data = churned_data[churned_data['Churn Category'].isin(top_churn_categories.index)]
+
+        # Calculate center of the map dynamically
+        lat_center = top_category_data['Latitude'].mean()
+        lon_center = top_category_data['Longitude'].mean()
+
+        # Create the interactive map
+        fig_map_category = px.scatter_mapbox(
+            top_category_data,
+            lat="Latitude",
+            lon="Longitude",
+            color="Churn Category",
+            hover_name="Customer ID",
+            hover_data=["Age", "Contract"],
+            color_discrete_sequence=px.colors.qualitative.Vivid,
+            zoom=3.5
+        )
+
+        fig_map_category.update_layout(mapbox_style="carto-positron", mapbox_center={"lat": lat_center, "lon": lon_center})
+        st.plotly_chart(fig_map_category, use_container_width=True)
+    else:
+        st.write("ℹ️ No geographical data available for mapping.")
+
+st.write('---')
+
+# Filter the churned data based on the churn_filter
+churned_data = df_clean_[df_clean_['Churn Label'] == 1]
+
+# Create age categories for churned customers
+def age_category(age):
+    if age < 30:
+        return 'Young Adults'
+    elif 30 <= age < 50:
+        return 'Middle-Aged Adults'
+    else:
+        return 'Seniors'
+
+churned_data['AgeGroup'] = churned_data['Age'].apply(age_category)
+
+# Pie chart for Age Group distribution of churned customers
+age_group_counts = churned_data['AgeGroup'].value_counts()
+
+# Pie chart for Contract distribution of churned customers
+contract_counts = churned_data['Contract'].value_counts()
+
+# Create a Streamlit layout with two columns
+col1, col2 = st.columns(2)
+
+# Pie chart for Age Group distribution in the first column
+with col1:
+    fig1 = go.Figure(go.Pie(labels=age_group_counts.index, values=age_group_counts, 
+                            marker=dict(colors=['#ff9999','#66b3ff','#99ff99'])))
+    fig1.update_layout(title='Churned Customers by Age Group')
+    st.plotly_chart(fig1)
+
+# Pie chart for Contract distribution in the second column
+with col2:
+    fig2 = go.Figure(go.Pie(labels=contract_counts.index, values=contract_counts, 
+                            marker=dict(colors=['#ffcc99','#ff6666','#66b3ff'])))
+    fig2.update_layout(title='Churned Customers by Contract Type')
+    st.plotly_chart(fig2)
+    
+st.write('---')
 
