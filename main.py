@@ -1,6 +1,6 @@
 import streamlit as st
 import pandas as pd
-import matplotlib.pyplot as plt
+import plotly.express as px
 
 # Load the telco dataset
 df = pd.read_csv('telco.csv')
@@ -65,37 +65,22 @@ for service in service_columns:
 # Convert the churn percentages to a DataFrame for better visualization
 service_churn_percentage_df = pd.DataFrame(service_churn_percentage, index=['Churn Percentage']).T
 
-# Create two columns for displaying the table and the plot
-col1, col2 = st.columns(2)
+# Sort and get the top 5 services with the highest churn percentages
+top_5_services = service_churn_percentage_df.sort_values(by="Churn Percentage", ascending=False).head(5)
 
-# Column 1: Display raw churn counts for the top 5 services in a cute, styled way
-with col1:
-    st.markdown("### Raw Churn Counts for Top 5 Services")
-    top_5_services = service_churn_percentage_df.sort_values(by="Churn Percentage", ascending=False).head(5)
-    st.dataframe(top_5_services)  # Display the top 5 services table
+# Prepare data for Plotly bubble chart
+top_5_services = top_5_services.reset_index()
+top_5_services.columns = ['Service', 'Churn Percentage']
+top_5_services['Size'] = top_5_services['Churn Percentage'] * 10  # Adjust size by multiplying by a factor
 
-# Column 2: Display churn percentage graph
-with col2:
-    st.markdown("### Churn Percentage Comparison by Service")
-    
-    # Create the bar chart for churn percentages
-    fig, ax = plt.subplots(figsize=(10, 6))
-
-    # Plot churn percentage
-    service_churn_percentage_df.plot(kind='bar', ax=ax, width=0.8, color='salmon')
-
-    # Add labels and title
-    ax.set_xlabel('Service')
-    ax.set_ylabel('Churn Percentage (%)')
-    ax.set_title('Churn Percentage Comparison by Service')
-
-    # Set X-axis labels and apply rotation
-    ax.set_xticks(range(len(service_churn_percentage_df.columns)))  # Set the ticks to match number of services
-    ax.set_xticklabels(service_churn_percentage_df.columns, rotation=45, ha='right')  # Rotate labels for better readability
-
-    # Apply tight layout to prevent overlap of labels
-    plt.tight_layout()
-
-    # Display the plot in Streamlit
-    st.pyplot(fig)
-
+# Create a bubble chart using Plotly
+fig = px.scatter(top_5_services, x="Service", y="Churn Percentage", 
+                 size="Size", color="Churn Percentage", 
+                 hover_name="Service", 
+                 title="Top 5 Services with Highest Churn Percentage",
+                 size_max=60,  # Max size of the bubbles
+                 color_continuous_scale="Reds",  # Color scale for churn percentage
+                 labels={"Churn Percentage": "Churn Percentage (%)", "Service": "Service"})
+                 
+# Display the chart in Streamlit
+st.plotly_chart(fig)
