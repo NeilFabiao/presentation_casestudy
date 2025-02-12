@@ -67,7 +67,7 @@ for service in service_columns:
 # Convert the churn rates dictionary to a DataFrame for better visualization
 churn_rates_df = pd.DataFrame(churn_rates)
 
-# Plotting churn rates for each service with added legend for better descriptiveness
+# Plotting churn rates for each service
 fig, ax = plt.subplots(figsize=(10, 6))
 
 # Plot the churn rates for "No" and "Yes" categories
@@ -84,8 +84,7 @@ ax.set_xticklabels(churn_rates_df.columns, rotation=45, ha='right')
 # Add legend
 ax.legend(['No Churn', 'Yes Churn'], loc='upper left')
 
-# Show the plot
-plt.tight_layout()
-plt.show()
+# Display the plot in Streamlit
+st.pyplot(fig)  # Use Streamlit's pyplot to render the plot
 
 
