@@ -26,16 +26,16 @@ with st.sidebar:
     gender_filter = st.radio("Select Gender", options=["All", "Male", "Female"], index=0)
 
 if gender_filter != "All":
-    df = df[df['Gender'] == gender_filter]
+    df_updated = df[df['Gender'] == gender_filter].copy()
 else:
-    df = df
+    df_updated = df.copy()
 
 # Display filtered data
 st.markdown(f"### Filtered Data: Gender = {gender_filter}")
-st.write(df)
+st.write(df_updated)
 
 # Display summary of gender counts
-gender_counts = df['Gender'].value_counts()
+gender_counts = df_updated['Gender'].value_counts()
 st.markdown("### Gender Counts")
 st.write(gender_counts)
 
