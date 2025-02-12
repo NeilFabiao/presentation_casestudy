@@ -315,31 +315,25 @@ else:
     with st.expander("💡 Click to View Detailed Strategy Suggestions"):
         st.markdown("## **Recommendation Overview**")
 
-        # Customer Segments
-        st.markdown("### **Customer Segments & Targeted Strategies**")
-
-        st.markdown("#### 📌 **Middle-Aged Adults (Two-Year Contract, Male/Female)**")
-        st.write("""
-        - Offering loyalty rewards or personalized customer service makes sense for this group, as they tend to have higher tenures.
-        - Special bundles or family plans align well with Middle-Aged Adults, who may appreciate incentives that appeal to their lifestyle.
-        """)
-
-        st.markdown("#### 📌 **Seniors (One-Year Contract, Female)**")
-        st.write("""
-        - Focus on simplicity and tech assistance, as this group prefers easy-to-understand services and may need extra support with technology.
-        - Straightforward billing and clear communication can improve retention among senior customers.
-        """)
-
-        st.markdown("#### 📌 **Young Adults (One-Year Contract, Male/Female)**")
-        st.write("""
-        - Flexible plans and referral incentives align well with Young Adults, who prefer adaptable, low-commitment contracts.
-        - Using gaming or gadget-related incentives and social media engagement can appeal to their interests.
-        """)
+        # Churn by Age Group
+        st.subheader("📌 Churn Insights by Age Group")
+        st.write("**Takeaway:** Seniors have the highest churn rate, followed by middle-aged adults and young adults.")
+        st.write("**Strategy:**")
+        st.markdown("- **Seniors:** Focus on **clear communication, easy billing, and tech assistance** to reduce churn.")
+        st.markdown("- **Middle-Aged Adults:** Offer **family plans, personalized rewards, and long-term incentives**.")
+        st.markdown("- **Young Adults:** Use **flexible contracts, referral programs, and digital engagement** strategies.")
+    
+        # Churn by Contract Type
+        st.subheader("📌 Churn Insights by Contract Type")
+        st.write("**Takeaway:** The majority of churned customers are on **month-to-month contracts**, with minimal churn from long-term contracts.")
+        st.write("**Strategy:**")
+        st.markdown("- Introduce **discounted long-term plans and upgrade incentives** to retain customers.")
+        st.markdown("- Provide **loyalty benefits for month-to-month users** to encourage retention.")
 
         # Key Churn Factors
         st.markdown("### **Key Churn Factors & Strategies to Address Them**")
 
-        st.markdown("#### 🔥 **Competitor-Driven Churn**")
+        st.markdown("#### ✔️ **Competitor-Driven Churn**")
         st.write("""
         - Continuously monitor and analyze competitors’ pricing, services, and customer feedback.
         - Implement a loyalty rewards program to retain customers and offer exclusive benefits.
