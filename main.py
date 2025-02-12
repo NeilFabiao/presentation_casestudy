@@ -112,38 +112,3 @@ st.write('---')
 # Part 2: What would we do to reduce churn?
 st.write('### Question 2: What would we do to reduce churn?')
 
-# Step 1: Filter churned data and create age categories
-churned_data = df_clean_[df_clean_['Churn Label'] == 1]  # Filter churned customers
-
-# Create age categories
-def age_category(age):
-    if age < 30:
-        return 'Young Adults'
-    elif 30 <= age < 50:
-        return 'Middle-Aged Adults'
-    else:
-        return 'Seniors'
-
-churned_data['AgeGroup'] = churned_data['Age'].apply(age_category)
-
-# Group churned data by AgeGroup, Contract, Gender, and Customer Status
-grouped_churn_data = churned_data.groupby(['AgeGroup', 'Contract', 'Gender', 'Customer Status']).agg(
-    AvgTenure=('Tenure in Months', 'mean'),
-    AvgMonthlyCharge=('Monthly Charge', 'mean')
-).reset_index()
-
-# Round the results to 2 decimal places
-grouped_churn_data['AvgTenure'] = grouped_churn_data['AvgTenure'].round(2)
-grouped_churn_data['AvgMonthlyCharge'] = grouped_churn_data['AvgMonthlyCharge'].round(2)
-
-# Part 3: Show pie charts for Age Group, Contract, and Gender
-st.write('### Churn Distribution by Age Group, Contract Type, and Gender')
-
-# Pie chart for Age Group distribution of churned customers
-age_group_counts = churned_data['AgeGroup'].value_counts().reset_index()
-age_group_counts.columns = ['AgeGroup', 'Count']  # Rename columns for clarity
-fig_age = px.pie(age_group_counts, names='AgeGroup', values='Count', title="Churned Customers by Age Group", color_discrete_sequence=px.colors.pastel)
-st.plotly_chart(fig_age)
-
-
-
