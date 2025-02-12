@@ -169,13 +169,10 @@ with col1:
 
 st.write('---')
 
-# Filter the churned data based on the churn_filter
-churned_data = df_clean_[df_clean_['Churn Category'] == 1]
-
 # Part 1: Identify the top 5 churn reasons
 top_churn_category = churned_data['Churn Category'].value_counts().head(5)
 
-# Create a layout with two columns for the churn reasons and the geographical distribution
+# Create a layout with two columns for the churn category and the geographical distribution
 col1, col2 = st.columns(2)
 
 # Column 1: Display the top 5 churn reasons
