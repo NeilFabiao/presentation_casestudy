@@ -141,10 +141,3 @@ with col1:
                             marker=dict(colors=['#ff9999','#66b3ff','#99ff99'])))
     fig1.update_layout(title='Churned Customers by Age Group')
     st.plotly_chart(fig1)
-
-# Pie chart for Contract distribution in the second column
-with col2:
-    fig2 = go.Figure(go.Pie(labels=contract_counts.index, values=contract_counts, 
-                            marker=dict(colors=['#ffcc99','#ff6666','#66b3ff'])))
-    fig2.update_layout(title='Churned Customers by Contract Type')
-    st.plotly_chart(fig2)
