@@ -71,7 +71,7 @@ churn_rates_df = pd.DataFrame(churn_rates)
 fig, ax = plt.subplots(figsize=(10, 6))
 
 # Plot the churn rates for "No" and "Yes" categories
-churn_data.T.plot(kind='bar', ax=ax, width=0.8, position=0, color=['skyblue', 'salmon'])
+churn_rates_df.T.plot(kind='bar', ax=ax, width=0.8, position=0, color=['skyblue', 'salmon'])
 
 # Add labels and title
 ax.set_xlabel('Service')
