@@ -122,6 +122,35 @@ with col2:
         fig_map.update_layout(mapbox_style="carto-positron")
         st.plotly_chart(fig_map, use_container_width=True)
 
+# Identify the top 5 churn Category
+top_churn_category = df_clean_['Churn Category'].value_counts().head(5)
+
+# Create two columns for displaying churn reasons and their geographical distribution
+col1, col2 = st.columns(2)
+
+# Column 1: Display the top 5 category reasons
+with col1:
+    st.markdown("### 🏆 Top 5 Churn Category")
+    df_top_reasons = top_churn_reasons.reset_index()
+    df_top_reasons.columns = ['Churn Reason', 'Count']
+    st.dataframe(df_top_reasons.set_index("Churn Category"))
+
+# Column 2: Geographical distribution of churned customers
+with col2:
+    st.markdown("### 🌍 Geographical Distribution of Top 5 Churn Category")
+    if 'Latitude' in df_clean_.columns and 'Longitude' in df_clean_.columns:
+        top_reason_data = df_clean_[df_clean_['Churn Category'].isin(top_churn_reasons.index)]
+        fig_map = px.scatter_mapbox(
+            top_reason_data,
+            lat="Latitude",
+            lon="Longitude",
+            color="Churn Reason",
+            hover_name="Customer ID",
+            zoom=4
+        )
+        fig_map.update_layout(mapbox_style="carto-positron")
+        st.plotly_chart(fig_map, use_container_width=True)
+
 st.write('---')
 
 # 📌 Pie Charts: Customer Demographics & Contracts
