@@ -161,10 +161,16 @@ top_churn_reasons = churned_data_filtered['Churn Reason'].value_counts().head(5)
 # Create two columns for displaying top churn reasons and their geographical distribution
 col1, col2 = st.columns(2)
 
-# Column 1: Display the top 5 churn reasons
+# Column 1: Display the top 5 churn reasons (Formatted DataFrame)
 with col1:
     st.markdown("### 🏆 Top 5 Churn Reasons")
-    st.dataframe(top_churn_reasons.reset_index().rename(columns={'index': 'Churn Reason', 'Churn Reason': 'Count'}))
+    
+    # Convert Series to DataFrame and properly rename columns
+    df_top_reasons = top_churn_reasons.reset_index()
+    df_top_reasons.columns = ['Churn Reason', 'Count']  # Correct column renaming
+    
+    # Display clean DataFrame without index column
+    st.dataframe(df_top_reasons, hide_index=True)
 
 # Column 2: Display the geographical distribution of churned customers for the top 5 churn reasons
 with col2:
@@ -187,8 +193,8 @@ with col2:
             hover_name="Customer ID",
             hover_data=["Age", "Contract"],
             color_discrete_sequence=px.colors.qualitative.Pastel,
-            zoom=5,
-            title="Geographical Distribution of Churned Customers by Top Reasons"
+            zoom=3
+            #title="Geographical Distribution of Churned Customers by Top Reasons"
         )
 
         fig_map.update_layout(mapbox_style="carto-positron", mapbox_center={"lat": lat_center, "lon": lon_center})
