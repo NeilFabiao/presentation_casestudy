@@ -98,7 +98,7 @@ with col2:
     xaxis_tickangle=-45,  # Rotate x-axis labels
     yaxis_range=[min_churn_percentage - 5, max_churn_percentage + 5],  # Dynamic range based on data
     margin=dict(l=10, r=10, t=40, b=50),  # Set margins to ensure no clipping
-    title_x=0.5,  # Center the title
+    title=None,  # Hide the title
     title_font=dict(size=16),  # Title font size
     xaxis=dict(showgrid=True),  # Show gridlines on x-axis for better readability
     yaxis=dict(showgrid=True),  # Show gridlines on y-axis
