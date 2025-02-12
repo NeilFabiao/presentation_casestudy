@@ -1,35 +1,31 @@
 import streamlit as st
 import pandas as pd
-import plotly.express as px
-import seaborn as sns
 import matplotlib.pyplot as plt
 
 # Load the telco dataset
 df = pd.read_csv('telco.csv')
 
-# Definir as colunas a serem alteradas (estas colunas foram identificadas no jupyter notebook desta repo)
+# Clean the dataset (replace NaN with 'Unknown' in certain columns)
 cols_to_change = ['Churn Reason', 'Churn Category', 'Internet Type', 'Offer']
-
-# Substituir valores NaN por 'Unknown' (Desconhecido)
 df[cols_to_change] = df[cols_to_change].fillna('Unknown')
 
-# Streamlit UI setup Part 1
+# Streamlit UI setup
 st.set_page_config(page_title="Análise de Churn de Telco", page_icon="📊", layout="wide", initial_sidebar_state="expanded")
 st.title("Análise de Churn de Telco 📊")
 st.write("Este relatório fornece insights sobre os padrões de churn e estratégias para melhorar a retenção de clientes.")
 st.write('---')
 
-# Sidebar for gender selection
+# Sidebar for gender and churn status selection
 with st.sidebar:
-    st.title("Telco customer churn dashboard")
-    st.write("In this section we can select the different filters we wish to see")
+    st.title("Telco Customer Churn Dashboard")
+    st.write("In this section, we can select the different filters we wish to see.")
     
     # Gender selection using radio buttons
     gender_filter = st.radio("Select Gender", options=["All", "Male", "Female"], index=0)
     # Churn selection using radio buttons
     churn_filter = st.radio("Select Churn Status", options=["All", "Yes", "No"], index=0)
 
-
+# Filter the DataFrame based on selected gender and churn status
 if gender_filter != "All":
     df_updated = df[df['Gender'] == gender_filter].copy()
 else:
@@ -37,27 +33,28 @@ else:
 
 if churn_filter != "All":
     df_updated = df_updated[df_updated['Churn Label'] == churn_filter].copy()
-else:
-    df_updated = df_updated.copy()
 
-#Main panel this is where we start answering the questions
+# Check for unique values in 'Churn Label' to ensure clean data
+st.write("Unique values in 'Churn Label':", df_updated['Churn Label'].unique())
 
-
-#Part 1: Which services tend to have high churn?
-st.write('Question 1:  Which services tend to have high churn')
+# Part 1: Which services tend to have high churn?
+st.write('### Question 1: Which services tend to have high churn?')
 
 # Service-related columns
 service_columns = ['Phone Service', 'Internet Service', 'Multiple Lines',
                    'Streaming TV', 'Streaming Movies', 'Streaming Music',
-                   'Online Security', 'Online Backup','Device Protection Plan',
-                   'Premium Tech Support','Unlimited Data']
-
-#control point for dataset
-df_clean_ = df_updated.copy()
+                   'Online Security', 'Online Backup', 'Device Protection Plan',
+                   'Premium Tech Support', 'Unlimited Data']
 
 # Initialize dictionaries to store churn counts and percentages
 service_counts = {}
 service_churn_rates = {}
+
+df_clean_ = df_updated.copy()
+
+# Check for unique values in service-related columns to ensure clean data
+for service in service_columns:
+    st.write(f"Unique values in '{service}':", df_clean_[service].unique())
 
 # Convert 'Churn Label' to numeric (if not already)
 df_clean_['Churn Label'] = df_clean_['Churn Label'].map({'Yes': 1, 'No': 0})
@@ -77,15 +74,15 @@ for service in service_columns:
 service_counts_df = pd.DataFrame(service_counts, index=['Churned Count']).T
 service_churn_rates_df = pd.DataFrame(service_churn_rates, index=['Churn Percentage']).T
 
-# Display the churn counts in a table and churn percentage graph
+# Create two columns for displaying the table and the plot
 col1, col2 = st.columns(2)
 
-# Column 1: Raw churn counts table
+# Column 1: Display raw churn counts table
 with col1:
     st.markdown("### Raw Churn Counts by Service")
     st.write(service_counts_df.sort_values(by="Churned Count", ascending=False))
 
-# Column 2: Churn percentage as bar chart
+# Column 2: Display churn percentage graph
 with col2:
     st.markdown("### Churn Percentage Comparison")
     fig, ax = plt.subplots(figsize=(10, 6))
@@ -101,5 +98,3 @@ with col2:
 
     # Display the plot in Streamlit
     st.pyplot(fig)
-
-
