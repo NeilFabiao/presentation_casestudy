@@ -59,11 +59,8 @@ with col3:
 st.write("""
 **Citação e Referência do Conjunto de Dados**
 
-O **Telco Customer Churn Dataset** da IBM contém dados sobre clientes de telecomunicações, 
-utilizados para prever a probabilidade de cancelamento de serviços e analisar fatores que influenciam o churn. 
-Disponível em :
-- [Kaggle - Telco Customer Churn Dataset](https://www.kaggle.com/datasets/blastchar/telco-customer-churn)
-- [Kaggle - Telco Customer Churn Dataset (Outro Link)](https://www.kaggle.com/datasets/blastchar/telco-customer-churn)
+O **Telco Customer Churn Dataset** contém dados sobre clientes de telecomunicações, 
+utilizados para analisar fatores que influenciam o churn. 
 
 **Referência:** IBM, 2021.
 """)
