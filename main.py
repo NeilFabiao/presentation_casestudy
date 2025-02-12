@@ -18,7 +18,7 @@ st.write('---')
 # Sidebar for gender and churn status selection
 with st.sidebar:
     st.title("Telco Customer Churn Dashboard")
-    st.write("In this section, we can select the different filters we wish to see.")
+    st.write("In this section we can select the different filters we wish to see.")
     
     # Gender selection using radio buttons
     gender_filter = st.radio("Select Gender", options=["All", "Male", "Female"], index=0)
@@ -52,9 +52,6 @@ service_columns = ['Phone Service', 'Internet Service', 'Multiple Lines',
 service_counts = {}
 service_churn_rates = {}
 
-# Check for unique values in 'Churn Label' to ensure clean data
-st.write("Unique values in 'Churn Label':", df_clean_['Churn Label'].unique())
-
 # Calculate raw churn counts and churn percentages for each service
 for service in service_columns:
     # Raw churn counts: Count churned customers (Churn Label == 1)
@@ -82,16 +79,29 @@ with col1:
 # Column 2: Display churn percentage graph
 with col2:
     st.markdown("### Churn Percentage Comparison")
+
+    # Copy the churn rates to a new variable for plotting
+    churn_data = service_churn_rates_df.copy()
+
+    # Create the plot
     fig, ax = plt.subplots(figsize=(10, 6))
-    service_churn_rates_df.T.plot(kind='bar', ax=ax, width=0.8, color='salmon')
+
+    # Plot the churn rates for "No" and "Yes" categories with different colors
+    churn_data.T.plot(kind='bar', ax=ax, width=0.8, position=0, color=['skyblue', 'salmon'])
 
     # Add labels and title
     ax.set_xlabel('Service')
     ax.set_ylabel('Churn Percentage (%)')
-    ax.set_title('Churn Percentage Comparison by Service')
+    ax.set_title('Churn Rate Comparison by Service')
 
     # Set X-axis labels with rotation
-    ax.set_xticklabels(service_churn_rates_df.columns, rotation=45, ha='right')
+    ax.set_xticklabels(churn_data.columns, rotation=45, ha='right')
+
+    # Add legend with clear labels
+    ax.legend(['No Churn', 'Yes Churn'], loc='upper left')
+
+    # Apply tight layout to prevent overlap of labels
+    plt.tight_layout()
 
     # Display the plot in Streamlit
     st.pyplot(fig)
