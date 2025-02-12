@@ -49,31 +49,29 @@ service_columns = ['Phone Service', 'Internet Service', 'Multiple Lines',
                    'Premium Tech Support', 'Unlimited Data']
 
 # Initialize dictionaries to store churn counts and percentages
-service_counts = {}
+service_churn_percentage = {}
 
-# Calculate raw churn counts for each service
+# Calculate churn percentage for each service
 for service in service_columns:
     # Raw churn counts: Count churned customers (Churn Label == 1)
     churned_customers = df_clean_[df_clean_[service] == 'Yes']  # Customers who used this service
     churn_count = churned_customers[churned_customers['Churn Label'] == 1].shape[0]  # Count churned customers
-    service_counts[service] = churn_count
-
-# Convert the service counts dictionary to a DataFrame for better visualization
-service_counts_df = pd.DataFrame(service_counts, index=['Churned Count']).T
-
-# Sort and get the top 5 services with the highest churn counts
-top_5_services = service_counts_df.sort_values(by="Churned Count", ascending=False).head(5)
+    
+    # Calculate churn percentage for each service
+    total_service_users = df_clean_[df_clean_[service] == 'Yes'].shape[0]
+    churn_percentage = (churn_count / total_service_users) * 100 if total_service_users > 0 else 0
+    service_churn_percentage[service] = churn_percentage
 
 # Convert the churn percentages to a DataFrame for better visualization
 service_churn_percentage_df = pd.DataFrame(service_churn_percentage, index=['Churn Percentage']).T
 
-
 # Create two columns for displaying the table and the plot
 col1, col2 = st.columns(2)
 
-# Column 1: Display raw churn counts for the top 5 services in a table format
+# Column 1: Display raw churn counts for the top 5 services in a cute, styled way
 with col1:
-    st.markdown("### Top 5 Services with Highest Churn Counts")
+    st.markdown("### Raw Churn Counts for Top 5 Services")
+    top_5_services = service_churn_percentage_df.sort_values(by="Churn Percentage", ascending=False).head(5)
     st.dataframe(top_5_services)  # Display the top 5 services table
 
 # Column 2: Display churn percentage graph
@@ -99,7 +97,3 @@ with col2:
 
     # Display the plot in Streamlit
     st.pyplot(fig)
-
-
-
-    
