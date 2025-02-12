@@ -38,15 +38,45 @@ if churn_filter != "All":
 else:
     df_updated = df_updated.copy()
 
+#Main panel this is where we start answering the questions
 
+#Part 1: Which services tend to have high churn?
 
-# Display filtered data
-st.markdown(f"### Filtered Data: Gender = {gender_filter}")
-st.write(df_updated)
+# Service-related columns
+service_columns = ['Phone Service', 'Internet Service', 'Multiple Lines',
+                   'Streaming TV', 'Streaming Movies', 'Streaming Music',
+                   'Online Security', 'Online Backup','Device Protection Plan',
+                   'Premium Tech Support','Unlimited Data']
 
-# Display summary of gender counts
-gender_counts = df_updated['Gender'].value_counts()
-st.markdown("### Gender Counts")
-st.write(gender_counts)
+# Calculate churn rate for each service
+churn_rates = {}
+
+for service in service_columns:
+    # Group by the service column and calculate the churn rate (mean of 'Churn' column)
+    churn_rate = df_updated.groupby(service)['Churn'].mean() * 100  # Churn rate as percentage
+    churn_rates[service] = churn_rate
+
+# Convert the churn rates dictionary to a DataFrame for better visualization
+churn_rates_df = pd.DataFrame(churn_rates)
+
+# Plotting churn rates for each service
+fig, ax = plt.subplots(figsize=(12, 8))
+
+# Plot the churn rates for each service
+churn_rates_df.plot(kind='bar', ax=ax, width=0.8, color=['skyblue', 'salmon'])
+
+# Add labels and title
+ax.set_xlabel('Service')
+ax.set_ylabel('Churn Rate (%)')
+ax.set_title('Churn Rate Comparison by Service')
+
+# Set X-axis labels with rotation
+ax.set_xticklabels(churn_rates_df.columns, rotation=45, ha='right')
+
+# Add legend
+ax.legend(['No Churn', 'Yes Churn'], loc='upper left')
+
+# Show the plot
+st.pyplot(fig)  # Display the plot in Streamlit
 
 
