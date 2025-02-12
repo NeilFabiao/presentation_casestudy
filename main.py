@@ -149,64 +149,18 @@ with col2:
                             marker=dict(colors=['#ffcc99','#ff6666','#66b3ff'])))
     fig2.update_layout(title='Churned Customers by Contract Type')
     st.plotly_chart(fig2)
+    
+    # Geographical distribution of churned customers (assuming you have latitude and longitude in your dataset)
+if 'Latitude' in churned_data.columns and 'Longitude' in churned_data.columns:
+    # Create a map with Plotly
+    fig_map = px.scatter_mapbox(churned_data, lat="Latitude", lon="Longitude", color="AgeGroup", 
+                                hover_name="Customer ID", hover_data=["Age", "Contract"],
+                                color_continuous_scale="Viridis", zoom=3)
 
+    fig_map.update_layout(mapbox_style="carto-positron", title="Geographical Distribution of Churned Customers")
+    st.plotly_chart(fig_map)
 
-
+else:
+    st.write("Geographical data (Latitude and Longitude) not found in the dataset.")
 
 st.write('---')
-
-# Group by the CLTV segments (You can define thresholds or use k-means to group CLTV into segments)
-kmeans = KMeans(n_clusters=5, random_state=42)
-churned_data['CLTV'] = kmeans.fit_predict(churned_data[['CLTV']])
-
-# Group churned customers by CLTV segments and calculate total revenue for each segment
-CLTV_revenue = churned_data.groupby('CLTV')['Total Revenue'].sum()
-
-# Identify the top CLTV segments based on total revenue
-top_CLTVs = CLTV_revenue.nlargest(5)
-
-# Assign colors to each CLTV segment for the map
-color_discrete_map = {0: 'blue', 1: 'green', 2: 'red', 3: 'purple', 4: 'orange'}
-
-# Create a scatter mapbox for the top CLTV segments
-fig_CLTVs = go.Figure()
-
-for segment in top_CLTVs.index:
-    segment_data = churned_data[churned_data['CLTV'] == segment]
-    fig_CLTVs.add_trace(
-        go.Scattermapbox(
-            lat=segment_data['Latitude'],
-            lon=segment_data['Longitude'],
-            mode='markers',
-            marker=dict(size=9, color=color_discrete_map[segment]),
-            name=f"CLTV Segment {segment}"
-        )
-    )
-
-# Update layout to set mapbox properties
-fig_CLTVs.update_layout(
-    title='Geographical Distribution of Top CLTV Segments by Churned Customers',
-    mapbox=dict(
-        style="carto-positron",
-        zoom=4,
-        center=dict(lat=churned_data['Latitude'].mean(), lon=churned_data['Longitude'].mean())
-    ),
-    margin={"r": 0, "t": 0, "l": 0, "b": 0},
-    legend_title_text='CLTV Segment'
-)
-
-# Display in Streamlit
-st.markdown('### Geographical Distribution of Top CLTV Segments by Churned Customers')
-
-# Create two columns for the map and the table
-col1, col2 = st.columns([3, 1])
-
-with col1:
-    st.plotly_chart(fig_CLTVs, use_container_width=True)
-
-with col2:
-    # Create and display a table of top CLTV segments
-    top_CLTVs_table = top_CLTVs.reset_index()
-    top_CLTVs_table.columns = ['CLTV Segment', 'Total Revenue']
-    st.write(top_CLTVs_table)
-
