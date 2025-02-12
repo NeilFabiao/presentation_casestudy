@@ -64,6 +64,10 @@ service_counts_df = pd.DataFrame(service_counts, index=['Churned Count']).T
 # Sort and get the top 5 services with the highest churn counts
 top_5_services = service_counts_df.sort_values(by="Churned Count", ascending=False).head(5)
 
+# Convert the churn percentages to a DataFrame for better visualization
+service_churn_percentage_df = pd.DataFrame(service_churn_percentage, index=['Churn Percentage']).T
+
+
 # Create two columns for displaying the table and the plot
 col1, col2 = st.columns(2)
 
