@@ -42,7 +42,9 @@ else:
 
 #Main panel this is where we start answering the questions
 
+
 #Part 1: Which services tend to have high churn?
+st.write('Question 1:  Which services tend to have high churn')
 
 # Service-related columns
 service_columns = ['Phone Service', 'Internet Service', 'Multiple Lines',
