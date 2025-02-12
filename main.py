@@ -114,20 +114,8 @@ st.write('### Question 2: What would we do to reduce churn?')
 # Assuming df_with_everything is your data and it's loaded already
 data = df_clean_.copy()
 
-# Filter churned customers
-churned_data = data[data['Churn Label'].str.contains('Yes', case=False, na=False)]
+# Filter the churned data based on the churn_filter
+churned_data = df_clean_[df_clean_['Churn Label'] == 1]
 
-# Create age categories
-def age_category(age):
-    if age < 30:
-        return 'Young Adults'
-    elif 30 <= age < 50:
-        return 'Middle-Aged Adults'
-    else:
-        return 'Seniors'
-
-churned_data['AgeGroup'] = churned_data['Age'].apply(age_category)
-
-
-
+# Show the filtered churned data in Streamlit
 st.write(churned_data)
