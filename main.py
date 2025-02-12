@@ -165,7 +165,7 @@ if 'Latitude' in churned_data.columns and 'Longitude' in churned_data.columns:
     # Calculate the spread and adjust zoom level
     lat_diff = max_lat - min_lat
     lon_diff = max_lon - min_lon
-    zoom_level = 10 - max(lat_diff, lon_diff)  # You can tweak this formula for better zoom levels
+    zoom_level = 10 + max(lat_diff, lon_diff)  # You can tweak this formula for better zoom levels
 
     # Create the map with Plotly, using the dynamic center and zoom level
     fig_map = px.scatter_mapbox(churned_data, lat="Latitude", lon="Longitude", color="AgeGroup", 
