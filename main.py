@@ -107,7 +107,7 @@ with col2:
     
     st.plotly_chart(fig)
 
-st.write('--')
+st.write('---')
 
 # Part 2: What would we do to reduce churn?
 st.write('### Question 2: What would we do to reduce churn?')
@@ -126,7 +126,7 @@ st.markdown("""
 - Flexible plans with referral incentives for social networks.
 - Use of gaming or gadget-related incentives.""")
 
-st.write('--')
+st.write('---')
 
 # Part 3: What should be the strategy to employ to reduce churn in the future
 
