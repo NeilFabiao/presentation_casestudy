@@ -19,11 +19,11 @@ st.write('---')
 with st.sidebar:
     st.title("Telco Customer Churn Dashboard")
     st.write("In this section we can select the different filters we wish to see.")
-    
+
     # Gender selection using radio buttons
     gender_filter = st.radio("Select Gender", options=["All", "Male", "Female"], index=0)
     # Churn selection using radio buttons
-    churn_filter = st.radio("Select Churn Status", options=["Yes", "No"], index=0)
+    churn_filter = st.radio("Select Churn Status", options=["All", "Yes", "No"], index=0)
 
 # Filter the DataFrame based on selected gender and churn status
 if gender_filter != "All":
@@ -38,6 +38,7 @@ else:
     # Map 'Yes' to 1 and 'No' to 0 based on churn status selection
     df_clean_ = df_updated.copy()
     df_clean_['Churn Label'] = df_clean_['Churn Label'].map({'Yes': 1, 'No': 0}) if churn_filter == "Yes" else df_clean_['Churn Label'].map({'Yes': 0, 'No': 1})
+
 
 # Part 1: Which services tend to have high churn?
 st.write('### Question 1: Which services tend to have high churn?')
@@ -56,7 +57,7 @@ for service in service_columns:
     # Raw churn counts: Count churned customers (Churn Label == 1)
     churned_customers = df_clean_[df_clean_[service] == 'Yes']  # Customers who used this service
     churn_count = churned_customers[churned_customers['Churn Label'] == 1].shape[0]  # Count churned customers
-    
+
     # Calculate churn percentage for each service
     total_service_users = df_clean_[df_clean_[service] == 'Yes'].shape[0]
     churn_percentage = (churn_count / total_service_users) * 100 if total_service_users > 0 else 0
@@ -65,31 +66,44 @@ for service in service_columns:
 # Convert the churn percentages to a DataFrame for better visualization
 service_churn_percentage_df = pd.DataFrame(service_churn_percentage, index=['Churn Percentage']).T
 
-# Sort and get the top 5 services with the highest churn percentages
-top_5_services = service_churn_percentage_df.sort_values(by="Churn Percentage", ascending=False).head(5)
-
 # Create two columns for displaying the table and the plot
 col1, col2 = st.columns(2)
 
-# Column 1: Display raw churn counts for the top 5 services in a cute, styled way
+# Column 1: Display raw churn counts for the top 5 services in a cute, styled way (using Plotly)
 with col1:
-    st.markdown("### Raw Churn Counts for Top 5 Services")
+    st.markdown("### Raw Churn Counts for Top 5 Services (Plotly)")
+
     top_5_services = service_churn_percentage_df.sort_values(by="Churn Percentage", ascending=False).head(5)
-    st.dataframe(top_5_services)  # Display the top 5 services table
 
-# Column 2: Display churn percentage graph using Plotly
+    fig_counts = px.bar(
+        top_5_services,
+        x=top_5_services.index,
+        y="Churn Percentage",  # Assuming this is the count, rename if needed
+        title="Top 5 Services by Churn Count",
+        color="Churn Percentage", # Color the bars based on churn percentage
+        color_continuous_scale="viridis" # Use a nice color scale
+    )
+    fig_counts.update_layout(xaxis_title="Service", yaxis_title="Churn Count")  # Update axis labels
+    st.plotly_chart(fig_counts)
+
+
+# Column 2: Display churn percentage graph (using Plotly)
 with col2:
-    st.markdown("### Churn Percentage Comparison by Service")
-    
-    # Prepare data for Plotly bar chart
-    top_5_services = top_5_services.reset_index()
+    st.markdown("### Churn Percentage Comparison by Service (Plotly)")
 
-    # Create the bar chart using Plotly
-    fig = px.bar(top_5_services, x='Service', y='Churn Percentage',
-                 title="Churn Percentage Comparison for Top 5 Services",
-                 color='Service', 
-                 color_discrete_map={'Phone Service': 'red', 'Internet Service': 'blue', 'Multiple Lines': 'green', 'Streaming TV': 'purple', 'Streaming Movies': 'orange'},
-                 labels={'Churn Percentage': 'Churn Percentage (%)', 'Service': 'Service'})
-    
-    # Display the bar chart in Streamlit
+    fig = px.scatter(
+        service_churn_percentage_df,
+        x=service_churn_percentage_df.index,
+        y="Churn Percentage",
+        size="Churn Percentage",  # Size of the markers
+        hover_name=service_churn_percentage_df.index,  # Tooltips
+        title="Churn Percentage Comparison by Service",
+    )
+
+    fig.update_layout(
+        xaxis_title="Service",
+        yaxis_title="Churn Percentage (%)",
+        xaxis_tickangle=-45,  # Rotate x-axis labels
+    )
+
     st.plotly_chart(fig)
