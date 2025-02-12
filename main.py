@@ -156,7 +156,7 @@ st.write('---')
 churned_data = df_clean_[df_clean_['Churn Label'] == 1]
 
 # Part 1: Identify the top 5 churn reasons
-top_churn_reasons = churned_data['Churn Reason'].value_counts().head(5)
+top_churn_reasons = churned_data['Churn Reason'].value_counts()
 
 # Create a layout with two columns for the churn reasons and the geographical distribution
 col1, col2 = st.columns(2)
