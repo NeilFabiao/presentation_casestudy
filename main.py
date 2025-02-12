@@ -152,6 +152,9 @@ with col2:
     
 st.write('---')
 
+# Filter the churned data based on the churn_filter
+churned_data = df_clean_[df_clean_['Churn Label'] == 1]
+
 # Part 1: Identify the top 5 churn reasons
 top_churn_reasons = churned_data['Churn Reason'].value_counts().head(5)
 
@@ -162,23 +165,4 @@ col1, col2 = st.columns(2)
 with col1:
     st.markdown("### Top 5 Churn Reasons")
     st.write(top_churn_reasons)  # Display the top 5 churn reasons table
-
-# Column 2: Display geographical distribution of churned customers for each of the top 5 churn reasons
-with col2:
-    for reason in top_churn_reasons.index:
-        # Filter the churned data for the current churn reason
-        reason_data = churned_data[churned_data['Churn Reason'] == reason]
-
-        # Geographical distribution of churned customers for the specific churn reason
-        if 'Latitude' in reason_data.columns and 'Longitude' in reason_data.columns:
-            # Create a map with Plotly for each top churn reason
-            fig_map = px.scatter_mapbox(reason_data, lat="Latitude", lon="Longitude", color="AgeGroup", 
-                                        hover_name="Customer ID", hover_data=["Age", "Contract"],
-                                        color_continuous_scale="Viridis", zoom=4, 
-                                        title=f"Geographical Distribution of Churned Customers for Churn Reason: {reason}")
-
-            fig_map.update_layout(mapbox_style="carto-positron")
-            st.plotly_chart(fig_map)
-        else:
-            st.write(f"Geographical data (Latitude and Longitude) not found for churn reason: {reason}")
 
