@@ -71,7 +71,7 @@ col1, col2 = st.columns(2)
 
 # Column 1: Display raw churn counts for the top 5 services
 with col1:
-    st.markdown("### Raw Churn Counts for Top 5 Services")
+    st.markdown("### Top 5 Services")
     top_5_services = service_churn_percentage_df.sort_values(by="Churn Percentage", ascending=False).head(5)
     st.dataframe(top_5_services)  # Display the top 5 services table
 
