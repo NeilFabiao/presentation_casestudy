@@ -67,15 +67,16 @@ top_5_services = service_counts_df.sort_values(by="Churned Count", ascending=Fal
 # Create two columns for displaying the table and the plot
 col1, col2 = st.columns(2)
 
-# Column 1: Display raw churn counts for the top 5 services in a cute, styled way
+# Column 1: Display raw churn counts for the top 5 services in a table format
 with col1:
     st.markdown("### Top 5 Services with Highest Churn Counts")
+    st.dataframe(top_5_services)  # Display the top 5 services table
+
+# Column 2: Display churn percentage graph
+with col2:
+    st.markdown("### Churn Percentage Comparison")
+
+    # Copy the churn rates to a new variable for plotting
+    churn_data = service_churn_rates_df.copy()
+
     
-    # Use markdown to make the table more attractive
-    for idx, row in top_5_services.iterrows():
-        service_name = idx
-        churn_count = row['Churned Count']
-        
-        # Add cute badge or label depending on the churn count
-        st.markdown(f"**{service_name}:** :blue[{churn_count}] churned customers")
-        st.write("")  # Adding a line break to separate each entry
