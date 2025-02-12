@@ -128,10 +128,6 @@ def age_category(age):
 
 churned_data['AgeGroup'] = churned_data['Age'].apply(age_category)
 
-# Group by the age category, contract, gender, and customer status
-grouped_churn_data = churned_data.groupby(['AgeGroup', 'Contract', 'Gender', 'Customer Status']).agg(
-    AvgTenure=('Tenure in Months', 'mean'),
-    AvgMonthlyCharge=('Monthly Charge', 'mean')
-).reset_index()
 
-st.write(grouped_churn_data)
+
+st.write(churned_data)
