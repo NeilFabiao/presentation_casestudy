@@ -156,7 +156,7 @@ with col2:
         # Create a map with Plotly
         fig_map = px.scatter_mapbox(churned_data, lat="Latitude", lon="Longitude", color="AgeGroup", 
                                     hover_name="Customer ID", hover_data=["Age", "Contract"],
-                                    color_continuous_scale="Viridis", zoom=5)
+                                    color_continuous_scale="Viridis", zoom=4)
     
         fig_map.update_layout(mapbox_style="carto-positron", title="Geographical Distribution of Churned Customers")
         st.plotly_chart(fig_map)
