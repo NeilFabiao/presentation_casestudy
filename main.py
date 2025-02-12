@@ -261,3 +261,57 @@ with col2:
     
 st.write('---')
 
+# Part 3: What should be the strategy to employ to reduce churn in the future?
+st.write('### 📌 Question 3: What Should Be the Strategy to Reduce Churn in the Future?')
+
+# Create an expandable section to improve readability
+with st.expander("💡 Click to View Detailed Strategy Suggestions"):
+    st.markdown("## **Suggestion**")
+
+    # Part 1: Customer Segments & Targeted Strategies
+    st.markdown("### **Customer Segments & Targeted Strategies**")
+    
+    st.markdown("#### 📌 **Middle-Aged Adults (Two-Year Contract, Female/Male)**")
+    st.write("""
+    - Offering loyalty rewards or personalized customer service makes sense for this group, as they tend to have higher tenures.
+    - Special bundles or family plans align well with Middle-Aged Adults, who may appreciate incentives that appeal to their lifestyle.
+    """)
+
+    st.markdown("#### 📌 **Seniors (One-Year Contract, Female)**")
+    st.write("""
+    - Focus on simplicity and tech assistance, as this group prefers easy-to-understand services and may need extra support with technology.
+    - Straightforward billing and clear communication can improve retention among senior customers.
+    """)
+
+    st.markdown("#### 📌 **Young Adults (One-Year Contract, Female/Male)**")
+    st.write("""
+    - Flexible plans and referral incentives align well with Young Adults, who prefer adaptable, low-commitment contracts.
+    - Using gaming or gadget-related incentives and social media engagement can appeal to their interests.
+    """)
+
+    # Part 2: Addressing Key Churn Factors
+    st.markdown("### **Key Churn Factors & Strategies to Address Them**")
+
+    st.markdown("#### 🔥 **Competitor-Driven Churn**")
+    st.write("""
+    - Continuously monitor and analyze competitors’ pricing, services, and customer feedback.
+    - Implement a loyalty rewards program to retain customers and offer exclusive benefits.
+    """)
+
+    st.markdown("#### 📉 **Dissatisfaction-Driven Churn**")
+    st.write("""
+    - Improve service quality, network coverage, and call/data reliability.
+    - Conduct customer satisfaction surveys to pinpoint and address problem areas.
+    - Offer personalized deals and retention incentives to make customers feel valued.
+    """)
+
+    st.markdown("#### 🤝 **Customer Service-Related Churn (Attitude)**")
+    st.write("""
+    - Train customer service teams to handle complaints with empathy and professionalism.
+    - Improve response times and customer support channels to enhance customer satisfaction.
+    """)
+
+st.write('---')
+
+
+
