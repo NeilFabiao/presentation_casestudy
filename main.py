@@ -68,5 +68,20 @@ service_churn_percentage_df = pd.DataFrame(service_churn_percentage, index=['Chu
 # Sort and get the top 5 services with the highest churn percentages
 top_5_services = service_churn_percentage_df.sort_values(by="Churn Percentage", ascending=False).head(5)
 
-st.write(top_5_services)
+# Prepare data for Plotly bubble chart
+top_5_services = top_5_services.reset_index()
+top_5_services.columns = ['Service', 'Churn Percentage']
+top_5_services['Size'] = top_5_services['Churn Percentage'] * 10  # Adjust size by multiplying by a factor
+
+# Create a bubble chart using Plotly
+fig = px.scatter(top_5_services, x="Service", y="Churn Percentage", 
+                 size="Size", color="Churn Percentage", 
+                 hover_name="Service", 
+                 title="Top 5 Services with Highest Churn Percentage",
+                 size_max=60,  # Max size of the bubbles
+                 color_continuous_scale="Reds",  # Color scale for churn percentage
+                 labels={"Churn Percentage": "Churn Percentage (%)", "Service": "Service"})
+                 
+# Display the chart in Streamlit
+st.plotly_chart(fig)
 
