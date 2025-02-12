@@ -24,11 +24,21 @@ with st.sidebar:
     st.title("Input Filters")
     # Gender selection using radio buttons
     gender_filter = st.radio("Select Gender", options=["All", "Male", "Female"], index=0)
+    # Churn selection using radio buttons
+    churn_filter = st.radio("Select Churn Status", options=["All", "Yes", "No"], index=0)
+
 
 if gender_filter != "All":
     df_updated = df[df['Gender'] == gender_filter].copy()
 else:
     df_updated = df.copy()
+
+if churn_filter != "All":
+    df_updated = df[df['Churn'] == churn_filter].copy()
+else:
+    df_updated = df.copy()
+
+
 
 # Display filtered data
 st.markdown(f"### Filtered Data: Gender = {gender_filter}")
