@@ -140,45 +140,9 @@ grouped_churn_data['AvgMonthlyCharge'] = grouped_churn_data['AvgMonthlyCharge'].
 st.write('### Churn Distribution by Age Group, Contract Type, and Gender')
 
 # Pie chart for Age Group distribution of churned customers
-age_group_counts = churned_data['AgeGroup'].value_counts()
-fig_age = px.pie(values=age_group_counts, names=age_group_counts.index, title="Churned Customers by Age Group", color_discrete_sequence=px.colors.pastel)
-st.plotly_chart(fig_age)
-
-
-# Here you can insert your suggestions or strategies, e.g.:
-st.markdown("""
-**Middle-Aged Adults (Two-Year Contract, Female/Male):**
-- Offering loyalty rewards or personalized customer service for long-term contract holders.
-- Special bundles or family plans that align well with their lifestyle.
-  
-**Seniors (One-Year Contract, Female):**
-- Focus on simplicity and tech assistance.
-- Easy-to-understand services and straightforward support.
-
-**Young Adults (One-Year Contract, Female/Male):**
-- Flexible plans with referral incentives for social networks.
-- Use of gaming or gadget-related incentives.""")
-
-st.write('---')
-
-
-# Part 3: What should be the strategy to employ to reduce churn in the future?
-st.write('### Question 3: What should be the strategy to employ to reduce churn in the future')
-
-# Provide a strategic suggestion here
-st.markdown("""
-**Competitor Analysis:**
-- Continuously monitor competitors’ offerings and pricing structures.
-- Use customer loyalty rewards programs to create a competitive edge.
-
-**Dissatisfaction:**
-- Survey customers regularly to pinpoint areas for improvement.
-- Personalized deals and exclusive offers for dissatisfied customers.
-
-**Attitude:**
-- Train customer service representatives to address issues empathetically and improve service quality.
-""")
-
+age_group_counts = churned_data['AgeGroup'].value_counts().reset_index()
+age_group_counts.columns = ['AgeGroup', 'Count']  # Rename columns for clarity
+fig_age = px.pie(age_group_counts, names='AgeGroup', values='Count', title="Churned Customers by Age Group", color_discrete_sequence=px.colors.pastel)st.plotly_chart(fig_age)
 
 
 
