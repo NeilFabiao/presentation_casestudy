@@ -70,7 +70,7 @@ col1, col2 = st.columns(2)
 
 # Column 1: Display raw churn counts for the top 5 services in a cute, styled way
 with col1:
-    st.markdown("### Raw Churn Counts for Top 5 Services")
+    st.markdown("### Top 5 Services")
     top_5_services = service_churn_percentage_df.sort_values(by="Churn Percentage", ascending=False).head(5)
     st.dataframe(top_5_services)  # Display the top 5 services table
 
@@ -92,7 +92,6 @@ with col2:
     # Set X-axis labels and apply rotation
     ax.set_xticks(range(len(service_churn_percentage_df.columns)))  # Set the ticks to match number of services
     ax.set_xticklabels(service_churn_percentage_df.columns, rotation=45, ha='right')  # Rotate labels for better readability
-
 
     # Apply tight layout to prevent overlap of labels
     plt.tight_layout()
