@@ -152,33 +152,106 @@ with col2:
     
 st.write('---')
 
-# Filter the churned data based on the churn_filter
+# Filter the DataFrame based on selected gender
+df_updated = df if gender_filter == "All" else df[df['Gender'] == gender_filter].copy()
+
+# Apply the churn status filter
+if churn_filter == "Yes":
+    df_clean_ = df_updated.copy()
+    df_clean_['Churn Label'] = df_clean_['Churn Label'].map({'Yes': 1, 'No': 0})
+
+    # Only replace NaN with 'Unknown' for churned customers
+    df_clean_.loc[df_clean_['Churn Label'] == 1, cols_to_change] = df_clean_[cols_to_change].fillna('Unknown')
+
+elif churn_filter == "No":
+    df_clean_ = df_updated.copy()
+    df_clean_['Churn Label'] = df_clean_['Churn Label'].map({'Yes': 0, 'No': 1})
+
+    # Do NOT replace NaN values in 'Churn Reason' for non-churned customers
+    df_clean_.loc[df_clean_['Churn Label'] == 0, 'Churn Reason'] = df_clean_['Churn Reason']
+
+# Filter churned customers for analysis
 churned_data = df_clean_[df_clean_['Churn Label'] == 1]
 
-# Part 1: Identify the top 5 churn reasons
-top_churn_reasons = churned_data['Churn Reason'].value_counts()
+# Remove 'Unknown' churn reasons from analysis to avoid skewed data
+churned_data_filtered = churned_data[churned_data['Churn Reason'] != 'Unknown']
 
-# Create a layout with two columns for the churn reasons and the geographical distribution
+# Part 1: Identify the top 5 churn reasons (excluding 'Unknown')
+top_churn_reasons = churned_data_filtered['Churn Reason'].value_counts().head(5)
+
+# Part 2: Identify the top 5 churn categories
+top_churn_categories = churned_data_filtered['Churn Category'].value_counts().head(5)
+
+# Create a layout with two columns for the churn reasons and their distribution
 col1, col2 = st.columns(2)
 
 # Column 1: Display the top 5 churn reasons
 with col1:
-    st.markdown("### Top 5 Churn Reasons")
-    st.write(top_churn_reasons)  # Display the top 5 churn reasons table
+    st.markdown("### 🏆 Top 5 Churn Reasons")
+    st.dataframe(top_churn_reasons.reset_index().rename(columns={'index': 'Churn Reason', 'Churn Reason': 'Count'}))
 
+# Column 2: Display distribution of the top 5 churn reasons in a bar chart
+with col2:
+    st.markdown("### 📊 Distribution of Top 5 Churn Reasons")
+    fig_churn_reasons = px.bar(
+        top_churn_reasons,
+        x=top_churn_reasons.index,
+        y=top_churn_reasons.values,
+        labels={'x': 'Churn Reason', 'y': 'Number of Customers'},
+        color=top_churn_reasons.index,
+        color_discrete_sequence=px.colors.qualitative.Set1,
+        title="Top 5 Churn Reasons Distribution"
+    )
+    fig_churn_reasons.update_layout(xaxis_tickangle=-45)
+    st.plotly_chart(fig_churn_reasons, use_container_width=True)
 
 st.write('---')
 
-# Part 1: Identify the top 5 churn reasons
-top_churn_category = churned_data['Churn Category'].value_counts().head(5)
-
-# Create a layout with two columns for the churn category and the geographical distribution
+# Create a layout with two columns for the churn categories and their distribution
 col1, col2 = st.columns(2)
 
-# Column 1: Display the top 5 churn reasons
+# Column 1: Display the top 5 churn categories
 with col1:
-    st.markdown("### Top 5 Churn Category")
-    st.write(top_churn_category)  # Display the top 5 churn reasons table
+    st.markdown("### 🏆 Top 5 Churn Categories")
+    st.dataframe(top_churn_categories.reset_index().rename(columns={'index': 'Churn Category', 'Churn Category': 'Count'}))
 
+# Column 2: Display distribution of the top 5 churn categories in a bar chart
+with col2:
+    st.markdown("### 📊 Distribution of Top 5 Churn Categories")
+    fig_churn_categories = px.bar(
+        top_churn_categories,
+        x=top_churn_categories.index,
+        y=top_churn_categories.values,
+        labels={'x': 'Churn Category', 'y': 'Number of Customers'},
+        color=top_churn_categories.index,
+        color_discrete_sequence=px.colors.qualitative.Set3,
+        title="Top 5 Churn Categories Distribution"
+    )
+    fig_churn_categories.update_layout(xaxis_tickangle=-45)
+    st.plotly_chart(fig_churn_categories, use_container_width=True)
 
+st.write('---')
 
+# Geographical Distribution of Churned Customers (Optional if location data exists)
+if 'Latitude' in churned_data.columns and 'Longitude' in churned_data.columns:
+    # Calculate center of the map
+    lat_center = churned_data['Latitude'].mean()
+    lon_center = churned_data['Longitude'].mean()
+
+    # Create a map of churned customers
+    fig_map = px.scatter_mapbox(
+        churned_data,
+        lat="Latitude",
+        lon="Longitude",
+        color="Churn Reason",
+        hover_name="Customer ID",
+        hover_data=["Age", "Contract"],
+        color_discrete_sequence=px.colors.qualitative.Pastel,
+        zoom=5,
+        title="🌍 Geographical Distribution of Churned Customers"
+    )
+
+    fig_map.update_layout(mapbox_style="carto-positron", mapbox_center={"lat": lat_center, "lon": lon_center})
+    st.plotly_chart(fig_map, use_container_width=True)
+else:
+    st.write("ℹ️ No geographical data available for mapping.")
