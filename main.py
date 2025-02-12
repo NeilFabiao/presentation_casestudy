@@ -15,13 +15,8 @@ cols_to_change = ['Churn Reason', 'Churn Category', 'Internet Type', 'Offer']
 df[cols_to_change] = df[cols_to_change].fillna('Unknown')
 
 # Exibir os valores únicos após a substituição
-print("Valores únicos em 'Churn Reason':")
-print(df['Churn Reason'].unique())
-
-# Contar a ocorrência de cada valor único em 'Churn Reason'
-churn_reason_counts = df['Churn Reason'].value_counts()
-print("\nContagem de cada valor único em 'Churn Reason':")
-print(churn_reason_counts)
+st.write("Valores únicos em 'Churn Reason':")
+st.write(df['Churn Reason'
 
 
 # Streamlit UI setup
