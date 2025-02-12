@@ -160,7 +160,7 @@ kmeans = KMeans(n_clusters=5, random_state=42)
 churned_data['CLTV'] = kmeans.fit_predict(churned_data[['CLTV']])
 
 # Group churned customers by CLTV segments and calculate total revenue for each segment
-CLTV_revenue = churned_data.groupby('CLTV')['total_revenue'].sum()
+CLTV_revenue = churned_data.groupby('CLTV')['Total Revenue'].sum()
 
 # Identify the top CLTV segments based on total revenue
 top_CLTVs = CLTV_revenue.nlargest(5)
