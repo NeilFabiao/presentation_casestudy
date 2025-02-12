@@ -70,9 +70,21 @@ col1, col2 = st.columns(2)
 
 # Column 1: Display raw churn counts for the top 5 services in a cute, styled way
 with col1:
-    st.markdown("### Top 5 Services")
-    top_5_services = service_churn_percentage_df.sort_values(by="Churn Percentage", ascending=False).head(5)
-    st.dataframe(top_5_services)  # Display the top 5 services table
+    st.markdown("### Top 5 Services with Highest Churn Counts (Donut Charts)")
+
+    # Loop through the top 5 services to create donut charts
+    for idx, row in top_5_services.iterrows():
+        service_name = idx
+        churn_count = row['Churned Count']
+        
+        # Create a donut chart for each service
+        fig = px.pie(values=[churn_count, top_5_services['Churned Count'].sum() - churn_count],
+                     names=['Churned', 'Not Churned'],
+                     hole=0.3,  # Create a donut chart
+                     title=f'{service_name} Churn Count')
+
+        fig.update_traces(textinfo='percent+label', pull=[0.1, 0])  # Show percentage and label on the chart
+        st.plotly_chart(fig)  # Display the donut chart in Streamlit
 
 # Column 2: Display churn percentage graph
 with col2:
@@ -90,8 +102,8 @@ with col2:
     ax.set_title('Churn Percentage Comparison by Service')
 
     # Set X-axis labels and apply rotation
-    ax.set_xticks(range(len(service_churn_percentage_df.columns)))  # Set the ticks to match number of services
-    ax.set_xticklabels(service_churn_percentage_df.columns, rotation=45, ha='right')  # Rotate labels for better readability
+    #ax.set_xticks(range(len(service_churn_percentage_df.columns)))  # Set the ticks to match number of services
+    #ax.set_xticklabels(service_churn_percentage_df.columns, rotation=45, ha='right')  # Rotate labels for better readability
 
     # Apply tight layout to prevent overlap of labels
     plt.tight_layout()
