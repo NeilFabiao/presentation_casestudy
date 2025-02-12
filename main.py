@@ -33,11 +33,6 @@ else:
 
 if churn_filter != "All":
     df_updated = df_updated[df_updated['Churn Label'] == churn_filter].copy()
-else:
-    df_updated = df.copy()
-
-# Check for unique values in 'Churn Label' to ensure clean data
-st.write("Unique values in 'Churn Label':", df_updated['Churn Label'].unique())
 
 # Part 1: Which services tend to have high churn?
 st.write('### Question 1: Which services tend to have high churn?')
@@ -54,20 +49,20 @@ service_churn_rates = {}
 
 df_clean_ = df_updated.copy()
 
-# Check for unique values in service-related columns to ensure clean data
-for service in service_columns:
-    st.write(f"Unique values in '{service}':", df_clean_[service].unique())
+# Check for unique values in 'Churn Label' to ensure clean data
+st.write(f"Unique values in 'Churn Label': {df_clean_['Churn Label'].unique()}")
 
 # Convert 'Churn Label' to numeric (if not already)
 df_clean_['Churn Label'] = df_clean_['Churn Label'].map({'Yes': 1, 'No': 0})
 
 # Calculate raw churn counts and churn rates for each service
 for service in service_columns:
-    churned_customers = df_clean_[df_clean_[service] == 'Yes']  # Customers who used this service and churned
+    # Raw churn counts: Count churned customers (Churn Label == 1)
+    churned_customers = df_clean_[df_clean_[service] == 'Yes']  # Customers who used this service
     churn_count = churned_customers[churned_customers['Churn Label'] == 1].shape[0]  # Count churned customers
     service_counts[service] = churn_count
     
-    # Calculate churn percentage for each service
+    # Calculate churn percentage for each service (only for churned customers)
     total_service_users = df_clean_[df_clean_[service] == 'Yes'].shape[0]
     churn_percentage = (churn_count / total_service_users) * 100 if total_service_users > 0 else 0
     service_churn_rates[service] = churn_percentage
