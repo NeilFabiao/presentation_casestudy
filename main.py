@@ -53,7 +53,7 @@ service_columns = ['Phone Service', 'Internet Service', 'Multiple Lines',
                    'Premium Tech Support','Unlimited Data']
 
 #control point for dataset
-df_clean_ = df.copy()
+df_clean_ = df_updated.copy()
 
 # Convert 'Churn Label' to numeric (if not already)
 df_clean_['Churn Label'] = df_clean_['Churn Label'].map({'Yes': 1, 'No': 0})
