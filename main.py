@@ -1,246 +1,232 @@
 import streamlit as st
 import pandas as pd
+import matplotlib.pyplot as plt
 import plotly.express as px
 import plotly.graph_objects as go
+from sklearn.cluster import KMeans
 
-# ----------------------------------
-# 1. Data Loading and Preprocessing
-# ----------------------------------
-@st.cache_data
-def load_data(csv_path):
-    """Loads the telco dataset and fills specific NaNs with 'Unknown'."""
-    df_ = pd.read_csv(csv_path)
-    cols_to_change = ['Churn Reason', 'Churn Category', 'Internet Type', 'Offer']
-    for col in cols_to_change:
-        if col in df_.columns:
-            df_[col] = df_[col].fillna('Unknown')
-    return df_
+# Load the telco dataset
+df = pd.read_csv('telco.csv')
 
-# Load the dataset
-df = load_data('telco.csv')
+# Clean the dataset (replace NaN with 'Unknown' in certain columns)
+cols_to_change = ['Churn Reason', 'Churn Category', 'Internet Type', 'Offer']
+df[cols_to_change] = df[cols_to_change].fillna('Unknown')
 
-# -------------------------------------------------
-# 2. Streamlit Page Configuration and Main Heading
-# -------------------------------------------------
-st.set_page_config(
-    page_title="Telco Churn Analysis", 
-    page_icon="📊", 
-    layout="wide", 
-    initial_sidebar_state="expanded"
-)
-
-st.title("📊 Telco Customer Churn Dashboard")
-st.write("This dashboard provides insights into churn patterns and strategies for improving customer retention.")
+# Streamlit UI setup
+st.set_page_config(page_title="Análise de Churn de Telco", page_icon="📊", layout="wide", initial_sidebar_state="expanded")
+st.title("Análise de Churn de Telco 📊")
+st.write("Este relatório fornece insights sobre os padrões de churn e estratégias para melhorar a retenção de clientes.")
 st.write('---')
 
-# -----------------
-# 3. Sidebar Filters
-# -----------------
+# Sidebar for gender and churn status selection
 with st.sidebar:
-    st.title("🔍 Filters")
-    st.write("Use the filters below to explore churn trends.")
+    st.title("Telco Customer Churn Dashboard")
+    st.write("In this section we can select the different filters we wish to see.")
     
-    # Gender filter
-    gender_filter = st.radio(
-        "Select Gender", 
-        options=["All", "Male", "Female"], 
-        index=0
-    )
-    
-    # Churn status filter
-    churn_filter = st.radio(
-        "Select Churn Status", 
-        options=["All", "Yes", "No"], 
-        index=0
-    )
+    # Gender selection using radio buttons
+    gender_filter = st.radio("Select Gender", options=["All", "Male", "Female"], index=0)
+    # Churn selection using radio buttons
+    churn_filter = st.radio("Select Churn Status", options=["Yes", "No"], index=0)
 
-# -------------------------
-# 4. Data Filtering by User
-# -------------------------
-df_filtered = df.copy()
-
-# Filter by Gender
+# Filter the DataFrame based on selected gender and churn status
 if gender_filter != "All":
-    df_filtered = df_filtered[df_filtered['Gender'] == gender_filter].copy()
+    df_updated = df[df['Gender'] == gender_filter].copy()
+else:
+    df_updated = df.copy()
 
-# Filter by Churn Status
-if churn_filter == "Yes":
-    # Map Yes -> 1 and No -> 0, then keep only churned
-    df_filtered['Churn Label'] = df_filtered['Churn Label'].map({'Yes': 1, 'No': 0})
-    df_filtered = df_filtered[df_filtered['Churn Label'] == 1]
-elif churn_filter == "No":
-    # Map Yes -> 0 and No -> 1, then keep only non-churned
-    df_filtered['Churn Label'] = df_filtered['Churn Label'].map({'Yes': 0, 'No': 1})
-    df_filtered = df_filtered[df_filtered['Churn Label'] == 1]
-# If "All", do nothing.
+# Apply the churn status filter
+if churn_filter == "All":
+    df_clean_ = df_updated.copy()  # Do not map 'Churn Label' if "All" is selected
+else:
+    # Map 'Yes' to 1 and 'No' to 0 based on churn status selection
+    df_clean_ = df_updated.copy()
+    df_clean_['Churn Label'] = df_clean_['Churn Label'].map({'Yes': 1, 'No': 0}) if churn_filter == "Yes" else df_clean_['Churn Label'].map({'Yes': 0, 'No': 1})
 
-# ---------------------------------------------
-# 5. Question 1: Which Services Tend to Churn?
-# ---------------------------------------------
-st.write('### 📌 Question 1: Which Services Tend to Have High Churn?')
+# Part 1: Which services tend to have high churn?
+st.write('### Question 1: Which services tend to have high churn?')
 
-# Service-related columns (ensure these match your dataset)
-service_columns = [
-    'Phone Service', 'Internet Service', 'Multiple Lines',
-    'Streaming TV', 'Streaming Movies', 'Streaming Music',
-    'Online Security', 'Online Backup', 'Device Protection Plan',
-    'Premium Tech Support', 'Unlimited Data'
-]
+# Service-related columns
+service_columns = ['Phone Service', 'Internet Service', 'Multiple Lines',
+                   'Streaming TV', 'Streaming Movies', 'Streaming Music',
+                   'Online Security', 'Online Backup', 'Device Protection Plan',
+                   'Premium Tech Support', 'Unlimited Data']
 
-# Calculate the churn percentage for each service
-service_churn_pct = {}
+# Initialize dictionaries to store churn counts and percentages
+service_churn_percentage = {}
+
+# Calculate churn percentage for each service
 for service in service_columns:
-    # Customers who have this service
-    service_users = df_filtered[df_filtered[service] == 'Yes']
-    total_service_users = service_users.shape[0]
+    # Raw churn counts: Count churned customers (Churn Label == 1)
+    churned_customers = df_clean_[df_clean_[service] == 'Yes']  # Customers who used this service
+    churn_count = churned_customers[churned_customers['Churn Label'] == 1].shape[0]  # Count churned customers
     
-    # Among those, how many are churned if we are looking at churned data only
-    # or total data? This logic depends on whether df_filtered is only churned or not. 
-    # If you want the churn rate *within* df_filtered, do:
-    if total_service_users > 0:
-        # Because we already filtered by churn status above,
-        # we can interpret "Churn Label == 1" as churned if needed:
-        churn_count = service_users[service_users['Churn Label'] == 1].shape[0]
-        service_churn_pct[service] = (churn_count / total_service_users) * 100
-    else:
-        service_churn_pct[service] = 0
+    # Calculate churn percentage for each service
+    total_service_users = df_clean_[df_clean_[service] == 'Yes'].shape[0]
+    churn_percentage = (churn_count / total_service_users) * 100 if total_service_users > 0 else 0
+    service_churn_percentage[service] = churn_percentage
 
-# Convert dict to DataFrame
-service_churn_df = pd.DataFrame(service_churn_pct, index=['Churn Percentage']).T
+# Convert the churn percentages to a DataFrame for better visualization
+service_churn_percentage_df = pd.DataFrame(service_churn_percentage, index=['Churn Percentage']).T
 
-# Two-column layout for table and bar chart
+# Create two columns for displaying the table and the plot
 col1, col2 = st.columns(2)
 
+# Column 1: Display raw churn counts for the top 5 services
 with col1:
-    st.markdown("### 🏆 Top 5 Services by Churn Rate")
-    top_5_services = service_churn_df.sort_values(by="Churn Percentage", ascending=False).head(5)
-    st.dataframe(top_5_services)
+    st.markdown("### Top 5 Services")
+    top_5_services = service_churn_percentage_df.sort_values(by="Churn Percentage", ascending=False).head(5)
+    st.dataframe(top_5_services)  # Display the top 5 services table
 
+# Column 2: Display churn percentage graph (using Plotly)
 with col2:
-    st.markdown("### 📊 Churn Percentage by Service")
-    if not service_churn_df.empty:
-        fig = px.bar(
-            service_churn_df,
-            x=service_churn_df.index,
-            y="Churn Percentage",
-            color="Churn Percentage",
-            color_continuous_scale="viridis",
-            title=None
-        )
-        fig.update_layout(
-            xaxis_title="Service",
-            yaxis_title="Churn Percentage (%)",
-            xaxis_tickangle=-45,
-            margin=dict(l=10, r=10, t=40, b=50),
-            coloraxis_showscale=False
-        )
-        st.plotly_chart(fig)
-    else:
-        st.write("No data available to plot.")
+    st.markdown("### Churn Percentage Comparison by Service")
+
+    # Get the maximum and minimum churn percentages for dynamic y-axis range
+    min_churn_percentage = service_churn_percentage_df["Churn Percentage"].min()
+    max_churn_percentage = service_churn_percentage_df["Churn Percentage"].max()
+
+    # Create the bar chart using Plotly
+    fig = px.bar(
+        service_churn_percentage_df,
+        x=service_churn_percentage_df.index,
+        y="Churn Percentage",
+        color="Churn Percentage",  # Color bars by churn percentage
+        color_continuous_scale="viridis", # Use a nice color scale
+        title=None  # Hide the title directly here
+    )
+
+    fig.update_layout(
+        xaxis_title="Service",
+        yaxis_title="Churn Percentage (%)",
+        xaxis_tickangle=-45,  # Rotate x-axis labels
+        yaxis_range=[min_churn_percentage - 5, max_churn_percentage + 5],  # Dynamic range based on data
+        margin=dict(l=10, r=10, t=40, b=50),  # Set margins to ensure no clipping
+        xaxis=dict(showgrid=True),  # Show gridlines on x-axis for better readability
+        yaxis=dict(showgrid=True),  # Show gridlines on y-axis
+        coloraxis_showscale=False  # Hide the color bar (right bar)
+    )
+    
+    st.plotly_chart(fig)
 
 st.write('---')
 
-# -----------------------------------
-# 6. Question 2: Why Do Customers Churn?
-# -----------------------------------
-st.write('### 📌 Question 2: What Would We Do to Reduce Churn?')
+# Part 2: What would we do to reduce churn?
+st.write('### Question 2: What would we do to reduce churn?')
 
-# Safeguard: If df_filtered is empty, display a message and stop
-if df_filtered.empty:
-    st.info("No data available for the current filters. Please adjust your filters to see results.")
-    st.stop()
+# --- CHURN Reason SECTION ---
 
-# Count top churn reasons
-if 'Churn Reason' in df_filtered.columns:
-    top_churn_reasons = df_filtered['Churn Reason'].value_counts().head(5)
-else:
-    top_churn_reasons = pd.Series()
+churned_data = df_clean_[df_clean_['Churn Label'] == 1]
 
-# Two-column layout for reasons and map
+# Remove 'Unknown' churn reasons from analysis to avoid skewed data
+churned_data_filtered = churned_data[churned_data['Churn Reason'] != 'Unknown']
+
+# Part 1: Identify the top 5 churn reasons (excluding 'Unknown')
+top_churn_reasons = churned_data_filtered['Churn Reason'].value_counts().head(5)
+
+# Create two columns for displaying top churn reasons and their geographical distribution
 col1, col2 = st.columns(2)
 
+# Column 1: Display the top 5 churn reasons (Formatted DataFrame)
 with col1:
     st.markdown("### 🏆 Top 5 Churn Reasons")
-    if not top_churn_reasons.empty:
-        df_top_reasons = top_churn_reasons.reset_index()
-        df_top_reasons.columns = ['Churn Reason', 'Count']
-        st.dataframe(df_top_reasons.set_index("Churn Reason"))
-    else:
-        st.write("No churn reasons found.")
+    
+    # Convert Series to DataFrame and properly rename columns
+    df_top_reasons = top_churn_reasons.reset_index()
+    df_top_reasons.columns = ['Churn Reason', 'Count']  # Correct column renaming
+    
+    # Display clean DataFrame without index column
+    st.dataframe(df_top_reasons, hide_index=True)
 
+# Column 2: Display the geographical distribution of churned customers for the top 5 churn reasons
 with col2:
     st.markdown("### 🌍 Geographical Distribution of Top 5 Churn Reasons")
-    if 'Latitude' in df_filtered.columns and 'Longitude' in df_filtered.columns and not top_churn_reasons.empty:
-        reason_filter_data = df_filtered[df_filtered['Churn Reason'].isin(top_churn_reasons.index)]
-        if not reason_filter_data.empty:
-            fig_map = px.scatter_mapbox(
-                reason_filter_data,
-                lat="Latitude",
-                lon="Longitude",
-                color="Churn Reason",
-                hover_name="Customer ID",
-                zoom=4
-            )
-            fig_map.update_layout(mapbox_style="carto-positron", height=450)
-            st.plotly_chart(fig_map, use_container_width=True)
-        else:
-            st.write("No geographical data available for the top reasons.")
+    
+    if 'Latitude' in churned_data.columns and 'Longitude' in churned_data.columns:
+        # Filter churned data for only the top 5 churn reasons
+        top_reason_data = churned_data[churned_data['Churn Reason'].isin(top_churn_reasons.index)]
+
+        # Calculate center of the map dynamically
+        lat_center = top_reason_data['Latitude'].mean()
+        lon_center = top_reason_data['Longitude'].mean()
+
+        # Create the interactive map
+        fig_map = px.scatter_mapbox(
+            top_reason_data,
+            lat="Latitude",
+            lon="Longitude",
+            color="Churn Reason",
+            hover_name="Customer ID",
+            hover_data=["Age", "Contract"],
+            color_discrete_sequence=px.colors.qualitative.Pastel,
+            zoom=3.5
+            #title="Geographical Distribution of Churned Customers by Top Reasons"
+        )
+
+        fig_map.update_layout(mapbox_style="carto-positron", mapbox_center={"lat": lat_center, "lon": lon_center})
+        st.plotly_chart(fig_map, use_container_width=True)
     else:
-        st.write("Latitude/Longitude columns not found or no data to display.")
+        st.write("ℹ️ No geographical data available for mapping.")
+
+# --- ADD CHURN CATEGORY SECTION ---
 
 st.write('---')
 
-# ---------------------------------------------
-# 7. Additional: Churn Categories Exploration
-# ---------------------------------------------
-st.write('### 📌 Churn Categories Exploration')
+# Filter the churned data based on the churn_filter
+churned_data = df_clean_[df_clean_['Churn Label'] == 1]
 
-# Count top churn categories
-if 'Churn Category' in df_filtered.columns:
-    top_churn_categories = df_filtered['Churn Category'].value_counts().head(5)
-else:
-    top_churn_categories = pd.Series()
+# Part 2: Identify the top 5 churn categories
+top_churn_categories = churned_data_filtered['Churn Category'].value_counts().head(5)
 
+# Create two columns for displaying churn categories and their geographical distribution
 col1, col2 = st.columns(2)
 
+# Column 1: Display the top 5 churn categories (Formatted DataFrame)
 with col1:
     st.markdown("### 🏆 Top 5 Churn Categories")
-    if not top_churn_categories.empty:
-        df_top_categories = top_churn_categories.reset_index()
-        df_top_categories.columns = ['Churn Category', 'Count']
-        st.dataframe(df_top_categories.set_index("Churn Category"))
-    else:
-        st.write("No churn categories found.")
+    
+    # Convert Series to DataFrame and properly rename columns
+    df_top_categories = top_churn_categories.reset_index()
+    df_top_categories.columns = ['Churn Category', 'Count']  # Correct column renaming
+    
+    # Display clean DataFrame without index column
+    st.dataframe(df_top_categories, hide_index=True)
 
+# Column 2: Display the geographical distribution of churned customers for the top 5 churn categories
 with col2:
     st.markdown("### 🌍 Geographical Distribution of Top 5 Churn Categories")
-    if 'Latitude' in df_filtered.columns and 'Longitude' in df_filtered.columns and not top_churn_categories.empty:
-        category_filter_data = df_filtered[df_filtered['Churn Category'].isin(top_churn_categories.index)]
-        if not category_filter_data.empty:
-            fig_map_cat = px.scatter_mapbox(
-                category_filter_data,
-                lat="Latitude",
-                lon="Longitude",
-                color="Churn Category",
-                hover_name="Customer ID",
-                zoom=4
-            )
-            fig_map_cat.update_layout(mapbox_style="carto-positron", height=450)
-            st.plotly_chart(fig_map_cat, use_container_width=True)
-        else:
-            st.write("No geographical data available for the top categories.")
+    
+    if 'Latitude' in churned_data.columns and 'Longitude' in churned_data.columns:
+        # Filter churned data for only the top 5 churn categories
+        top_category_data = churned_data[churned_data['Churn Category'].isin(top_churn_categories.index)]
+
+        # Calculate center of the map dynamically
+        lat_center = top_category_data['Latitude'].mean()
+        lon_center = top_category_data['Longitude'].mean()
+
+        # Create the interactive map
+        fig_map_category = px.scatter_mapbox(
+            top_category_data,
+            lat="Latitude",
+            lon="Longitude",
+            color="Churn Category",
+            hover_name="Customer ID",
+            hover_data=["Age", "Contract"],
+            color_discrete_sequence=px.colors.qualitative.Vivid,
+            zoom=3.5
+        )
+
+        fig_map_category.update_layout(mapbox_style="carto-positron", mapbox_center={"lat": lat_center, "lon": lon_center})
+        st.plotly_chart(fig_map_category, use_container_width=True)
     else:
-        st.write("Latitude/Longitude columns not found or no data to display.")
+        st.write("ℹ️ No geographical data available for mapping.")
 
 st.write('---')
 
-# -------------------------------------------------
-# 8. Pie Charts: Customer Demographics & Contracts
-# -------------------------------------------------
-st.write('### 📊 Customer Demographics & Contract Type Distribution')
+# Filter the churned data based on the churn_filter
+churned_data = df_clean_[df_clean_['Churn Label'] == 1]
 
-# Create a helper to categorize age
-def get_age_category(age):
+# Create age categories for churned customers
+def age_category(age):
     if age < 30:
         return 'Young Adults'
     elif 30 <= age < 50:
@@ -248,53 +234,81 @@ def get_age_category(age):
     else:
         return 'Seniors'
 
-if 'Age' in df_filtered.columns:
-    df_filtered['AgeGroup'] = df_filtered['Age'].apply(get_age_category)
-else:
-    df_filtered['AgeGroup'] = 'Unknown'
+churned_data['AgeGroup'] = churned_data['Age'].apply(age_category)
 
-age_group_counts = df_filtered['AgeGroup'].value_counts() if 'AgeGroup' in df_filtered.columns else pd.Series()
-contract_counts = df_filtered['Contract'].value_counts() if 'Contract' in df_filtered.columns else pd.Series()
+# Pie chart for Age Group distribution of churned customers
+age_group_counts = churned_data['AgeGroup'].value_counts()
 
+# Pie chart for Contract distribution of churned customers
+contract_counts = churned_data['Contract'].value_counts()
+
+# Create a Streamlit layout with two columns
 col1, col2 = st.columns(2)
 
+# Pie chart for Age Group distribution in the first column
 with col1:
-    st.markdown("#### Customer Distribution by Age Group")
-    if not age_group_counts.empty:
-        fig1 = go.Figure(go.Pie(labels=age_group_counts.index, values=age_group_counts.values))
-        fig1.update_layout(title='Age Group Distribution')
-        st.plotly_chart(fig1)
-    else:
-        st.write("ℹ️ No data available for Age Group distribution.")
+    fig1 = go.Figure(go.Pie(labels=age_group_counts.index, values=age_group_counts, 
+                            marker=dict(colors=['#ff9999','#66b3ff','#99ff99'])))
+    fig1.update_layout(title='Churned Customers by Age Group')
+    st.plotly_chart(fig1)
 
+# Pie chart for Contract distribution in the second column
 with col2:
-    st.markdown("#### Customer Distribution by Contract Type")
-    if not contract_counts.empty:
-        fig2 = go.Figure(go.Pie(labels=contract_counts.index, values=contract_counts.values))
-        fig2.update_layout(title='Contract Type Distribution')
-        st.plotly_chart(fig2)
-    else:
-        st.write("ℹ️ No data available for Contract distribution.")
-
+    fig2 = go.Figure(go.Pie(labels=contract_counts.index, values=contract_counts, 
+                            marker=dict(colors=['#ffcc99','#ff6666','#66b3ff'])))
+    fig2.update_layout(title='Churned Customers by Contract Type')
+    st.plotly_chart(fig2)
+    
 st.write('---')
 
-# ------------------------------------------------------
-# 9. Question 3: Strategy to Reduce Churn in the Future
-# ------------------------------------------------------
+# Part 3: What should be the strategy to employ to reduce churn in the future?
 st.write('### 📌 Question 3: What Should Be the Strategy to Reduce Churn in the Future?')
 
-with st.expander("💡 Click to View Strategy Suggestions"):
-    st.markdown("## **Strategy Recommendations**")
-    st.markdown("#### 📌 **Customer Segments & Solutions**")
-    st.write("- **Middle-Aged Adults**: Loyalty rewards and personalized service.")
-    st.write("- **Seniors**: Simple plans and technical assistance.")
-    st.write("- **Young Adults**: Flexible plans and referral programs.")
+# Create an expandable section to improve readability
+with st.expander("💡 Click to View Detailed Strategy Suggestions"):
+    st.markdown("## **Suggestion**")
 
-    st.markdown("#### 🔥 **Key Churn Factors & Fixes**")
-    st.write("- **Competitor Churn**: Loyalty programs & competitive pricing.")
-    st.write("- **Service Dissatisfaction**: Improve network & personalized offers.")
-    st.write("- **Customer Support Issues**: Train representatives for better customer experience.")
+    # Part 1: Customer Segments & Targeted Strategies
+    st.markdown("### **Customer Segments & Targeted Strategies**")
+    
+    st.markdown("#### 📌 **Middle-Aged Adults (Two-Year Contract, Female/Male)**")
+    st.write("""
+    - Offering loyalty rewards or personalized customer service makes sense for this group, as they tend to have higher tenures.
+    - Special bundles or family plans align well with Middle-Aged Adults, who may appreciate incentives that appeal to their lifestyle.
+    """)
+
+    st.markdown("#### 📌 **Seniors (One-Year Contract, Female)**")
+    st.write("""
+    - Focus on simplicity and tech assistance, as this group prefers easy-to-understand services and may need extra support with technology.
+    - Straightforward billing and clear communication can improve retention among senior customers.
+    """)
+
+    st.markdown("#### 📌 **Young Adults (One-Year Contract, Female/Male)**")
+    st.write("""
+    - Flexible plans and referral incentives align well with Young Adults, who prefer adaptable, low-commitment contracts.
+    - Using gaming or gadget-related incentives and social media engagement can appeal to their interests.
+    """)
+
+    # Part 2: Addressing Key Churn Factors
+    st.markdown("### **Key Churn Factors & Strategies to Address Them**")
+
+    st.markdown("#### 🔥 **Competitor-Driven Churn**")
+    st.write("""
+    - Continuously monitor and analyze competitors’ pricing, services, and customer feedback.
+    - Implement a loyalty rewards program to retain customers and offer exclusive benefits.
+    """)
+
+    st.markdown("#### 📉 **Dissatisfaction-Driven Churn**")
+    st.write("""
+    - Improve service quality, network coverage, and call/data reliability.
+    - Conduct customer satisfaction surveys to pinpoint and address problem areas.
+    - Offer personalized deals and retention incentives to make customers feel valued.
+    """)
+
+    st.markdown("#### 🤝 **Customer Service-Related Churn (Attitude)**")
+    st.write("""
+    - Train customer service teams to handle complaints with empathy and professionalism.
+    - Improve response times and customer support channels to enhance customer satisfaction.
+    """)
 
 st.write('---')
-st.write("### End of Dashboard")
-
