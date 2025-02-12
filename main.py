@@ -21,7 +21,9 @@ st.write('---')
 
 # Sidebar for gender selection
 with st.sidebar:
-    st.title("Input Filters")
+    st.title("Telco customer churn dashboard")
+    st.write("In this section we can select the different filters we wish to see")
+    
     # Gender selection using radio buttons
     gender_filter = st.radio("Select Gender", options=["All", "Male", "Female"], index=0)
     # Churn selection using radio buttons
