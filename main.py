@@ -69,5 +69,8 @@ for service in service_columns:
 # Convert the churn rates dictionary to a DataFrame for better visualization
 churn_rates_df = pd.DataFrame(churn_rates)
 
+# Display the churn rates for each service
+st.write(churn_rates_df.T)
+
 
 
