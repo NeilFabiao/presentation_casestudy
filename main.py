@@ -134,8 +134,4 @@ grouped_churn_data = churned_data.groupby(['AgeGroup', 'Contract', 'Gender', 'Cu
     AvgMonthlyCharge=('Monthly Charge', 'mean')
 ).reset_index()
 
-# Round the results to 2 decimal places
-grouped_churn_data['AvgTenure'] = grouped_churn_data['AvgTenure'].round(2)
-grouped_churn_data['AvgMonthlyCharge'] = grouped_churn_data['AvgMonthlyCharge'].round(2)
-
 st.write(grouped_churn_data)
