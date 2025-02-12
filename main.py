@@ -112,6 +112,34 @@ st.write('---')
 # Part 2: What would we do to reduce churn?
 st.write('### Question 2: What would we do to reduce churn?')
 
+# Step 1: Filter churned data and create age categories
+churned_data = df_clean_[df_clean_['Churn Label'] == 1]  # Filter churned customers
+
+# Create age categories
+def age_category(age):
+    if age < 30:
+        return 'Young Adults'
+    elif 30 <= age < 50:
+        return 'Middle-Aged Adults'
+    else:
+        return 'Seniors'
+
+churned_data['AgeGroup'] = churned_data['Age'].apply(age_category)
+
+# Group churned data by AgeGroup, Contract, Gender, and Customer Status
+grouped_churn_data = churned_data.groupby(['AgeGroup', 'Contract', 'Gender', 'Customer Status']).agg(
+    AvgTenure=('Tenure in Months', 'mean'),
+    AvgMonthlyCharge=('Monthly Charge', 'mean')
+).reset_index()
+
+# Round the results to 2 decimal places
+grouped_churn_data['AvgTenure'] = grouped_churn_data['AvgTenure'].round(2)
+grouped_churn_data['AvgMonthlyCharge'] = grouped_churn_data['AvgMonthlyCharge'].round(2)
+
+# Display the grouped churn data table
+st.markdown("### Grouped Data of Churned Customers")
+st.dataframe(grouped_churn_data)
+
 # Here you can insert your suggestions or strategies, e.g.:
 st.markdown("""
 **Middle-Aged Adults (Two-Year Contract, Female/Male):**
