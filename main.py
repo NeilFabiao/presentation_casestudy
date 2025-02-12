@@ -137,110 +137,79 @@ with col2:
 # Final divider
 st.write("---")
 
+
 # ----------------------------------------------------
-# 8. Section 2: What would we do to reduce churn?
+# Section 2: "What would we do to reduce churn?"
 # ----------------------------------------------------
+
+
 st.subheader("Question 2: What would we do to reduce churn?")
 
-# --- CHURN REASON ANALYSIS ---
-# Filter churned customers
-churned_data = df_filtered[df_filtered['Churn Label'] == "Yes"].copy()
+# Check if there are any churned customers
+if df_filtered.empty:
+    st.warning("No churned customers found based on the selected filters. Try adjusting the filters.")
+else:
+    # --- CHURN REASON ANALYSIS ---
+    churned_data_filtered = df_filtered[df_filtered['Churn Reason'] != 'Unknown'].copy()
+    top_churn_reasons = churned_data_filtered['Churn Reason'].value_counts().head(5)
 
-# Remove 'Unknown' churn reasons for better insights
-churned_data_filtered = churned_data[churned_data['Churn Reason'] != 'Unknown'].copy()
+    col3, col4 = st.columns(2)  # Unique column names for this section
 
-# Identify the top 5 churn reasons (excluding 'Unknown')
-top_churn_reasons = churned_data_filtered['Churn Reason'].value_counts().head(5)
+    with col3:
+        st.markdown("### 🏆 Top 5 Churn Reasons")
+        df_top_reasons = top_churn_reasons.reset_index()
+        df_top_reasons.columns = ['Churn Reason', 'Count']
+        st.dataframe(df_top_reasons, hide_index=True)
 
-# Create two columns: One for top churn reasons, one for geographical mapping
-col1, col2 = st.columns(2)
+    with col4:
+        st.markdown("### 🌍 Geographical Distribution of Top 5 Churn Reasons")
+        if 'Latitude' in df_filtered.columns and 'Longitude' in df_filtered.columns:
+            top_reason_data = df_filtered[df_filtered['Churn Reason'].isin(top_churn_reasons.index)]
+            if not top_reason_data.empty:
+                lat_center = top_reason_data['Latitude'].mean()
+                lon_center = top_reason_data['Longitude'].mean()
 
-# Column 1: Display top churn reasons
-with col1:
-    st.markdown("### 🏆 Top 5 Churn Reasons")
-    
-    # Convert Series to DataFrame and rename columns
-    df_top_reasons = top_churn_reasons.reset_index()
-    df_top_reasons.columns = ['Churn Reason', 'Count']
-    
-    # Display clean DataFrame
-    st.dataframe(df_top_reasons, hide_index=True)
+                fig_map = px.scatter_mapbox(
+                    top_reason_data, lat="Latitude", lon="Longitude", color="Churn Reason",
+                    hover_name="Customer ID", hover_data=["Age", "Contract"],
+                    color_discrete_sequence=px.colors.qualitative.Pastel, zoom=3.5
+                )
+                fig_map.update_layout(mapbox_style="carto-positron", mapbox_center={"lat": lat_center, "lon": lon_center})
+                st.plotly_chart(fig_map, use_container_width=True)
+            else:
+                st.info("No geographical data available for this selection.")
+        else:
+            st.info("No geographical data available for mapping.")
 
-# Column 2: Display geographical distribution of churn reasons
-with col2:
-    st.markdown("### 🌍 Geographical Distribution of Top 5 Churn Reasons")
-    
-    if 'Latitude' in churned_data.columns and 'Longitude' in churned_data.columns:
-        # Filter churned data for top 5 churn reasons
-        top_reason_data = churned_data[churned_data['Churn Reason'].isin(top_churn_reasons.index)]
+    st.write("---")
 
-        # Compute dynamic map center
-        lat_center = top_reason_data['Latitude'].mean()
-        lon_center = top_reason_data['Longitude'].mean()
+    # --- CHURN CATEGORY ANALYSIS ---
+    top_churn_categories = churned_data_filtered['Churn Category'].value_counts().head(5)
 
-        # Create an interactive map
-        fig_map = px.scatter_mapbox(
-            top_reason_data,
-            lat="Latitude",
-            lon="Longitude",
-            color="Churn Reason",
-            hover_name="Customer ID",
-            hover_data=["Age", "Contract"],
-            color_discrete_sequence=px.colors.qualitative.Pastel,
-            zoom=3.5
-        )
+    col5, col6 = st.columns(2)  # Unique column names for this section
 
-        fig_map.update_layout(mapbox_style="carto-positron", mapbox_center={"lat": lat_center, "lon": lon_center})
-        st.plotly_chart(fig_map, use_container_width=True)
-    else:
-        st.write("ℹ️ No geographical data available for mapping.")
+    with col5:
+        st.markdown("### 🏆 Top 5 Churn Categories")
+        df_top_categories = top_churn_categories.reset_index()
+        df_top_categories.columns = ['Churn Category', 'Count']
+        st.dataframe(df_top_categories, hide_index=True)
 
-st.write("---")
+    with col6:
+        st.markdown("### 🌍 Geographical Distribution of Top 5 Churn Categories")
+        if 'Latitude' in df_filtered.columns and 'Longitude' in df_filtered.columns:
+            top_category_data = df_filtered[df_filtered['Churn Category'].isin(top_churn_categories.index)]
+            if not top_category_data.empty:
+                lat_center = top_category_data['Latitude'].mean()
+                lon_center = top_category_data['Longitude'].mean()
 
-# --- CHURN CATEGORY ANALYSIS ---
-# Identify the top 5 churn categories
-top_churn_categories = churned_data_filtered['Churn Category'].value_counts().head(5)
-
-# Create two columns: One for top churn categories, one for geographical mapping
-col1, col2 = st.columns(2)
-
-# Column 1: Display top churn categories
-with col1:
-    st.markdown("### 🏆 Top 5 Churn Categories")
-    
-    # Convert Series to DataFrame and rename columns
-    df_top_categories = top_churn_categories.reset_index()
-    df_top_categories.columns = ['Churn Category', 'Count']
-    
-    # Display clean DataFrame
-    st.dataframe(df_top_categories, hide_index=True)
-
-# Column 2: Display geographical distribution of churn categories
-with col2:
-    st.markdown("### 🌍 Geographical Distribution of Top 5 Churn Categories")
-    
-    if 'Latitude' in churned_data.columns and 'Longitude' in churned_data.columns:
-        # Filter churned data for top 5 churn categories
-        top_category_data = churned_data[churned_data['Churn Category'].isin(top_churn_categories.index)]
-
-        # Compute dynamic map center
-        lat_center = top_category_data['Latitude'].mean()
-        lon_center = top_category_data['Longitude'].mean()
-
-        # Create an interactive map
-        fig_map_category = px.scatter_mapbox(
-            top_category_data,
-            lat="Latitude",
-            lon="Longitude",
-            color="Churn Category",
-            hover_name="Customer ID",
-            hover_data=["Age", "Contract"],
-            color_discrete_sequence=px.colors.qualitative.Vivid,
-            zoom=3.5
-        )
-
-        fig_map_category.update_layout(mapbox_style="carto-positron", mapbox_center={"lat": lat_center, "lon": lon_center})
-        st.plotly_chart(fig_map_category, use_container_width=True)
-    else:
-        st.write("ℹ️ No geographical data available for mapping.")
-
+                fig_map_category = px.scatter_mapbox(
+                    top_category_data, lat="Latitude", lon="Longitude", color="Churn Category",
+                    hover_name="Customer ID", hover_data=["Age", "Contract"],
+                    color_discrete_sequence=px.colors.qualitative.Vivid, zoom=3.5
+                )
+                fig_map_category.update_layout(mapbox_style="carto-positron", mapbox_center={"lat": lat_center, "lon": lon_center})
+                st.plotly_chart(fig_map_category, use_container_width=True)
+            else:
+                st.info("No geographical data available for this selection.")
+        else:
+            st.info("No geographical data available for mapping.")
