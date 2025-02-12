@@ -237,6 +237,27 @@ else:
             st.info("No geographical data available for mapping.")
 
 
+    # ----------------------------------------------------
+    # Click-to-View Churn Category Insights Section
+    # ----------------------------------------------------
+    with st.expander("💡 Click to View Churn Category Insights"):
+        
+        # Overall Churn Summary
+        st.subheader("📌 Overall Churn Trends")
+        st.write("**Takeaway:** Competitor influence is the primary churn category, followed by customer service attitude, dissatisfaction, and pricing.")
+        st.write("**Strategy:** Strengthen **competitive pricing, improve service quality, and enhance customer experience** to reduce churn.")
+    
+        # Male Churn Summary
+        st.subheader("📌 Male Churn Trends")
+        st.write("**Takeaway:** Male customers churn mainly due to **competitor influence and dissatisfaction**, with **customer service attitude** also playing a key role.")
+        st.write("**Strategy:** Offer **early access to better devices, loyalty rewards, and proactive service support** for better retention.")
+    
+        # Female Churn Summary
+        st.subheader("📌 Female Churn Trends")
+        st.write("**Takeaway:** Female customers are more likely to churn due to **competitor influence and pricing**, with **attitude of support representatives** being a major concern.")
+        st.write("**Strategy:** **Improve personalized customer interactions, introduce pricing incentives, and offer better support training** to retain female customers.")
+    
+
 # ----------------------------------------------------
 # Section 3: Understanding Churned Customers
 # ----------------------------------------------------
