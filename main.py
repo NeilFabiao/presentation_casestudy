@@ -157,23 +157,23 @@ st.write('---')
 
 # Group by the CLTV segments (You can define thresholds or use k-means to group CLTV into segments)
 kmeans = KMeans(n_clusters=5, random_state=42)
-churned_data['CLTV_Segment'] = kmeans.fit_predict(churned_data[['CLTV']])
+churned_data['CLTV'] = kmeans.fit_predict(churned_data[['CLTV']])
 
 # Group churned customers by CLTV segments and calculate total revenue for each segment
-cltv_segment_revenue = churned_data.groupby('CLTV_Segment')['total_revenue'].sum()
+CLTV_revenue = churned_data.groupby('CLTV')['total_revenue'].sum()
 
 # Identify the top CLTV segments based on total revenue
-top_cltv_segments = cltv_segment_revenue.nlargest(5)
+top_CLTVs = CLTV_revenue.nlargest(5)
 
 # Assign colors to each CLTV segment for the map
 color_discrete_map = {0: 'blue', 1: 'green', 2: 'red', 3: 'purple', 4: 'orange'}
 
 # Create a scatter mapbox for the top CLTV segments
-fig_cltv_segments = go.Figure()
+fig_CLTVs = go.Figure()
 
-for segment in top_cltv_segments.index:
-    segment_data = churned_data[churned_data['CLTV_Segment'] == segment]
-    fig_cltv_segments.add_trace(
+for segment in top_CLTVs.index:
+    segment_data = churned_data[churned_data['CLTV'] == segment]
+    fig_CLTVs.add_trace(
         go.Scattermapbox(
             lat=segment_data['latitude'],
             lon=segment_data['longitude'],
@@ -184,7 +184,7 @@ for segment in top_cltv_segments.index:
     )
 
 # Update layout to set mapbox properties
-fig_cltv_segments.update_layout(
+fig_CLTVs.update_layout(
     title='Geographical Distribution of Top CLTV Segments by Churned Customers',
     mapbox=dict(
         style="carto-positron",
@@ -202,11 +202,11 @@ st.markdown('### Geographical Distribution of Top CLTV Segments by Churned Custo
 col1, col2 = st.columns([3, 1])
 
 with col1:
-    st.plotly_chart(fig_cltv_segments, use_container_width=True)
+    st.plotly_chart(fig_CLTVs, use_container_width=True)
 
 with col2:
     # Create and display a table of top CLTV segments
-    top_cltv_segments_table = top_cltv_segments.reset_index()
-    top_cltv_segments_table.columns = ['CLTV Segment', 'Total Revenue']
-    st.write(top_cltv_segments_table)
+    top_CLTVs_table = top_CLTVs.reset_index()
+    top_CLTVs_table.columns = ['CLTV Segment', 'Total Revenue']
+    st.write(top_CLTVs_table)
 
