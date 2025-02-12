@@ -62,15 +62,14 @@ df_clean_['Churn Label'] = df_clean_['Churn Label'].map({'Yes': 1, 'No': 0})
 churn_rates = {}
 
 for service in service_columns:
-    # Group by the service column and calculate the churn rate (mean of 'Churn Label')
-    churn_rate = df_clean_.groupby(service)['Churn Label'].mean() * 100  # Churn rate as percentage
-    churn_rates[service] = churn_rate
+    # Improved calculation:
+    churn_rate = df_clean_.groupby([service, 'Churn Label']).size().unstack(fill_value=0) # Get counts
+    total_for_service = churn_rate.sum(axis=1)  # Total customers for each service option
+    churn_percentage = (churn_rate[1] / total_for_service) * 100 if 1 in churn_rate.columns else pd.Series(0, index=total_for_service.index) # Calculate churn rate, handling missing 'Yes' column
+    churn_rates[service] = churn_percentage # Store the result
 
-# Convert the churn rates dictionary to a DataFrame for better visualization
 churn_rates_df = pd.DataFrame(churn_rates)
 
-# Display the churn rates for each service
 st.write(churn_rates_df.T)
-
 
 
