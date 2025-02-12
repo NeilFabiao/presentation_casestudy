@@ -1,8 +1,6 @@
-# Import necessary libraries
 import streamlit as st
 import pandas as pd
 import plotly.express as px
-import plotly.graph_objs as go  # Import graph objects
 import seaborn as sns
 import matplotlib.pyplot as plt
 
@@ -16,7 +14,7 @@ st.write("This dashboard provides insights into customer churn patterns and stra
 st.write('---')
 
 # Define columns layout for the main panel
-col1, col2 = st.columns((2, 3, 2), gap="medium")
+col1, col2 = st.columns([2, 3], gap="medium")  # Corrected line
 
 # Column 1: Visualizing churn rate by service type
 with col1:
