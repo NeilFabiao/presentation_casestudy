@@ -182,6 +182,25 @@ else:
         else:
             st.info("No geographical data available for mapping.")
 
+    # Adding insights after the plot
+    st.markdown("### Gender-Based Churn Insights")
+    
+    # Female Churn Summary
+    st.subheader("📌 Female Churn")
+    st.write("**Takeaway:** Women primarily leave due to competitor pricing and device quality, with customer service also playing a role.")
+    st.write("**Strategy:** Improve pricing competitiveness, device upgrade programs, and customer service interactions.")
+    
+    # Male Churn Summary
+    st.subheader("📌 Male Churn")
+    st.write("**Takeaway:** Device quality is the biggest concern for male customers, followed by pricing and service experience.")
+    st.write("**Strategy:** Introduce early device access, trade-in programs, price-matching, and tech-oriented customer support.")
+    
+    # Overall Churn Summary
+    st.subheader("📌 Overall Churn")
+    st.write("**Takeaway:** Device quality and pricing are the biggest churn drivers, with customer service dissatisfaction as a secondary factor.")
+    st.write("**Strategy:** Implement device-focused retention bundles, better pricing models, and enhanced customer service.")
+
+
     st.write("---")
 
     # --- CHURN CATEGORY ANALYSIS ---
