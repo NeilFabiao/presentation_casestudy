@@ -45,29 +45,32 @@ with st.sidebar:
     st.header("Select Filters")
     
     # Gender filter
-    gender_filter = st.radio("Select Gender",options=["All", "Male", "Female"],index=0)
+    gender_filter = st.radio(
+        "Select Gender",
+        options=["All", "Male", "Female"],
+        index=0
+    )
     
-    # Churn status filter
-    churn_filter = st.radio("Select Churn Status",options=["Yes", "No"],index=0)
+    # Churn status filter (now includes "All")
+    churn_filter = st.radio(
+        "Select Churn Status",
+        options=["All", "Yes", "No"],  # Provide the "All" option
+        index=0
+    )
 
 # ----------------------------------------------------
 # 5. Filter the Data Based on Sidebar Selections
 # ----------------------------------------------------
+df_filtered = df.copy()
 
 # 5.1 Filter by Gender
 if gender_filter != "All":
-    df_filtered = df[df["Gender"] == gender_filter].copy()
-else:
-    df_filtered = df.copy()
+    df_filtered = df_filtered[df_filtered["Gender"] == gender_filter]
 
 # 5.2 Filter by Churn Status
-df_filtered = df_filtered.copy()
-if churn_filter == "Yes":
-    df_filtered["Churn Label"] = df_filtered["Churn Label"].map({"Yes": 1, "No": 0})
-    df_filtered = df_filtered[df_filtered["Churn Label"] == 1]
-else:  # churn_filter == "No"
-    df_filtered["Churn Label"] = df_filtered["Churn Label"].map({"Yes": 0, "No": 1})
-    df_filtered = df_filtered[df_filtered["Churn Label"] == 1]
+if churn_filter != "All":
+    # Keep only rows whose "Churn Label" matches the chosen filter
+    df_filtered = df_filtered[df_filtered["Churn Label"] == churn_filter]
 
 # ----------------------------------------------------
 # 6. Section 1: Which Services Tend to Have High Churn?
@@ -87,11 +90,11 @@ service_churn_dict = {}
 
 # Calculate churn % for each service among the filtered data
 for service in service_columns:
-    # Subset of customers who have the service = 'Yes'
+    # Subset: rows that have this service == 'Yes'
     service_users = df_filtered[df_filtered[service] == 'Yes']
     
-    # Among those service users, count how many are churned (Churn Label == 1)
-    churn_count = service_users[service_users['Churn Label'] == 1].shape[0]
+    # Among those service users, count how many are churned ("Churn Label" == "Yes")
+    churn_count = service_users[service_users['Churn Label'] == "Yes"].shape[0]
     total_users = service_users.shape[0]
     
     # Compute percentage (avoid division by zero)
