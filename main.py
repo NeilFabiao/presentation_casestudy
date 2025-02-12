@@ -83,5 +83,19 @@ with col2:
 
     # Plot churn percentage
     service_churn_percentage_df.plot(kind='bar', ax=ax, width=0.8, color='salmon')
+    
+    # Add labels and title
+    ax.set_xlabel('Service')
+    ax.set_ylabel('Churn Percentage (%)')
+    ax.set_title('Churn Percentage Comparison by Service')
+
+    # Set X-axis labels with rotation
+    ax.set_xticklabels(service_churn_percentage_df.columns, rotation=45, ha='right')
+
+    # Apply tight layout to prevent overlap of labels
+    plt.tight_layout()
+
+    # Display the plot in Streamlit
+    st.pyplot(fig)
 
    
