@@ -111,3 +111,50 @@ st.write('---')
 # Part 2: What would we do to reduce churn?
 st.write('### Question 2: What would we do to reduce churn?')
 
+# Assuming df_with_everything is your data and it's loaded already
+data = df_clean_.copy()
+
+# Filter churned customers
+churned_data = data[data['Churn Label'].str.contains('Yes', case=False, na=False)]
+
+# Create age categories
+def age_category(age):
+    if age < 30:
+        return 'Young Adults'
+    elif 30 <= age < 50:
+        return 'Middle-Aged Adults'
+    else:
+        return 'Seniors'
+
+churned_data['AgeGroup'] = churned_data['Age'].apply(age_category)
+
+# Group by the age category, contract, gender, and customer status
+grouped_churn_data = churned_data.groupby(['AgeGroup', 'Contract', 'Gender', 'Customer Status']).agg(
+    AvgTenure=('Tenure in Months', 'mean'),
+    AvgMonthlyCharge=('Monthly Charge', 'mean')
+).reset_index()
+
+# Round the results to 2 decimal places
+grouped_churn_data['AvgTenure'] = grouped_churn_data['AvgTenure'].round(2)
+grouped_churn_data['AvgMonthlyCharge'] = grouped_churn_data['AvgMonthlyCharge'].round(2)
+
+# Pie chart for Age Group distribution of churned customers
+age_group_counts = churned_data['AgeGroup'].value_counts()
+
+# Pie chart for Contract distribution of churned customers
+contract_counts = churned_data['Contract'].value_counts()
+
+# Create a Streamlit layout with two pie charts
+st.markdown("### Churned Customers Distribution")
+
+# Pie chart for Age Group distribution
+fig1, ax1 = plt.subplots(figsize=(8, 6))
+ax1.pie(age_group_counts, labels=age_group_counts.index, autopct='%1.1f%%', colors=['#ff9999','#66b3ff','#99ff99'], startangle=90)
+ax1.set_title('Churned Customers by Age Group')
+st.pyplot(fig1)
+
+# Pie chart for Contract distribution
+fig2, ax2 = plt.subplots(figsize=(8, 6))
+ax2.pie(contract_counts, labels=contract_counts.index, autopct='%1.1f%%', colors=['#ffcc99','#ff6666','#66b3ff'], startangle=90)
+ax2.set_title('Churned Customers by Contract Type')
+st.pyplot(fig2)
