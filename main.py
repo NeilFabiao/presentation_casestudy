@@ -52,34 +52,18 @@ service_columns = ['Phone Service', 'Internet Service', 'Multiple Lines',
 
 # Calculate churn rate for each service
 churn_rates = {}
-df_updated['Churn Label'] = df_updated['Churn Label'].map({'Yes': 1, 'No': 0})
+
+df_clean_ = df_updated.copy()
+
+# Convert 'Churn Label' to numeric (if not already)
+df_clean_['Churn Label'] = df_clean_['Churn Label'].map({'Yes': 1, 'No': 0})
 
 for service in service_columns:
     # Group by the service column and calculate the churn rate (mean of 'Churn' column)
-    churn_rate = df_updated.groupby(service)['Churn Label'].mean() * 100  # Churn rate as percentage
+    churn_rate = df_clean_.groupby(service)['Churn Label'].mean() * 100  # Churn rate as percentage
     churn_rates[service] = churn_rate
 
-# Convert the churn rates dictionary to a DataFrame for better visualization
-churn_rates_df = pd.DataFrame(churn_rates)
 
-# Plotting churn rates for each service
-fig, ax = plt.subplots(figsize=(12, 8))
-
-# Plot the churn rates for each service
-churn_rates_df.plot(kind='bar', ax=ax, width=0.8, color=['skyblue', 'salmon'])
-
-# Add labels and title
-ax.set_xlabel('Service')
-ax.set_ylabel('Churn Rate (%)')
-ax.set_title('Churn Rate Comparison by Service')
-
-# Set X-axis labels with rotation
-ax.set_xticklabels(churn_rates_df.columns, rotation=45, ha='right')
-
-# Add legend
-ax.legend(['No Churn', 'Yes Churn'], loc='upper left')
-
-# Show the plot
-st.pyplot(fig)  # Display the plot in Streamlit
+st.write(churn_rates)
 
 
