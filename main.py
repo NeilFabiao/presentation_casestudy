@@ -7,61 +7,54 @@ import matplotlib.pyplot as plt
 # Load the telco dataset
 df = pd.read_csv('telco.csv')
 
-# Calculate the number of missing values in each column
-missing_values_count = df.isnull().sum()
+# Definir as colunas a serem alteradas (estas colunas foram identificadas no jupyter notebook desta repo)
+cols_to_change = ['Churn Reason', 'Churn Category', 'Internet Type', 'Offer']
 
-# Calculate the percentage of missing values in each column
-missing_values_percentage = (missing_values_count / len(df)) * 100
+# Substituir valores NaN por 'Unknown' (Desconhecido)
+df[cols_to_change] = df[cols_to_change].fillna('Unknown')
 
-# Create a DataFrame to display the results
-missing_values_df = pd.DataFrame({
-    'Column Name': missing_values_count.index,
-    'Missing Values': missing_values_count,
-    'Percentage Missing': missing_values_percentage
-})
-
-# Filter the DataFrame to show only rows with more than 5% missing values
-filtered_missing_df = missing_values_df[missing_values_df['Percentage Missing'] > 5]
-
-# Sort the DataFrame by 'Percentage Missing' in descending order
-sorted_missing_df = filtered_missing_df.sort_values(by='Percentage Missing', ascending=False)
-
-# Streamlit UI setup
+# Streamlit UI setup Part 1
 st.set_page_config(page_title="Análise de Churn de Telco", page_icon="📊", layout="wide", initial_sidebar_state="expanded")
 st.title("Análise de Churn de Telco 📊")
 st.write("Este relatório fornece insights sobre os padrões de churn e estratégias para melhorar a retenção de clientes.")
 st.write('---')
 
-# Create three columns for different content sections
-col1, col2, col3 = st.columns(3)
-
-with col1:
-    st.markdown("### Análise de Valores Faltantes")
-    # Display missing values data in markdown if there are any
-    if not sorted_missing_df.empty:
-        st.write(sorted_missing_df)
-    else:
-        st.write("Não há colunas com mais de 5% de valores ausentes.")
-    st.write("""
-    Como mais de 50% da proporção de dados estão ausentes nestas colunas, é melhor manter os dados para realizar algumas análises. 
-    Excluir esses dados não traria os melhores resultados. Existem mais valores desconhecidos nessas 3 colunas, 
-    então estamos mudando-os para 'Desconhecido' onde os dados do cliente não foram registrados.
-    """)
-
-with col2:
-    st.markdown("### Outra Seção de Informações")
-    st.write("Aqui você pode adicionar outra seção de conteúdo que pode ser útil. Por exemplo, informações adicionais sobre o churn, a importância dos dados de clientes, etc.")
+# Sidebar for user inputs
+with st.sidebar:
+    st.title("Input Filters")
     
-    # You can replace the text above with any additional analysis or insight related to the data.
+    # Gender selection using radio buttons
+    gender_filter = st.radio("Select Gender", options=["All", "Male", "Female"], index=0)
     
-with col3:
-    st.markdown("### Referencias")
-st.write("""
-**Citação e Referência do Conjunto de Dados**
+    # Churn selection using radio buttons
+    churn_filter = st.radio("Select Churn Status", options=["All", "Yes", "No"], index=0)
 
-O **Telco Customer Churn Dataset** contém dados sobre clientes de telecomunicações, 
-utilizados para analisar fatores que influenciam o churn. 
+# Filter the DataFrame based on selections
+if gender_filter != "All":
+    df = df[df['Gender'] == gender_filter]
 
-**Referência:** IBM, 2021.
-""")
+if churn_filter != "All":
+    df = df[df['Churn'] == churn_filter]
 
+# Check if the filtered DataFrame is empty
+if df.empty:
+    st.write("No data available for the selected filters.")
+else:
+    # Display the filtered data
+    st.markdown(f"### Filtered Data: Gender = {gender_filter}, Churn = {churn_filter}")
+    st.write(df)
+
+    # Streamlit UI setup Part 2
+    # Add additional summary metrics like average tenure and monthly charges
+    average_tenure = df['tenure'].mean()
+    average_monthly_charges = df['MonthlyCharges'].mean()
+    gender_counts = df['Gender'].value_counts()
+    male_to_female_ratio = f"{gender_counts.get('Male', 0)}:{gender_counts.get('Female', 0)}"
+
+    # Display summary metrics
+    st.markdown("### Summary Metrics")
+    st.write({
+        "Average Tenure": round(average_tenure, 2),
+        "Average Monthly Charges": round(average_monthly_charges, 2),
+        "Male to Female Ratio": male_to_female_ratio
+    })
