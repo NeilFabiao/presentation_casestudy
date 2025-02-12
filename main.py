@@ -75,3 +75,17 @@ with col1:
     top_5_services = service_churn_percentage_df.sort_values(by="Churn Percentage", ascending=False).head(5)
     st.dataframe(top_5_services)  # Display the top 5 services table
 
+# Column 2: Display churn percentage graph (using Plotly)
+with col2:
+    st.markdown("### Churn Percentage Comparison by Service (Plotly)")
+
+    fig = px.bar(
+        service_churn_percentage_df,
+        x=service_churn_percentage_df.index,
+        y="Churn Percentage",
+        title="Churn Percentage Comparison by Service",
+        color="Churn Percentage",  # Color bars by churn percentage
+        color_continuous_scale="viridis" # Use a nice color scale
+    )
+
+
