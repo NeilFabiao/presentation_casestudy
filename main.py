@@ -18,12 +18,12 @@ st.write('---')
 # Sidebar for gender and churn status selection
 with st.sidebar:
     st.title("Telco Customer Churn Dashboard")
-    st.write("In this section we can select the different filters we wish to see.")
+    st.write("In this section, we can select the different filters we wish to see.")
     
     # Gender selection using radio buttons
     gender_filter = st.radio("Select Gender", options=["All", "Male", "Female"], index=0)
     # Churn selection using radio buttons
-    churn_filter = st.radio("Select Churn Status", options=["All", "Yes", "No"], index=0)
+    churn_filter = st.radio("Select Churn Status", options=["Yes", "No"], index=0)
 
 # Filter the DataFrame based on selected gender and churn status
 if gender_filter != "All":
@@ -31,8 +31,13 @@ if gender_filter != "All":
 else:
     df_updated = df.copy()
 
-if churn_filter != "All":
-    df_updated = df_updated[df_updated['Churn Label'] == churn_filter].copy()
+# Apply the churn status filter
+if churn_filter == "All":
+    df_clean_ = df_updated.copy()  # Do not map 'Churn Label' if "All" is selected
+else:
+    # Map 'Yes' to 1 and 'No' to 0 based on churn status selection
+    df_clean_ = df_updated.copy()
+    df_clean_['Churn Label'] = df_clean_['Churn Label'].map({'Yes': 1, 'No': 0}) if churn_filter == "Yes" else df_clean_['Churn Label'].map({'Yes': 0, 'No': 1})
 
 # Part 1: Which services tend to have high churn?
 st.write('### Question 1: Which services tend to have high churn?')
@@ -47,16 +52,8 @@ service_columns = ['Phone Service', 'Internet Service', 'Multiple Lines',
 service_counts = {}
 service_churn_rates = {}
 
-df_clean_ = df_updated.copy()
-
 # Check for unique values in 'Churn Label' to ensure clean data
 st.write("Unique values in 'Churn Label':", df_clean_['Churn Label'].unique())
-
-# Convert 'Churn Label' to numeric (if not already) based on user's selection
-if churn_filter == "Yes":
-    df_clean_['Churn Label'] = df_clean_['Churn Label'].map({'Yes': 1, 'No': 0})
-elif churn_filter == "No":
-    df_clean_['Churn Label'] = df_clean_['Churn Label'].map({'Yes': 0, 'No': 1})
 
 # Calculate raw churn counts and churn percentages for each service
 for service in service_columns:
