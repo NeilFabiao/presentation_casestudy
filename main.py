@@ -77,7 +77,7 @@ with col1:
 
 # Column 2: Display churn percentage graph (using Plotly)
 with col2:
-    st.markdown("### Churn Percentage Comparison by Service (Plotly)")
+    st.markdown("### Churn Percentage Comparison by Service")
 
     # Get the maximum and minimum churn percentages for dynamic y-axis range
     min_churn_percentage = service_churn_percentage_df["Churn Percentage"].min()
@@ -88,7 +88,6 @@ with col2:
         service_churn_percentage_df,
         x=service_churn_percentage_df.index,
         y="Churn Percentage",
-        title="Churn Percentage Comparison by Service",
         color="Churn Percentage",  # Color bars by churn percentage
         color_continuous_scale="viridis" # Use a nice color scale
     )
