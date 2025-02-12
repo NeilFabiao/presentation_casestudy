@@ -50,23 +50,29 @@ service_columns = ['Phone Service', 'Internet Service', 'Multiple Lines',
 
 # Initialize dictionaries to store churn counts and percentages
 service_counts = {}
-service_churn_rates = {}
+service_churn_rates_yes = {}
+service_churn_rates_no = {}
 
 # Calculate raw churn counts and churn percentages for each service
 for service in service_columns:
     # Raw churn counts: Count churned customers (Churn Label == 1)
     churned_customers = df_clean_[df_clean_[service] == 'Yes']  # Customers who used this service
-    churn_count = churned_customers[churned_customers['Churn Label'] == 1].shape[0]  # Count churned customers
-    service_counts[service] = churn_count
+    churn_count_yes = churned_customers[churned_customers['Churn Label'] == 1].shape[0]  # Count churned customers (Yes)
+    churn_count_no = churned_customers[churned_customers['Churn Label'] == 0].shape[0]  # Count non-churned customers (No)
+    service_counts[service] = churn_count_yes + churn_count_no  # Total customers who used this service
     
     # Calculate churn percentage for each service (only for churned customers)
     total_service_users = df_clean_[df_clean_[service] == 'Yes'].shape[0]
-    churn_percentage = (churn_count / total_service_users) * 100 if total_service_users > 0 else 0
-    service_churn_rates[service] = churn_percentage
+    churn_percentage_yes = (churn_count_yes / total_service_users) * 100 if total_service_users > 0 else 0
+    churn_percentage_no = (churn_count_no / total_service_users) * 100 if total_service_users > 0 else 0
+
+    service_churn_rates_yes[service] = churn_percentage_yes
+    service_churn_rates_no[service] = churn_percentage_no
 
 # Convert the service counts and churn rates dictionaries to DataFrames for better visualization
-service_counts_df = pd.DataFrame(service_counts, index=['Churned Count']).T
-service_churn_rates_df = pd.DataFrame(service_churn_rates, index=['Churn Percentage']).T
+service_counts_df = pd.DataFrame(service_counts, index=['Total Count']).T
+service_churn_rates_yes_df = pd.DataFrame(service_churn_rates_yes, index=['Yes Churn Percentage']).T
+service_churn_rates_no_df = pd.DataFrame(service_churn_rates_no, index=['No Churn Percentage']).T
 
 # Create two columns for displaying the table and the plot
 col1, col2 = st.columns(2)
@@ -74,14 +80,14 @@ col1, col2 = st.columns(2)
 # Column 1: Display raw churn counts table
 with col1:
     st.markdown("### Raw Churn Counts by Service")
-    st.write(service_counts_df.sort_values(by="Churned Count", ascending=False))
+    st.write(service_counts_df.sort_values(by="Total Count", ascending=False))
 
 # Column 2: Display churn percentage graph
 with col2:
     st.markdown("### Churn Percentage Comparison")
 
-    # Copy the churn rates to a new variable for plotting
-    churn_data = service_churn_rates_df.copy()
+    # Combine both churn percentages (Yes and No) into a single DataFrame for plotting
+    churn_data = pd.concat([service_churn_rates_no_df, service_churn_rates_yes_df], axis=0)
 
     # Create the plot
     fig, ax = plt.subplots(figsize=(10, 6))
