@@ -213,3 +213,106 @@ else:
                 st.info("No geographical data available for this selection.")
         else:
             st.info("No geographical data available for mapping.")
+
+
+# ----------------------------------------------------
+# Section 3: Understanding Churned Customers
+# ----------------------------------------------------
+st.subheader("Question 3: What should be the strategy to reduce churn?")
+
+if df_filtered.empty:
+    st.warning("No churned customers found based on the selected filters. Try adjusting the filters.")
+else:
+    # --- Churned Customers by Age Group ---
+    def age_category(age):
+        if age < 30:
+            return 'Young Adults'
+        elif 30 <= age < 50:
+            return 'Middle-Aged Adults'
+        else:
+            return 'Seniors'
+
+    df_filtered['Age Group'] = df_filtered['Age'].apply(age_category)
+
+    # Pie chart for Age Group distribution
+    age_group_counts = df_filtered['Age Group'].value_counts()
+
+    # Pie chart for Contract distribution
+    contract_counts = df_filtered['Contract'].value_counts()
+
+    # Create a Streamlit layout with two columns
+    col7, col8 = st.columns(2)
+
+    # Pie chart for Age Group distribution
+    with col7:
+        fig1 = go.Figure(go.Pie(
+            labels=age_group_counts.index, 
+            values=age_group_counts, 
+            marker=dict(colors=['#ff9999','#66b3ff','#99ff99'])
+        ))
+        fig1.update_layout(title="📊 Churned Customers by Age Group")
+        st.plotly_chart(fig1)
+
+    # Pie chart for Contract distribution
+    with col8:
+        fig2 = go.Figure(go.Pie(
+            labels=contract_counts.index, 
+            values=contract_counts, 
+            marker=dict(colors=['#ffcc99','#ff6666','#66b3ff'])
+        ))
+        fig2.update_layout(title="📜 Churned Customers by Contract Type")
+        st.plotly_chart(fig2)
+
+    st.write('---')
+
+    # --- Strategic Recommendations ---
+    st.write('### 📌 What Should Be the Strategy to Reduce Churn?')
+
+    # Expandable section for detailed insights
+    with st.expander("💡 Click to View Detailed Strategy Suggestions"):
+        st.markdown("## **Recommendation Overview**")
+
+        # Customer Segments
+        st.markdown("### **Customer Segments & Targeted Strategies**")
+
+        st.markdown("#### 📌 **Middle-Aged Adults (Two-Year Contract, Male/Female)**")
+        st.write("""
+        - Offering loyalty rewards or personalized customer service makes sense for this group, as they tend to have higher tenures.
+        - Special bundles or family plans align well with Middle-Aged Adults, who may appreciate incentives that appeal to their lifestyle.
+        """)
+
+        st.markdown("#### 📌 **Seniors (One-Year Contract, Female)**")
+        st.write("""
+        - Focus on simplicity and tech assistance, as this group prefers easy-to-understand services and may need extra support with technology.
+        - Straightforward billing and clear communication can improve retention among senior customers.
+        """)
+
+        st.markdown("#### 📌 **Young Adults (One-Year Contract, Male/Female)**")
+        st.write("""
+        - Flexible plans and referral incentives align well with Young Adults, who prefer adaptable, low-commitment contracts.
+        - Using gaming or gadget-related incentives and social media engagement can appeal to their interests.
+        """)
+
+        # Key Churn Factors
+        st.markdown("### **Key Churn Factors & Strategies to Address Them**")
+
+        st.markdown("#### 🔥 **Competitor-Driven Churn**")
+        st.write("""
+        - Continuously monitor and analyze competitors’ pricing, services, and customer feedback.
+        - Implement a loyalty rewards program to retain customers and offer exclusive benefits.
+        """)
+
+        st.markdown("#### 📉 **Dissatisfaction-Driven Churn**")
+        st.write("""
+        - Improve service quality, network coverage, and call/data reliability.
+        - Conduct customer satisfaction surveys to pinpoint and address problem areas.
+        - Offer personalized deals and retention incentives to make customers feel valued.
+        """)
+
+        st.markdown("#### 🤝 **Customer Service-Related Churn**")
+        st.write("""
+        - Train customer service teams to handle complaints with empathy and professionalism.
+        - Improve response times and customer support channels to enhance customer satisfaction.
+        """)
+
+st.write('---')
