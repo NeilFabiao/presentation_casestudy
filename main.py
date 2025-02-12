@@ -1,5 +1,6 @@
 import streamlit as st
 import pandas as pd
+import plotly.express as px
 import matplotlib.pyplot as plt
 
 # Load the telco dataset
@@ -49,26 +50,25 @@ service_columns = ['Phone Service', 'Internet Service', 'Multiple Lines',
                    'Premium Tech Support', 'Unlimited Data']
 
 # Initialize dictionaries to store churn counts and percentages
-service_churn_percentage = {}
+service_counts = {}
 
-# Calculate churn percentage for each service
+# Calculate raw churn counts for each service
 for service in service_columns:
     # Raw churn counts: Count churned customers (Churn Label == 1)
     churned_customers = df_clean_[df_clean_[service] == 'Yes']  # Customers who used this service
     churn_count = churned_customers[churned_customers['Churn Label'] == 1].shape[0]  # Count churned customers
-    
-    # Calculate churn percentage for each service
-    total_service_users = df_clean_[df_clean_[service] == 'Yes'].shape[0]
-    churn_percentage = (churn_count / total_service_users) * 100 if total_service_users > 0 else 0
-    service_churn_percentage[service] = churn_percentage
+    service_counts[service] = churn_count
 
-# Convert the churn percentages to a DataFrame for better visualization
-service_churn_percentage_df = pd.DataFrame(service_churn_percentage, index=['Churn Percentage']).T
+# Convert the service counts dictionary to a DataFrame for better visualization
+service_counts_df = pd.DataFrame(service_counts, index=['Churned Count']).T
+
+# Sort and get the top 5 services with the highest churn counts
+top_5_services = service_counts_df.sort_values(by="Churned Count", ascending=False).head(5)
 
 # Create two columns for displaying the table and the plot
 col1, col2 = st.columns(2)
 
-# Column 1: Display raw churn counts for the top 5 services in a cute, styled way
+# Column 1: Display donut charts for the top 5 services
 with col1:
     st.markdown("### Top 5 Services with Highest Churn Counts (Donut Charts)")
 
@@ -95,20 +95,18 @@ with col2:
 
     # Plot churn percentage
     service_churn_percentage_df.plot(kind='bar', ax=ax, width=0.8, color='salmon')
-    
+
     # Add labels and title
     ax.set_xlabel('Service')
     ax.set_ylabel('Churn Percentage (%)')
     ax.set_title('Churn Percentage Comparison by Service')
 
     # Set X-axis labels and apply rotation
-    #ax.set_xticks(range(len(service_churn_percentage_df.columns)))  # Set the ticks to match number of services
-    #ax.set_xticklabels(service_churn_percentage_df.columns, rotation=45, ha='right')  # Rotate labels for better readability
+    ax.set_xticks(range(len(service_churn_percentage_df.columns)))  # Set the ticks to match number of services
+    ax.set_xticklabels(service_churn_percentage_df.columns, rotation=45, ha='right')  # Rotate labels for better readability
 
     # Apply tight layout to prevent overlap of labels
     plt.tight_layout()
 
     # Display the plot in Streamlit
     st.pyplot(fig)
-
-   
