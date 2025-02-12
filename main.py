@@ -66,7 +66,7 @@ col1, col2 = st.columns(2)
 with col1:
     st.markdown("### 🏆 Top 5 Services by Churn Rate")
     top_5_services = service_churn_percentage_df.sort_values(by="Churn Percentage", ascending=False).head(5)
-    st.dataframe(top_5_services, hide_index=True)
+    st.dataframe(top_5_services)  # Display the top 5 services table
 
 # Column 2: Display churn percentage graph
 with col2:
