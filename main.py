@@ -1,6 +1,6 @@
 import streamlit as st
 import pandas as pd
-import plotly.express as px
+import matplotlib.pyplot as plt
 
 # Load the telco dataset
 df = pd.read_csv('telco.csv')
@@ -49,44 +49,30 @@ service_columns = ['Phone Service', 'Internet Service', 'Multiple Lines',
                    'Premium Tech Support', 'Unlimited Data']
 
 # Initialize dictionaries to store churn counts and percentages
-service_counts = {}
+service_churn_percentage = {}
 
-# Calculate raw churn counts for each service
+# Calculate churn percentage for each service
 for service in service_columns:
     # Raw churn counts: Count churned customers (Churn Label == 1)
     churned_customers = df_clean_[df_clean_[service] == 'Yes']  # Customers who used this service
     churn_count = churned_customers[churned_customers['Churn Label'] == 1].shape[0]  # Count churned customers
-    service_counts[service] = churn_count
+    
+    # Calculate churn percentage for each service
+    total_service_users = df_clean_[df_clean_[service] == 'Yes'].shape[0]
+    churn_percentage = (churn_count / total_service_users) * 100 if total_service_users > 0 else 0
+    service_churn_percentage[service] = churn_percentage
 
-# Convert the service counts dictionary to a DataFrame for better visualization
-service_counts_df = pd.DataFrame(service_counts, index=['Churned Count']).T
-
-# Sort and get the top 5 services with the highest churn counts
-top_5_services = service_counts_df.sort_values(by="Churned Count", ascending=False).head(5)
+# Convert the churn percentages to a DataFrame for better visualization
+service_churn_percentage_df = pd.DataFrame(service_churn_percentage, index=['Churn Percentage']).T
 
 # Create two columns for displaying the table and the plot
 col1, col2 = st.columns(2)
 
-# Column 1: Display donut charts for the top 5 services
+# Column 1: Display raw churn counts for the top 5 services in a cute, styled way
 with col1:
-    st.markdown("### Top 5 Services with Highest Churn Counts (Interactive Donut Charts)")
-
-    # Loop through the top 5 services to create interactive donut charts
-    for idx, row in top_5_services.iterrows():
-        service_name = idx
-        churn_count = row['Churned Count']
-        
-        # Create a donut chart for each service using Plotly
-        fig = px.pie(values=[churn_count, top_5_services['Churned Count'].sum() - churn_count],
-                     names=['Churned', 'Not Churned'],
-                     hole=0.3,  # Create a donut chart
-                     title=f'{service_name} Churn Count')
-        
-        # Add hover info and labels
-        fig.update_traces(textinfo='percent+label', pull=[0.1, 0])  # Show percentage and label on the chart
-        
-        # Display the donut chart in Streamlit
-        st.plotly_chart(fig)
+    st.markdown("### Raw Churn Counts for Top 5 Services")
+    top_5_services = service_churn_percentage_df.sort_values(by="Churn Percentage", ascending=False).head(5)
+    st.dataframe(top_5_services)  # Display the top 5 services table
 
 # Column 2: Display churn percentage graph
 with col2:
