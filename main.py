@@ -53,7 +53,7 @@ churn_rates = {}
 
 for service in service_columns:
     # Group by the service column and calculate the churn rate (mean of 'Churn' column)
-    churn_rate = df_updated.groupby(service)['Churn'].mean() * 100  # Churn rate as percentage
+    churn_rate = df_updated.groupby(service)['Churn Label'].mean() * 100  # Churn rate as percentage
     churn_rates[service] = churn_rate
 
 # Convert the churn rates dictionary to a DataFrame for better visualization
