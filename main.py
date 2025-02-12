@@ -61,7 +61,7 @@ df_clean_['Churn Label'] = df_clean_['Churn Label'].map({'Yes': 1, 'No': 0})
 # Calculate churn rate for each service
 churn_rates = {}
 
-#for service in service_columns:
+for service in service_columns:
     # Group by the service column and calculate the churn rate (mean of 'Churn Label')
     churn_rate = df_clean_.groupby(service)['Churn Label'].mean() * 100  # Churn rate as percentage
     churn_rates[service] = churn_rate
