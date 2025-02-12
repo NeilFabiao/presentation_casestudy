@@ -128,9 +128,6 @@ st.markdown("""
 
 st.write('---')
 
-# Part 3: What should be the strategy to employ to reduce churn in the future
-
-st.write('### Question 3: What should be the strategy to employ to reduce churn in the future')
 
 # Part 3: What should be the strategy to employ to reduce churn in the future?
 st.write('### Question 3: What should be the strategy to employ to reduce churn in the future')
