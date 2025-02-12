@@ -55,12 +55,17 @@ with col2:
     # You can replace the text above with any additional analysis or insight related to the data.
     
 with col3:
-    st.markdown("### Descrição do Conjunto de Dados")
-    st.write("""
-    **Citação e Referência do Conjunto de Dados**
-    O conjunto de dados foi originalmente apresentado em um artigo intitulado "Sparse spatial autoregressions" por 
-    R. Kelley Pace e Ronald Barry. Este é uma versão modificada do conjunto de dados de Habitação da Califórnia, 
-    que está disponível na página de Luís Torgo da Universidade do Porto. 
-    As informações foram encontradas no livro "Hands-On Machine learning with Scikit-Learn and TensorFlow" de 
-    [Aurélien Géron](https://inria.github.io/scikit-learn-mooc/python_scripts/datasets_california_housing.html).
-    """)
+    st.markdown("### Referencias")
+st.write("""
+**Citação e Referência do Conjunto de Dados**
+
+O **Telco Customer Churn Dataset** da IBM contém dados sobre clientes de telecomunicações, 
+utilizados para prever a probabilidade de cancelamento de serviços e analisar fatores que influenciam o churn. 
+Disponível em :
+- [Kaggle - Telco Customer Churn Dataset](https://www.kaggle.com/datasets/blastchar/telco-customer-churn)
+- [Kaggle - Telco Customer Churn Dataset (Outro Link)](https://www.kaggle.com/datasets/blastchar/telco-customer-churn)
+
+**Referência:** IBM, 2021.
+""")
+""")
+
