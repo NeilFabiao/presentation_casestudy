@@ -10,7 +10,7 @@ telco_data = pd.read_csv('telco.csv')
 # Streamlit UI setup
 st.set_page_config(page_title="Análise de Churn de Telco", page_icon="📊", layout="wide", initial_sidebar_state="expanded")
 st.title("Análise de Churn de Telco 📊")
-st.write("Este relatorio fornece insights sobre os padrões de churn de clientes e estratégias para melhorar a retenção de clientes.")
+st.write("Este relatorio fornece insights sobre os padrões de churn e estratégias para melhorar a retenção de clientes.")
 st.write('---')
 
 
