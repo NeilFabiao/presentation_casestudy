@@ -111,9 +111,6 @@ st.write('---')
 # Part 2: What would we do to reduce churn?
 st.write('### Question 2: What would we do to reduce churn?')
 
-# Assuming df_with_everything is your data and it's loaded already
-data = df_clean_.copy()
-
 # Filter the churned data based on the churn_filter
 churned_data = df_clean_[df_clean_['Churn Label'] == 1]
 
