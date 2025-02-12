@@ -115,6 +115,8 @@ st.write('### Question 2: What would we do to reduce churn?')
 
 # --- CHURN Reason SECTION ---
 
+churned_data = df_clean_[df_clean_['Churn Label'] == 1]
+
 # Remove 'Unknown' churn reasons from analysis to avoid skewed data
 churned_data_filtered = churned_data[churned_data['Churn Reason'] != 'Unknown']
 
