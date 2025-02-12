@@ -19,42 +19,23 @@ st.title("Análise de Churn de Telco 📊")
 st.write("Este relatório fornece insights sobre os padrões de churn e estratégias para melhorar a retenção de clientes.")
 st.write('---')
 
-# Sidebar for user inputs
+# Sidebar for gender selection
 with st.sidebar:
     st.title("Input Filters")
-    
     # Gender selection using radio buttons
     gender_filter = st.radio("Select Gender", options=["All", "Male", "Female"], index=0)
-    
-    # Churn selection using radio buttons
-    churn_filter = st.radio("Select Churn Status", options=["All", "Yes", "No"], index=0)
 
-# Filter the DataFrame based on selections
+# Filter the DataFrame based on selected gender
 if gender_filter != "All":
     df = df[df['Gender'] == gender_filter]
 
-if churn_filter != "All":
-    df = df[df['Churn'] == churn_filter]
+# Display filtered data
+st.markdown(f"### Filtered Data: Gender = {gender_filter}")
+st.write(df)
 
-# Check if the filtered DataFrame is empty
-if df.empty:
-    st.write("No data available for the selected filters.")
-else:
-    # Display the filtered data
-    st.markdown(f"### Filtered Data: Gender = {gender_filter}, Churn = {churn_filter}")
-    st.write(df)
+# Display summary of gender counts
+gender_counts = df['Gender'].value_counts()
+st.markdown("### Gender Counts")
+st.write(gender_counts)
 
-    # Streamlit UI setup Part 2
-    # Add additional summary metrics like average tenure and monthly charges
-    average_tenure = df['tenure'].mean()
-    average_monthly_charges = df['MonthlyCharges'].mean()
-    gender_counts = df['Gender'].value_counts()
-    male_to_female_ratio = f"{gender_counts.get('Male', 0)}:{gender_counts.get('Female', 0)}"
-    
-    # Display summary metrics
-    st.markdown("### Summary Metrics")
-    st.write({
-        "Average Tenure": round(average_tenure, 2),
-        "Average Monthly Charges": round(average_monthly_charges, 2),
-        "Male to Female Ratio": male_to_female_ratio
-    })
+
