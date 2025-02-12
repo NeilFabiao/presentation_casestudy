@@ -44,17 +44,17 @@ else:
     st.markdown(f"### Filtered Data: Gender = {gender_filter}, Churn = {churn_filter}")
     st.write(df)
 
-    # Streamlit UI setup Part 2
-    # Add additional summary metrics like average tenure and monthly charges
-    average_tenure = df['tenure'].mean()
-    average_monthly_charges = df['MonthlyCharges'].mean()
-    gender_counts = df['Gender'].value_counts()
-    male_to_female_ratio = f"{gender_counts.get('Male', 0)}:{gender_counts.get('Female', 0)}"
+# Streamlit UI setup Part 2
+# Add additional summary metrics like average tenure and monthly charges
+average_tenure = df['tenure'].mean()
+average_monthly_charges = df['MonthlyCharges'].mean()
+gender_counts = df['Gender'].value_counts()
+male_to_female_ratio = f"{gender_counts.get('Male', 0)}:{gender_counts.get('Female', 0)}"
 
-    # Display summary metrics
-    st.markdown("### Summary Metrics")
-    st.write({
-        "Average Tenure": round(average_tenure, 2),
-        "Average Monthly Charges": round(average_monthly_charges, 2),
-        "Male to Female Ratio": male_to_female_ratio
-    })
+# Display summary metrics
+st.markdown("### Summary Metrics")
+st.write({
+    "Average Tenure": round(average_tenure, 2),
+    "Average Monthly Charges": round(average_monthly_charges, 2),
+    "Male to Female Ratio": male_to_female_ratio
+})
