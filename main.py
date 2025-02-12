@@ -67,5 +67,4 @@ Disponível em :
 
 **Referência:** IBM, 2021.
 """)
-""")
 
