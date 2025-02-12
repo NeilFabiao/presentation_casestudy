@@ -52,41 +52,59 @@ service_columns = ['Phone Service', 'Internet Service', 'Multiple Lines',
                    'Online Security', 'Online Backup','Device Protection Plan',
                    'Premium Tech Support','Unlimited Data']
 
-# Calculate churn rate for each service
-churn_rates = {}
+# Initialize an empty dictionary to store raw counts of churned customers
+service_counts = {}
+service_percentages = {}
 
-df_clean_ = df_updated.copy()
+df_clean_ = df.copy()
 
 # Convert 'Churn Label' to numeric (if not already)
 df_clean_['Churn Label'] = df_clean_['Churn Label'].map({'Yes': 1, 'No': 0})
 
+# Calculate raw counts and percentages for each service
 for service in service_columns:
-    # Group by the service column and calculate the churn rate (mean of 'Churn' column)
-    churn_rate = df_clean_.groupby(service)['Churn Label'].mean() * 100  # Churn rate as percentage
-    churn_rates[service] = churn_rate
+    churned_customers = df_clean_[df_clean_[service] == 'Yes']  # Get the customers who used this service and churned
+    churn_count = churned_customers[churned_customers['Churn Label'] == 1].shape[0]  # Count churned customers
+    service_counts[service] = churn_count
+    
+    # Calculate percentage of churned customers for each service
+    total_service_users = df_clean_[df_clean_[service] == 'Yes'].shape[0]
+    churn_percentage = (churn_count / total_service_users) * 100 if total_service_users > 0 else 0
+    service_percentages[service] = churn_percentage
 
+# Convert the service counts and percentages dictionaries to DataFrames for better visualization
+service_counts_df = pd.DataFrame(service_counts, index=['Churned Count']).T
+service_percentages_df = pd.DataFrame(service_percentages, index=['Churn Percentage']).T
 
-# Convert the churn rates dictionary to a DataFrame for better visualization
-churn_rates_df = pd.DataFrame(churn_rates)
+# Streamlit UI setup with 3 columns
+col1, col2, col3 = st.columns(3)
 
-# Plotting churn rates for each service
-fig, ax = plt.subplots(figsize=(10, 6))
+# Column 1: Raw counts table
+with col1:
+    st.markdown("### Raw Counts of Churned Customers")
+    st.write(service_counts_df.sort_values(by="Churned Count", ascending=False))
 
-# Plot the churn rates for "No" and "Yes" categories
-churn_rates_df.T.plot(kind='bar', ax=ax, width=0.8, position=0, color=['skyblue', 'salmon'])
+# Column 2: Churn rate as percentages visualized in a bar chart
+with col2:
+    st.markdown("### Churn Percentage Comparison")
+    # Plotting churn percentage for each service
+    fig, ax = plt.subplots(figsize=(10, 6))
+    service_percentages_df.T.plot(kind='bar', ax=ax, width=0.8, color='salmon')
 
-# Add labels and title
-ax.set_xlabel('Service')
-ax.set_ylabel('Churn Rate (%)')
-ax.set_title('Churn Rate Comparison by Service')
+    # Add labels and title
+    ax.set_xlabel('Service')
+    ax.set_ylabel('Churn Percentage (%)')
+    ax.set_title('Churn Percentage Comparison by Service')
 
-# Set X-axis labels with rotation
-ax.set_xticklabels(churn_rates_df.columns, rotation=45, ha='right')
+    # Set X-axis labels with rotation
+    ax.set_xticklabels(service_percentages_df.columns, rotation=45, ha='right')
 
-# Add legend
-ax.legend(['No Churn', 'Yes Churn'], loc='upper left')
+    # Display the plot in Streamlit
+    st.pyplot(fig)
 
-# Display the plot in Streamlit
-st.pyplot(fig)  # Use Streamlit's pyplot to render the plot
-
-
+# Column 3: Short explanation
+with col3:
+    st.markdown("### Short Explanation")
+    st.write("""
+    In the churn analysis, we examined how various services contribute to churn. The **raw counts** show how many customers who used each service have churned. Meanwhile, the **churn percentage** provides insight into the proportion of customers who churned for each service, helping to identify which services have higher churn rates. Services with higher churn percentages may indicate areas where customer retention strategies could be improved.
+    """)
