@@ -33,6 +33,8 @@ else:
 
 if churn_filter != "All":
     df_updated = df_updated[df_updated['Churn Label'] == churn_filter].copy()
+else:
+    df_updated = df.copy()
 
 # Check for unique values in 'Churn Label' to ensure clean data
 st.write("Unique values in 'Churn Label':", df_updated['Churn Label'].unique())
