@@ -131,17 +131,19 @@ age_group_counts = churned_data['AgeGroup'].value_counts()
 # Pie chart for Contract distribution of churned customers
 contract_counts = churned_data['Contract'].value_counts()
 
-# Create a Streamlit layout with two pie charts
-st.markdown("### Churned Customers Distribution")
+# Create a Streamlit layout with two columns
+col1, col2 = st.columns(2)
 
-# Pie chart for Age Group distribution
-fig1, ax1 = plt.subplots(figsize=(8, 6))
-ax1.pie(age_group_counts, labels=age_group_counts.index, autopct='%1.1f%%', colors=['#ff9999','#66b3ff','#99ff99'], startangle=90)
-ax1.set_title('Churned Customers by Age Group')
-st.pyplot(fig1)
+# Pie chart for Age Group distribution in the first column
+with col1:
+    fig1 = go.Figure(go.Pie(labels=age_group_counts.index, values=age_group_counts, 
+                            marker=dict(colors=['#ff9999','#66b3ff','#99ff99'])))
+    fig1.update_layout(title='Churned Customers by Age Group')
+    st.plotly_chart(fig1)
 
-# Pie chart for Contract distribution
-fig2, ax2 = plt.subplots(figsize=(8, 6))
-ax2.pie(contract_counts, labels=contract_counts.index, autopct='%1.1f%%', colors=['#ffcc99','#ff6666','#66b3ff'], startangle=90)
-ax2.set_title('Churned Customers by Contract Type')
-st.pyplot(fig2)
+# Pie chart for Contract distribution in the second column
+with col2:
+    fig2 = go.Figure(go.Pie(labels=contract_counts.index, values=contract_counts, 
+                            marker=dict(colors=['#ffcc99','#ff6666','#66b3ff'])))
+    fig2.update_layout(title='Churned Customers by Contract Type')
+    st.plotly_chart(fig2)
