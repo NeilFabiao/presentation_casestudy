@@ -136,6 +136,13 @@ grouped_churn_data = churned_data.groupby(['AgeGroup', 'Contract', 'Gender', 'Cu
 grouped_churn_data['AvgTenure'] = grouped_churn_data['AvgTenure'].round(2)
 grouped_churn_data['AvgMonthlyCharge'] = grouped_churn_data['AvgMonthlyCharge'].round(2)
 
+# Part 3: Show pie charts for Age Group, Contract, and Gender
+st.write('### Churn Distribution by Age Group, Contract Type, and Gender')
+
+# Pie chart for Age Group distribution of churned customers
+age_group_counts = churned_data['AgeGroup'].value_counts()
+fig_age = px.pie(values=age_group_counts, names=age_group_counts.index, title="Churned Customers by Age Group", color_discrete_sequence=px.colors.pastel)
+st.plotly_chart(fig_age)
 
 
 # Here you can insert your suggestions or strategies, e.g.:
