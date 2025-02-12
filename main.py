@@ -107,4 +107,48 @@ with col2:
     
     st.plotly_chart(fig)
 
+st.write('--')
+
+# Part 2: What would we do to reduce churn?
+st.write('### Question 2: What would we do to reduce churn?')
+
+# Here you can insert your suggestions or strategies, e.g.:
+st.markdown("""
+**Middle-Aged Adults (Two-Year Contract, Female/Male):**
+- Offering loyalty rewards or personalized customer service for long-term contract holders.
+- Special bundles or family plans that align well with their lifestyle.
+  
+**Seniors (One-Year Contract, Female):**
+- Focus on simplicity and tech assistance.
+- Easy-to-understand services and straightforward support.
+
+**Young Adults (One-Year Contract, Female/Male):**
+- Flexible plans with referral incentives for social networks.
+- Use of gaming or gadget-related incentives.""")
+
+st.write('--')
+
+# Part 3: What should be the strategy to employ to reduce churn in the future
+
+st.write('### Question 3: What should be the strategy to employ to reduce churn in the future')
+
+# Part 3: What should be the strategy to employ to reduce churn in the future?
+st.write('### Question 3: What should be the strategy to employ to reduce churn in the future')
+
+# Provide a strategic suggestion here
+st.markdown("""
+**Competitor Analysis:**
+- Continuously monitor competitors’ offerings and pricing structures.
+- Use customer loyalty rewards programs to create a competitive edge.
+
+**Dissatisfaction:**
+- Survey customers regularly to pinpoint areas for improvement.
+- Personalized deals and exclusive offers for dissatisfied customers.
+
+**Attitude:**
+- Train customer service representatives to address issues empathetically and improve service quality.
+""")
+
+
+
 
