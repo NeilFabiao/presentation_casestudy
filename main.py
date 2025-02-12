@@ -193,7 +193,7 @@ with col2:
             hover_name="Customer ID",
             hover_data=["Age", "Contract"],
             color_discrete_sequence=px.colors.qualitative.Pastel,
-            zoom=3
+            zoom=4.5
             #title="Geographical Distribution of Churned Customers by Top Reasons"
         )
 
