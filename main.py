@@ -74,9 +74,28 @@ with col1:
 
 # Column 2: Display churn percentage graph
 with col2:
-    st.markdown("### Churn Percentage Comparison")
+    st.markdown("### Churn Percentage Comparison by Service")
+    
+    # Create the bar chart for churn percentages
+    fig, ax = plt.subplots(figsize=(10, 6))
 
-    # Copy the churn rates to a new variable for plotting
-    churn_data = service_churn_rates_df.copy()
+    # Plot churn percentage
+    service_churn_percentage_df.plot(kind='bar', ax=ax, width=0.8, color='salmon')
+
+    # Add labels and title
+    ax.set_xlabel('Service')
+    ax.set_ylabel('Churn Percentage (%)')
+    ax.set_title('Churn Percentage Comparison by Service')
+
+    # Set X-axis labels with rotation
+    ax.set_xticklabels(service_churn_percentage_df.columns, rotation=45, ha='right')
+
+    # Apply tight layout to prevent overlap of labels
+    plt.tight_layout()
+
+    # Display the plot in Streamlit
+    st.pyplot(fig)
+
+
 
     
