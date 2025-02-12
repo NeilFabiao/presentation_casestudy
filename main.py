@@ -16,7 +16,7 @@ df[cols_to_change] = df[cols_to_change].fillna('Unknown')
 
 # Exibir os valores únicos após a substituição
 st.write("Valores únicos em 'Churn Reason':")
-st.write(df['Churn Reason'])
+st.write(df['Churn Reason'].unique())
 
 
 # Streamlit UI setup
