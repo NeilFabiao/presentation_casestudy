@@ -61,9 +61,5 @@ df_clean_ = df.copy()
 # Convert 'Churn Label' to numeric (if not already)
 df_clean_['Churn Label'] = df_clean_['Churn Label'].map({'Yes': 1, 'No': 0})
 
-# Calculate churn rates for each service
-for service in service_columns:
-    churn_rate = df_clean_[df_clean_[service] == 'Yes']['Churn Label'].mean()  # Churn rate as proportion
-    service_churn_rates[service] = churn_rate
 
-st.write(service_churn_rates)
+st.write(df_clean_)
