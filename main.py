@@ -89,7 +89,7 @@ with col2:
         x=service_churn_percentage_df.index,
         y="Churn Percentage",
         color="Churn Percentage",  # Color bars by churn percentage
-        color_continuous_scale="viridis" # Use a nice color scale
+        color_continuous_scale="viridis", # Use a nice color scale
         title=None
     )
 
