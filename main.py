@@ -52,6 +52,7 @@ service_columns = ['Phone Service', 'Internet Service', 'Multiple Lines',
 
 # Calculate churn rate for each service
 churn_rates = {}
+df_updated['Churn Label'] = df_clean_['Churn Label'].map({'Yes': 1, 'No': 0})
 
 for service in service_columns:
     # Group by the service column and calculate the churn rate (mean of 'Churn' column)
