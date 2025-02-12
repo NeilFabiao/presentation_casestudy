@@ -189,7 +189,7 @@ fig_CLTVs.update_layout(
     mapbox=dict(
         style="carto-positron",
         zoom=4,
-        center=dict(lat=churned_data['Latitude'].mean(), lon=churned_data['longitude'].mean())
+        center=dict(lat=churned_data['Latitude'].mean(), lon=churned_data['Longitude'].mean())
     ),
     margin={"r": 0, "t": 0, "l": 0, "b": 0},
     legend_title_text='CLTV Segment'
