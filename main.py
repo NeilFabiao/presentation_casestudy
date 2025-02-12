@@ -79,7 +79,7 @@ ax.set_ylabel('Churn Rate (%)')
 ax.set_title('Churn Rate Comparison by Service')
 
 # Set X-axis labels with rotation
-ax.set_xticklabels(churn_data.columns, rotation=45, ha='right')
+ax.set_xticklabels(churn_rates_df.columns, rotation=45, ha='right')
 
 # Add legend
 ax.legend(['No Churn', 'Yes Churn'], loc='upper left')
