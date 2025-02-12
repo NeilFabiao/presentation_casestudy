@@ -14,16 +14,21 @@ cols_to_change = ['Churn Reason', 'Churn Category', 'Internet Type', 'Offer']
 # Substituir valores NaN por 'Unknown' (Desconhecido)
 df[cols_to_change] = df[cols_to_change].fillna('Unknown')
 
-# Exibir os valores únicos após a substituição
-st.write("Valores únicos em 'Churn Reason':")
-st.write(df['Churn Reason'].unique())
-
 
 # Streamlit UI setup
 st.set_page_config(page_title="Análise de Churn de Telco", page_icon="📊", layout="wide", initial_sidebar_state="expanded")
 st.title("Análise de Churn de Telco 📊")
 st.write("Este relatorio fornece insights sobre os padrões de churn e estratégias para melhorar a retenção de clientes.")
 st.write('---')
+
+# Exibir os valores únicos após a substituição
+st.write("Valores únicos em 'Churn Reason':")
+st.write(df['Churn Reason'].unique())
+
+# Contar a ocorrência de cada valor único em 'Churn Reason'
+churn_reason_counts = df['Churn Reason'].value_counts()
+st.write("\nContagem de cada valor único em 'Churn Reason':")
+st.write(churn_reason_counts)
 
 
 
