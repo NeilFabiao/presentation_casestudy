@@ -332,6 +332,41 @@ else:
 
     st.write('---')
 
+    # ----------------------------------------------------
+    # CLTV Analysis by Tenure
+    # ----------------------------------------------------
+    
+    # Define tenure ranges
+    def preprocess_data(df):
+        bins = [0, 6, 12, 24, 36, 48, 60, 72, df["Tenure in Months"].max()]
+        labels = ["0-6 months", "7-12 months", "13-24 months", "25-36 months", "37-48 months", "49-60 months", "61+ months"]
+        df["Tenure Group"] = pd.cut(df["Tenure in Months"], bins=bins, labels=labels, right=True)
+        return df
+    
+    df_filtered = preprocess_data(df_filtered)
+    
+    # CLTV Trend Plot
+    def plot_cltv_trend(df):
+        cltv_by_tenure = df.groupby("Tenure Group")["CLTV"].mean().reset_index()
+        cltv_by_tenure["Tenure Group"] = pd.Categorical(cltv_by_tenure["Tenure Group"], categories=labels, ordered=True)
+        cltv_by_tenure = cltv_by_tenure.sort_values("Tenure Group")
+    
+        fig = px.line(
+            cltv_by_tenure, 
+            x="Tenure Group", y="CLTV", markers=True, 
+            title="📈 CLTV Trend by Tenure Group",
+            labels={"CLTV": "Average CLTV", "Tenure Group": "Tenure Group"}
+        )
+        fig.update_traces(line=dict(color="blue", width=3))
+        fig.update_xaxes(tickangle=-45)
+        
+        st.plotly_chart(fig, use_container_width=True)
+    
+    # Create new column layout and plot CLTV trend
+    col9, _ = st.columns([1, 0.2])
+    with col9:
+        plot_cltv_trend(df_filtered)
+
     # --- Strategic Recommendations ---
     st.write('### 📌 What Should Be the Strategy to Reduce Churn?')
 
