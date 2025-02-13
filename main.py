@@ -423,23 +423,43 @@ else:
     st.write('### 📌 What Should Be the Strategy to Reduce Churn?')
 
     with st.expander("💡 Click to View Detailed Strategy Suggestions"):
+
         st.markdown("## **Recommendation Overview**")
-
+    
+        # Churn Insights by Age Group
         st.subheader("📌 Churn Insights by Age Group")
-        st.write("**Takeaway:** Seniors have the highest churn rate...")
-
+        st.write("**Strategy:** Consider **re-engagement campaigns, special senior/family offers, or long-term discount bundles** to maintain high-value customers.")
+    
+        # Churn Insights by Contract Type
         st.subheader("📌 Churn Insights by Contract Type")
-        st.write("**Takeaway:** The majority of churned customers are on month-to-month contracts...")
-
+        st.write("**Strategy:** Provide **strong onboarding experiences and early engagement offers** to month-to-month users to build loyalty from the start.")
+        st.write("**Strategy:** Encourage **cross-selling of additional services, offer mid-contract upgrades, or loyalty rewards** to increase customer value.")
+        
+        # Key Churn Factors & Strategies
         st.markdown("### **Key Churn Factors & Strategies to Address Them**")
-
+    
+        # Competitor-Driven Churn
         st.markdown("#### ✔️ **Competitor-Driven Churn**")
-        st.write("- Monitor and analyze competitors’ pricing...")
-
+        st.write("**Strategy:** Strengthen **loyalty programs** and provide **competitive bundling options** to retain customers.")
+    
+        # Dissatisfaction-Driven Churn
         st.markdown("#### 📉 **Dissatisfaction-Driven Churn**")
-        st.write("- Improve service quality, network coverage...")
-
+        st.write("**Strategy:** Improve **service quality, network coverage, and customer experience** to reduce dissatisfaction-related churn.")
+    
+        # Customer Service-Related Churn
         st.markdown("#### 🤝 **Customer Service-Related Churn**")
-        st.write("- Train customer service teams to handle complaints with empathy...")
-
+        st.write("**Strategy:** Focus on **regional service training improvements** and **customer support optimizations**.")
+    
+        # Location-Based Churn
+        st.markdown("#### 🌍 **Location-Based Churn Trends**")
+        st.write("**Strategy:** Implement **location-based retention offers** targeting high-churn urban areas.")
+    
+        # Pricing Concerns
+        st.markdown("#### 💰 **Pricing Concerns & Value Perception**")
+        st.write("**Strategy:** Introduce **tiered pricing plans** and **region-specific discounts** to improve affordability and retention.")
+    
+        # High-Value Customer Retention
+        st.markdown("#### 🏆 **Retaining High-Value Long-Term Customers**")
+        st.write("**Strategy:** Provide **loyalty perks, VIP support lines, or device upgrades** to reward and retain these valuable customers.")
+    
 st.write('---')
