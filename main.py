@@ -420,24 +420,18 @@ with st.expander("💡 Clique para ver insights sobre cancelamento por idade e m
 
     st.markdown("""
     - **Seniores (50+ anos)**: Apresentam a maior taxa de cancelamento (~50%). Os principais motivos incluem:
-        - Dificuldade na adoção de tecnologia.
         - Influência da concorrência com ofertas mais atrativas.
         - Insatisfação com a experiência do serviço.
 
-    - **Adultos de Meia-Idade (30-50 anos)**: Representam cerca de **33%** dos cancelamentos, sendo mais sensíveis a:
+    - **Adultos (30-50 anos)**: Representam cerca de **33%** dos cancelamentos, sendo mais sensíveis a:
         - Preços elevados e busca por planos mais baratos.
         - Qualidade do serviço e atendimento impactando a decisão de troca.
 
-    - **Jovens Adultos (<30 anos)**: São os que menos cancelam (~16%), mas ainda assim enfrentam:
+    - **Jovens (<30 anos)**: São os que menos cancelam (~16%), mas ainda assim enfrentam:
         - Maior propensão a trocar de provedor frequentemente.
         - Preferência por planos flexíveis e sem fidelização.
     """)
 
-    # **Observações Finais**
-    st.subheader("🔍 Observações Finais")
-    st.write("Clientes **seniores e adultos de meia-idade** são os mais propensos a cancelar devido à concorrência e à insatisfação com o serviço. "
-        "Já os **jovens adultos** buscam maior flexibilidade, preferindo contratos de curto prazo.")
- 
 st.write('---')
     
 # Preprocess data for Tenure Group
@@ -506,5 +500,11 @@ with st.expander("💡 Clique para ver sugestões detalhadas de estratégia"):
     # Retenção de clientes de alto valor
     st.markdown("#### 🏆 **Retenção de clientes de alto valor e longo prazo**")
     st.write("**Estratégia:** Ofereça **benefícios de lealdade, linhas de suporte VIP ou upgrades de dispositivos** para premiar e reter estes clientes valiosos.")
+
+    # **Observações Finais**
+    st.subheader("🔍 Observações Finais")
+    st.write("Clientes **seniores e adultos de meia-idade** são os mais propensos a cancelar devido à concorrência e à insatisfação com o serviço. "
+        "Já os **jovens adultos** buscam maior flexibilidade, preferindo contratos de curto prazo.")
+ 
 
 st.write('---')
