@@ -183,10 +183,35 @@ else:
             st.info("No geographical data available for mapping.")
 
     # ----------------------------------------------------
+    # Insights from the Geographical Churn Distribution Map
+    # ----------------------------------------------------
+    with st.expander("🌍 Click to View Insights from the Geographical Churn Distribution Map"):
+        
+        # High Churn Clusters in Urban Areas
+        st.subheader("📍 High Churn Clusters in Urban Areas")
+        st.write("**Observation:** The majority of churn points are concentrated in highly populated cities, such as Los Angeles, San Francisco, and San Diego.")
+        st.write("**Strategy:** Implement location-based retention offers, competitive pricing, and better network optimization in these high-churn cities.")
+    
+        # Competitor Influence Across Regions
+        st.subheader("🏆 Competitor Influence is a Key Factor Across Regions")
+        st.write("**Observation:** The most frequent churn category is 'Competitor', as seen by the high density of orange dots across regions.")
+        st.write("**Strategy:** Strengthen loyalty programs, price-matching offers, and exclusive deals to retain these customers.")
+    
+        # Dissatisfaction & Customer Service Issues
+        st.subheader("📞 Dissatisfaction and Customer Service Issues Vary by Location")
+        st.write("**Observation:** Purple (Attitude) and Blue (Dissatisfaction) dots are spread throughout the map, indicating customer service quality issues in multiple locations.")
+        st.write("**Strategy:** Focus on service training improvements, better support response times, and localized service enhancements in these areas.")
+    
+        # Pricing Concerns
+        st.subheader("💰 Pricing Concerns Are More Evenly Distributed")
+        st.write("**Observation:** Green dots (Price) are widely spread across the map, meaning price sensitivity exists across multiple regions, not just in major cities.")
+        st.write("**Strategy:** Introduce tiered pricing plans, flexible contracts, and budget-friendly options for different income segments.")
+    
+    # ----------------------------------------------------
     # Click-to-View Churn Insights Section
     # ----------------------------------------------------
     with st.expander("💡 Click to View Gender-Based Churn Insights"):
-        
+    
         # Female Churn Summary
         st.subheader("📌 Female Churn")
         st.write("**Takeaway:** Women primarily leave due to competitor pricing and device quality, with customer service also playing a role.")
@@ -201,9 +226,8 @@ else:
         st.subheader("📌 Overall Churn")
         st.write("**Takeaway:** Device quality and pricing are the biggest churn drivers, with customer service dissatisfaction as a secondary factor.")
         st.write("**Strategy:** Implement device-focused retention bundles, better pricing models, and enhanced customer service.")
-
-
-    st.write("---")
+    
+        st.write("---")
 
     # --- CHURN CATEGORY ANALYSIS ---
     top_churn_categories = churned_data_filtered['Churn Category'].value_counts().head(5)
