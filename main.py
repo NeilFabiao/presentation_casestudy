@@ -101,9 +101,9 @@ df = load_data('telco.csv')
 # 3. Main Title and Description
 # ----------------------------------------------------
 st.title("Telco Churn Analysis 📊")
-st.write("**Focus**: - Which services tend to have high churn? 
-                    - What would we do to reduce churn? 
-                    - What should be the strategy to employ to reduce churn in the future")
+st.write( "**Focus**: - Which services tend to have high churn?" 
+         "- What would we do to reduce churn?" 
+        "- What should be the strategy to employ to reduce churn in the future")
 st.write("---")
 
 # ----------------------------------------------------
