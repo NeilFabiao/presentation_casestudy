@@ -122,7 +122,7 @@ st.write("---")
 # ----------------------------------------------------
 with st.sidebar:
     st.header("Select Filters")
-    st.write("🔍 **Fifiltre os dados para explorar as tendências de rotatividade por género e o estado de rotatividade.** " 
+    st.write("🔍 **Filtre os dados para explorar as tendências de rotatividade por género e o estado de rotatividade.** " 
              "Ajuste as opções abaixo para analisar grupos específicos de clientes.")
     
     gender_filter = st.radio("Select Gender", options=["All", "Male", "Female"], index=0)
@@ -141,7 +141,7 @@ df_filtered = df_filtered[df_filtered["Churn Label"] == churn_filter].copy()
 # ----------------------------------------------------
 # 6. Section 1: Which Services Tend to Have High Churn?
 # ----------------------------------------------------
-st.subheader("Question 1: Which Services Tend to Have High Churn?")
+st.subheader("Questão 1: Que serviços tendem a ter uma elevada rotatividade?")
 
 service_columns = [
     "Phone Service", "Internet Service", "Multiple Lines",
@@ -163,7 +163,7 @@ service_churn_df = pd.DataFrame(service_churn_dict, index=["Churn Percentage"]).
 col1, col2 = st.columns(2)
 
 with col1:
-    st.markdown("### Top 10 Services by Churn Rate")
+    st.markdown("### Top 10 Servicos por Churn Rate")
     top_5_services = service_churn_df.sort_values(by="Churn Percentage", ascending=False).head(10)
     st.dataframe(top_5_services)
 
@@ -194,16 +194,16 @@ with col2:
     else:
         st.info("No data available to plot. Try changing your filters.")
 
-# Expander for insights
-with st.expander("💡 Click to View Churn Insights by Service"):
-    st.subheader("📌 Overall Churn Trends")
-    st.write("**Takeaway:** Services with the highest churn rates are Internet Service, Unlimited Data, and Streaming Services. ")
+# Expansor para insights
+with st.expander("💡 Clique para visualizar informação sobre a rotatividade por serviço""):
+    st.subheader("📌 Tendências gerais de cancelamento")
+    st.write("**Conclusão:** Os serviços com as maiores taxas de cancelamento são Internet, Dados Ilimitados e Serviços de Streaming.")
 
-    st.subheader("📌 Internet & Data Churn")
-    st.write("**Takeaway:** Customers using Internet Service (31.83%) and Unlimited Data (31.65%) churn at the highest rates. ")
+    st.subheader("📌 Cancelamento de Internet e Dados")
+    st.write("**Conclusão:** Os clientes que utilizam o serviço de Internet (31,83%) e Dados Ilimitados (31,65%) apresentam as taxas de cancelamento mais elevadas.")
 
-    st.subheader("📌 Streaming Services Churn")
-    st.write("**Takeaway:** Streaming TV (30.07%), Streaming Movies (29.94%), and Streaming Music (29.26%) have high churn rates. ")
+    st.subheader("📌 Cancelamento de Serviços de Streaming")
+    st.write("**Conclusão:** Streaming de TV (30,07%), Streaming de Filmes (29,94%) e Streaming de Música (29,26%) registam altas taxas de cancelamento.")
 
 st.write("---")
 
