@@ -353,16 +353,34 @@ if df_filtered.empty:
 else:
     def age_category(age):
         if age < 30:
-            return 'Young Adults (<30)'
+            return 'Young Adults (Menores que 30 anos)'
         elif 30 <= age < 50:
-            return 'Middle-Aged Adults (30-50)'
+            return 'Middle-Aged Adults (Entre 30-50 anos)'
         else:
-            return 'Seniors(50>)'
+            return 'Seniors(Maiores de 50 anos)'
 
     df_filtered['Age Group'] = df_filtered['Age'].apply(age_category)
 
     # Creating Streamlit layout
     st.subheader("📊 Churn Category by Age Group")
+
+    # Count churned customers per Age Group
+    churn_counts_by_age = df_filtered['Age Group'].value_counts().reset_index()
+    churn_counts_by_age.columns = ['Age Group', 'Churn Count']
+
+    # Calculate total churned customers
+    total_churned = df_filtered.shape[0]
+
+    # Calculate churn percentage for each Age Group
+    churn_counts_by_age['Churn Percentage'] = (churn_counts_by_age['Churn Count'] / total_churned) * 100
+
+    # Display churn percentage breakdown
+    st.subheader("📊 Churn Rate by Age Group")
+    for index, row in churn_counts_by_age.iterrows():
+        st.write(f"✅ **{row['Age Group']}**: {row['Churn Percentage']:.2f}% of all churned customers.")
+
+else:
+    st.warning("No churned customers found based on the selected filters. Try adjusting the filters.")
     
     # Creating Pie Charts
     age_groups = df_filtered['Age Group'].unique()
