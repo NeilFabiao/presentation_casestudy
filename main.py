@@ -122,8 +122,8 @@ st.write("---")
 # ----------------------------------------------------
 with st.sidebar:
     st.header("Select Filters")
-    st.write("🔍 **Filter the data to explore churn trends by gender and churn status.** "
-             "Adjust the options below to analyze specific customer groups.")
+    st.write("🔍 **Fifiltre os dados para explorar as tendências de rotatividade por género e o estado de rotatividade.** " 
+             "Ajuste as opções abaixo para analisar grupos específicos de clientes.")
     
     gender_filter = st.radio("Select Gender", options=["All", "Male", "Female"], index=0)
     churn_filter = st.radio("Select Churn Status", options=["Yes", "No"], index=0)
