@@ -384,7 +384,23 @@ else:
     
             with cols[i]:
                 st.plotly_chart(fig, use_container_width=True)
+
+    # Expander Section for Insights
+    with st.expander("💡 Clique para ver insights sobre cancelamento por idade e motivo"):
     
+        # **Tendências gerais de cancelamento**
+        st.subheader("📌 Tendências gerais de cancelamento")
+        st.write("**Conclusão:** A maioria dos clientes que cancelam pertencem ao grupo etário **Seniores (50%)**, "
+                 "e o principal motivo de cancelamento é **Concorrência**, seguido por **Preço** e **Insatisfação**.")
+        
+        # **Cancelamento por faixa etária**
+        st.subheader("📊 Cancelamento por faixa etária")
+        st.write("**Conclusão:** Os seniores apresentam a taxa de cancelamento mais alta, seguidos pelos adultos de meia-idade. "
+                 "Os jovens adultos são os que menos cancelam.")
+        st.write("**Observação:** Os seniores podem enfrentar **barreiras na adoção de tecnologia, insatisfação ou influência da concorrência**, "
+                 "enquanto os adultos de meia-idade podem ser **mais sensíveis ao preço**.")
+    
+        
     st.write('---')
     
     # Preprocess data for Tenure Group
