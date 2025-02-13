@@ -94,19 +94,8 @@ def plot_cltv_trend(df):
         font=dict(color="white")   # Adjust if you have a dark or light theme
     )
 
-    # ---------------------------
-    # 2) Adjust layout so there's enough space for the annotation
-    # ---------------------------
-    fig.update_layout(
-        margin=dict(r=150),  # give extra space on the right if needed
-    )
-
     # Plot in Streamlit
     st.plotly_chart(fig, use_container_width=True)
-
-# Example usage in your Streamlit code:
-# df_filtered = ...
-# plot_cltv_trend(df_filtered)
 
 
 
