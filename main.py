@@ -196,7 +196,52 @@ else:
     # Top Churn Categories
     top_churn_categories = churned_data_filtered['Churn Category'].value_counts().head(5)
 
-    col3, col4 = st.columns(2)
+    col5, col6 = st.columns(2)
+
+    with col5:
+        st.markdown("### 🏆 Top 5 Churn Categories")
+        df_top_categories = top_churn_categories.reset_index()
+        df_top_categories.columns = ['Churn Category', 'Count']
+        st.dataframe(df_top_categories, hide_index=True)
+
+    with col6:
+        st.markdown("### 🌍 Geographical Distribution of Top 5 Churn Categories")
+        if 'Latitude' in df_filtered.columns and 'Longitude' in df_filtered.columns:
+            top_category_data = df_filtered[df_filtered['Churn Category'].isin(top_churn_categories.index)]
+            if not top_category_data.empty:
+                lat_center = top_category_data['Latitude'].mean()
+                lon_center = top_category_data['Longitude'].mean()
+
+                fig_map_category = px.scatter_mapbox(
+                    top_category_data,
+                    lat="Latitude", lon="Longitude",
+                    color="Churn Category",
+                    hover_name="Customer ID",
+                    hover_data=["Age", "Contract"],
+                    color_discrete_sequence=px.colors.qualitative.Vivid,
+                    zoom=3.5
+                )
+                fig_map_category.update_layout(
+                    mapbox_style="carto-positron",
+                    mapbox_center={"lat": lat_center, "lon": lon_center}
+                )
+                st.plotly_chart(fig_map_category, use_container_width=True)
+            else:
+                st.info("No geographical data available for this selection.")
+        else:
+            st.info("No geographical data available for mapping.")
+
+    with st.expander("💡 Click to View Churn Category Insights"):
+        st.subheader("📌 Overall Churn Trends")
+        st.write("**Takeaway:** Competitor influence is the primary churn category...")
+
+        st.subheader("📌 Male Churn Trends")
+        st.write("**Takeaway:** Male customers churn mainly due to competitor influence and dissatisfaction...")
+
+        st.subheader("📌 Female Churn Trends")
+        st.write("**Takeaway:** Female customers are more likely to churn due to competitor influence and pricing...")
+
+col3, col4 = st.columns(2)
 
     with col3:
         st.markdown("### 🏆 Top 5 Churn Reasons")
@@ -257,51 +302,6 @@ else:
 
         st.subheader("📌 Overall Churn")
         st.write("**Takeaway:** Device quality and pricing are the biggest churn drivers...")
-
-    col5, col6 = st.columns(2)
-
-    with col5:
-        st.markdown("### 🏆 Top 5 Churn Categories")
-        df_top_categories = top_churn_categories.reset_index()
-        df_top_categories.columns = ['Churn Category', 'Count']
-        st.dataframe(df_top_categories, hide_index=True)
-
-    with col6:
-        st.markdown("### 🌍 Geographical Distribution of Top 5 Churn Categories")
-        if 'Latitude' in df_filtered.columns and 'Longitude' in df_filtered.columns:
-            top_category_data = df_filtered[df_filtered['Churn Category'].isin(top_churn_categories.index)]
-            if not top_category_data.empty:
-                lat_center = top_category_data['Latitude'].mean()
-                lon_center = top_category_data['Longitude'].mean()
-
-                fig_map_category = px.scatter_mapbox(
-                    top_category_data,
-                    lat="Latitude", lon="Longitude",
-                    color="Churn Category",
-                    hover_name="Customer ID",
-                    hover_data=["Age", "Contract"],
-                    color_discrete_sequence=px.colors.qualitative.Vivid,
-                    zoom=3.5
-                )
-                fig_map_category.update_layout(
-                    mapbox_style="carto-positron",
-                    mapbox_center={"lat": lat_center, "lon": lon_center}
-                )
-                st.plotly_chart(fig_map_category, use_container_width=True)
-            else:
-                st.info("No geographical data available for this selection.")
-        else:
-            st.info("No geographical data available for mapping.")
-
-    with st.expander("💡 Click to View Churn Category Insights"):
-        st.subheader("📌 Overall Churn Trends")
-        st.write("**Takeaway:** Competitor influence is the primary churn category...")
-
-        st.subheader("📌 Male Churn Trends")
-        st.write("**Takeaway:** Male customers churn mainly due to competitor influence and dissatisfaction...")
-
-        st.subheader("📌 Female Churn Trends")
-        st.write("**Takeaway:** Female customers are more likely to churn due to competitor influence and pricing...")
 
 # ----------------------------------------------------
 # Section 3: Understanding Churned Customers
