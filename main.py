@@ -74,7 +74,7 @@ def plot_cltv_trend(df):
     fig.update_xaxes(tickangle=-45)
 
     # Use two columns: one for the chart, one for the legend
-    col_chart, col_legend = st.columns([8, 1])  # To Adjust width ratio 
+    col_chart, col_legend = st.columns([7, 1])  # To Adjust width ratio 
 
     with col_chart:
         st.plotly_chart(fig, use_container_width=True)
