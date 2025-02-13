@@ -61,7 +61,7 @@ def plot_cltv_trend(df):
     )
     cltv_by_tenure = df.groupby("Tenure Group")["CLTV"].mean().reset_index()
 
-    # Create the figure
+    # Build the Plotly line chart
     fig = px.line(
         cltv_by_tenure,
         x="Tenure Group",
@@ -70,28 +70,34 @@ def plot_cltv_trend(df):
         title="📈 CLTV Trend by Tenure Group",
         labels={"CLTV": "Average CLTV", "Tenure Group": "Tenure Group"}
     )
+    # Set line color to gold and thickness to 3px
     fig.update_traces(line=dict(color="gold", width=3))
     fig.update_xaxes(tickangle=-45)
 
-    # Use two columns: one for the chart, one for the legend
-    col_chart, col_legend = st.columns([4, 1])  # To Adjust width ratio 
+    # Create a small DataFrame for the table legend
+    df_legend = pd.DataFrame({
+        "Tenure Group": TENURE_LABELS,
+        "Approx. Years": [
+            "0–0.5 yrs",
+            "0.5–1 yrs",
+            "1–2 yrs",
+            "2–3 yrs",
+            "3–4 yrs",
+            "4–5 yrs",
+            "5+ yrs"
+        ]
+    })
+
+    # Create two columns of equal width
+    col_legend, col_chart = st.columns(2)
+
+    with col_legend:
+        st.markdown("### Tenure Group Legend")
+        st.table(df_legend)
 
     with col_chart:
         st.plotly_chart(fig, use_container_width=True)
 
-    with col_legend:
-        st.markdown(
-            """
-            **Tenure Group Legend**  
-            - 0-6 months = ~0-0.5 yr  
-            - 7-12 months = ~0.5-1 yr  
-            - 13-24 months = 1-2 yrs  
-            - 25-36 months = 2-3 yrs  
-            - 37-48 months = 3-4 yrs  
-            - 49-60 months = 4-5 yrs  
-            - 61+ months = 5+ yrs
-            """
-        )
 
 
 # Load Data
