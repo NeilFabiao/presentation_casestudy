@@ -324,8 +324,6 @@ else:
         fig2.update_layout(title="📜 Churned Customers by Contract Type")
         st.plotly_chart(fig2)
 
-    st.write('---')
-
     # Preprocess data for Tenure Group
     df_filtered = preprocess_data(df_filtered)
 
