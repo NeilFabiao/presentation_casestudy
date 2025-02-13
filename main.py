@@ -377,7 +377,7 @@ else:
                     labels=churn_reasons.index,
                     values=churn_reasons.values,
                     hole=0.4,  # Donut-style
-                    marker=dict(colors=['#ff9999', '#66b3ff', '#99ff99']),
+                    marker=dict(colors=["#E63946", "#457B9D", "#F4A261", "#2A9D8F", "#8D99AE"]),
                 )
             )
             fig.update_layout(title=f"Churn Reasons - {age_group}")
