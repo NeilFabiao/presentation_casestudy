@@ -193,13 +193,19 @@ else:
     churned_data_filtered = df_filtered[df_filtered['Churn Reason'] != 'Unknown'].copy()
     top_churn_reasons = churned_data_filtered['Churn Reason'].value_counts().head(5)
 
-    col3, col4 = st.columns(2)
+    col3, col4, col5 = st.columns(3)
 
     with col3:
         st.markdown("### 🏆 Top 5 Churn Reasons")
         df_top_reasons = top_churn_reasons.reset_index()
         df_top_reasons.columns = ['Churn Reason', 'Count']
         st.dataframe(df_top_reasons, hide_index=True)
+
+     with col5:
+        st.markdown("### 🏆 Top 5 Churn Categories")
+        df_top_categories = top_churn_categories.reset_index()
+        df_top_categories.columns = ['Churn Category', 'Count']
+        st.dataframe(df_top_categories, hide_index=True)
 
     with col4:
         st.markdown("### 🌍 Geographical Distribution of Top 5 Churn Reasons")
@@ -260,11 +266,7 @@ else:
 
     col5, col6 = st.columns(2)
 
-    with col5:
-        st.markdown("### 🏆 Top 5 Churn Categories")
-        df_top_categories = top_churn_categories.reset_index()
-        df_top_categories.columns = ['Churn Category', 'Count']
-        st.dataframe(df_top_categories, hide_index=True)
+   
 
     with col6:
         st.markdown("### 🌍 Geographical Distribution of Top 5 Churn Categories")
