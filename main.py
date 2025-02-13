@@ -113,7 +113,7 @@ st.markdown(
     "### 🔍 Principais descobertas:\n"
  "- **Serviços de alta rotatividade**: Os serviços de Internet, dados ilimitados e streaming apresentam as taxas de cancelamento mais elevadas. \n"
  "- **Tendências demográficas**: Os idosos e os clientes com contratos mensais são os mais propensos a cancelar o serviço. \n"
- "- **Estratégias de retenção**: Programas de lealdade, preços competitivos e uma comunicação eficaz com o cliente podem ajudar a reduzir a rotatividade."
+ "- ** Programas de lealdade, preços competitivos com base na localização e uma comunicação eficaz com o cliente podem ajudar a reduzir a rotatividade."
 )
 
 st.write("---")
@@ -271,7 +271,7 @@ else:
     with st.expander("🌍 Clique para ver insights do Mapa de Distribuição Geográfica do Cancelamento"):
 
         st.subheader("📍 Concentração elevada de cancelamentos em áreas urbanas")
-        st.write("**Observação:** A maioria dos cancelamentos está concentrada em cidades altamente povoadas, "
+        st.write("**Observação:** A maioria dos cancelamentos está concentrada em cidades altamente povoadas ((San francisco, Los angeles e San Diego)), "
             "indicando que os clientes urbanos têm maior probabilidade de mudar de fornecedor devido ao aumento da concorrência.")
         
         st.subheader("🏆 Influência da concorrência é um fator-chave em todas as regiões")
@@ -331,7 +331,7 @@ with st.expander("💡 Clique para ver insights sobre cancelamento por género")
 
 with st.expander("🌍 Clique para ver insights do Mapa de Distribuição Geográfica do Cancelamento"):
     st.subheader("📍 Concentração elevada de cancelamentos em áreas urbanas")
-    st.write("**Observação:** A maioria dos cancelamentos está concentrada em cidades altamente povoadas.")
+    st.write("**Observação:** A maioria dos cancelamentos está concentrada em cidades altamente povoadas (San francisco, Los angeles e San Diego).")
 
     st.subheader("🏆 Influência da concorrência é um fator-chave em todas as regiões")
     st.write("**Observação:** A categoria de cancelamento mais frequente é 'Concorrência'.")
@@ -346,7 +346,7 @@ with st.expander("🌍 Clique para ver insights do Mapa de Distribuição Geogr�
 # ----------------------------------------------------
 # Section 3: Understanding Churned Customers
 # ----------------------------------------------------
-st.subheader("Question 3: What should be the strategy to reduce churn?")
+st.subheader("Questão 3: Qual deve ser a estratégia para reduzir o cancelamento?")
 
 if df_filtered.empty:
     st.warning("No churned customers found based on the selected filters. Try adjusting the filters.")
@@ -385,27 +385,28 @@ else:
         fig2.update_layout(title="📜 Churned Customers by Contract Type")
         st.plotly_chart(fig2)
 
-    with st.expander("💡 Click to View Churn Insights by Age & Contract Type"):
+    with st.expander("💡 Clique para ver insights sobre cancelamento por idade e tipo de contrato"):
 
-        # Overall Churn Trends
-        st.subheader("📌 Overall Churn Trends")
-        st.write("**Takeaway:** The majority of churned customers fall into the **Seniors age group (50%+)**, "
-            "while **Month-to-Month contracts account for nearly 90% of all churn**.")
-    
-        # Churn by Age Group
-        st.subheader("📊 Churn by Age Group")
-        st.write("**Takeaway:** Seniors (50.2%) have the highest churn, followed by Middle-Aged Adults (33.5%). "
-            "Young Adults (16.3%) churn the least.")
-        st.write(
-            "**Observation:** Seniors may face **technology adoption barriers, dissatisfaction, or competitor influence**, "
-            "while Middle-Aged Adults might be **more price-sensitive**.")
-    
-        # Churn by Contract Type
-        st.subheader("📜 Churn by Contract Type")
-        st.write("**Takeaway:** The vast majority of churn (88-89%) comes from customers on **Month-to-Month contracts**, "
-            "while **One-Year (8-9%) and Two-Year (2-3%) contracts have significantly lower churn rates**.")
-        st.write("**Observation:** Customers in **short-term contracts** are **more likely to leave** for better offers, "
-            "whereas those in **long-term contracts are more committed**.")
+        # Tendências gerais de cancelamento
+        st.subheader("📌 Tendências gerais de cancelamento")
+        st.write("**Conclusão:** A maioria dos clientes que cancelam pertencem ao grupo etário **Seniores (50%)**, "
+            "enquanto os **contratos mensais representam quase 90% de todos os cancelamentos**.")
+        
+        # Cancelamento por faixa etária
+        st.subheader("📊 Cancelamento por faixa etária")
+        st.write("**Conclusão:** Os seniores (50,2%) apresentam a taxa de cancelamento mais alta, seguidos pelos adultos de meia-idade (33,5%). "
+            "Os jovens adultos (16,3%) são os que menos cancelam.")
+        
+        st.write("**Observação:** Os seniores podem enfrentar **barreiras na adoção de tecnologia, insatisfação ou influência da concorrência**, "
+            "enquanto os adultos de meia-idade podem ser **mais sensíveis ao preço**.")
+        
+        # Cancelamento por tipo de contrato
+        st.subheader("📜 Cancelamento por tipo de contrato")
+        st.write("**Conclusão:** A grande maioria dos cancelamentos (88-89%) vem de clientes com **contratos mensais**, "
+            "enquanto os contratos de **um ano (8-9%) e dois anos (2-3%) têm taxas de cancelamento significativamente mais baixas**.")
+        st.write("**Observação:** Clientes com **contratos de curto prazo** têm **maior probabilidade de mudar** para ofertas melhores, "
+            "enquanto aqueles com **contratos de longo prazo demonstram maior compromisso**.")
+
     
     st.write('---')
     
@@ -415,25 +416,26 @@ else:
     # Display the gold line chart
     plot_cltv_trend(df_filtered)
 
-    # Add an expander with additional insights for CLTV by Tenure Group
-    with st.expander("🔍 Click to View Insights on CLTV by Tenure Group"):
-        st.subheader("⚡ Early Tenure CLTV (0–6 months)")
-        st.write("**Observation:** Newly joined customers (0–6 months) often have lower CLTV—"
-            "this can reflect short billing cycles, introductory offers, or limited usage.")
+    # Adicionar um expansor com insights adicionais sobre CLTV por grupo de tempo de permanência
+    with st.expander("🔍 Clique para ver insights sobre CLTV por grupo de permanência"):
+    
+        st.subheader("⚡ CLTV de curta permanência (0–6 meses)")
+        st.write("**Observação:** Clientes recém-chegados (0–6 meses) tendem a ter um CLTV mais baixo—"
+            "isto pode refletir ciclos de faturação curtos, ofertas introdutórias ou utilização limitada.")
+    
+        st.subheader("📈 CLTV de média permanência (7–36 meses)")
+        st.write("**Observação:** O CLTV tende a aumentar gradualmente entre os 7 e 36 meses, à medida que os clientes "
+            "adotam mais serviços ou opções de pacotes.")
+    
+        st.subheader("🏆 CLTV de longa permanência (49–60 meses)")
+        st.write("**Observação:** Há frequentemente um pico na faixa dos 49–60 meses, indicando que "
+            "os clientes de longa duração veem mais valor e gastam mais.")
+    
+        st.subheader("🔄 Estabilização ou ligeira queda após 61+ meses")
+        st.write("**Observação:** Alguns clientes mais antigos podem estabilizar ou reduzir ligeiramente os gastos—"
+            "podem já não precisar de serviços adicionais ou estar a explorar alternativas.")
 
-        st.subheader("📈 Mid-Tenure CLTV (7–36 months)")
-        st.write("**Observation:** CLTV tends to gradually increase through 7–36 months as customers "
-            "adopt more services or bundling options.")
-
-        st.subheader("🏆 Late Tenure CLTV (49–60 months)")
-        st.write("**Observation:** There is often a spike in the 49–60 months bracket, indicating "
-            "long-term customers who remain see higher value and spend more.")
-
-        st.subheader("🔄 61+ Months Plateau or Slight Dip")
-        st.write("**Observation:** Some seasoned customers might plateau or slightly reduce spend—"
-            "they may no longer need add-on services or could be exploring alternatives.")
-
-    st.write('### 📌 Qual deve ser a estratégia para reduzir o cancelamento?')
+st.write('### 📌 Qual deve ser a estratégia para reduzir o cancelamento?')
 
 with st.expander("💡 Clique para ver sugestões detalhadas de estratégia"):
 
