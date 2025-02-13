@@ -448,7 +448,7 @@ if 'Contract' in df_filtered.columns:
 
     # Create a single-line summary for Contract Types
     churn_summary_contract = " | ".join(
-        [f"📜 **{row['Plano']}**: {row['Churn Percentage']:.2f}%" for _, row in churn_counts_by_contract.iterrows()]
+        [f"📜 **{row['Contract Type']}**: {row['Churn Percentage']:.2f}%" for _, row in churn_counts_by_contract.iterrows()]
     )
 
     # Display the combined summary
