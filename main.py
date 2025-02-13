@@ -378,7 +378,7 @@ if not df_filtered.empty:
     )
 
     # Display the summary in a single line
-    st.subheader("📊 Churn Rate by Age Group")
+    st.subheader("📊 Taxa de churn por faixa etária")
     st.markdown(f"**{churn_summary}**")
 
 else:
