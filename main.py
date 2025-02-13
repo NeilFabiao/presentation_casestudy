@@ -89,8 +89,8 @@ def plot_cltv_trend(df):
     })
 
 
-    with col_chart:
-        st.plotly_chart(fig, use_container_width=True)
+  
+    st.plotly_chart(fig, use_container_width=True)
 
 
 
