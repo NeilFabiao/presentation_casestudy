@@ -433,46 +433,47 @@ else:
         st.write("**Observation:** Some seasoned customers might plateau or slightly reduce spend—"
             "they may no longer need add-on services or could be exploring alternatives.")
 
-    st.write('### 📌 What Should Be the Strategy to Reduce Churn?')
+    st.write('### 📌 Qual deve ser a estratégia para reduzir o cancelamento?')
 
-    with st.expander("💡 Click to View Detailed Strategy Suggestions"):
+with st.expander("💡 Clique para ver sugestões detalhadas de estratégia"):
 
-        st.markdown("## **Recommendation Overview**")
-    
-        # Churn Insights by Age Group
-        st.subheader("📌 Churn Insights by Age Group")
-        st.write("**Strategy:** Consider **re-engagement campaigns, special senior/family offers, or long-term discount bundles** to maintain high-value customers.")
-    
-        # Churn Insights by Contract Type
-        st.subheader("📌 Churn Insights by Contract Type")
-        st.write("**Strategy:** Provide **strong onboarding experiences and early engagement offers** to month-to-month users to build loyalty from the start.")
-        st.write("**Strategy:** Encourage **cross-selling of additional services, offer mid-contract upgrades, or loyalty rewards** to increase customer value.")
-        
-        # Key Churn Factors & Strategies
-        st.markdown("### **Key Churn Factors & Strategies to Address Them**")
-    
-        # Competitor-Driven Churn
-        st.markdown("#### ✔️ **Competitor-Driven Churn**")
-        st.write("**Strategy:** Strengthen **loyalty programs** and provide **competitive bundling options** to retain customers.")
-    
-        # Dissatisfaction-Driven Churn
-        st.markdown("#### 📉 **Dissatisfaction-Driven Churn**")
-        st.write("**Strategy:** Improve **service quality, network coverage, and customer experience** to reduce dissatisfaction-related churn.")
-    
-        # Customer Service-Related Churn
-        st.markdown("#### 🤝 **Customer Service-Related Churn**")
-        st.write("**Strategy:** Focus on **regional service training improvements** and **customer support optimizations**.")
-    
-        # Location-Based Churn
-        st.markdown("#### 🌍 **Location-Based Churn Trends**")
-        st.write("**Strategy:** Implement **location-based retention offers** targeting high-churn urban areas.")
-    
-        # Pricing Concerns
-        st.markdown("#### 💰 **Pricing Concerns & Value Perception**")
-        st.write("**Strategy:** Introduce **tiered pricing plans** and **region-specific discounts** to improve affordability and retention.")
-    
-        # High-Value Customer Retention
-        st.markdown("#### 🏆 **Retaining High-Value Long-Term Customers**")
-        st.write("**Strategy:** Provide **loyalty perks, VIP support lines, or device upgrades** to reward and retain these valuable customers.")
-    
+    st.markdown("## **Visão geral das recomendações**")
+
+    # Insights sobre cancelamento por faixa etária
+    st.subheader("📌 Insights sobre cancelamento por faixa etária")
+    st.write("**Estratégia:** Considere **campanhas de ofertas especiais para seniores/famílias ou pacotes com descontos de longo prazo** para manter clientes de alto valor.")
+
+    # Insights sobre cancelamento por tipo de contrato
+    st.subheader("📌 Insights sobre cancelamento por tipo de contrato")
+    st.write("**Estratégia:** Ofereça **experiências de onboarding eficazes e incentivos iniciais** para clientes com contratos mensais, promovendo a lealdade desde o início.")
+    st.write("**Estratégia:** Incentive **a venda cruzada de serviços adicionais, upgrades a meio do contrato ou recompensas de lealdade** para aumentar o valor do cliente.")
+
+    # Fatores-chave do cancelamento e estratégias
+    st.markdown("### **Fatores-chave do cancelamento e estratégias para os mitigar**")
+
+    # Cancelamento motivado pela concorrência
+    st.markdown("#### ✔️ **Cancelamento devido à concorrência**")
+    st.write("**Estratégia:** Reforce **os programas de lealdade** e ofereça **pacotes competitivos** para reter clientes.")
+
+    # Cancelamento por insatisfação
+    st.markdown("#### 📉 **Cancelamento devido à insatisfação**")
+    st.write("**Estratégia:** Melhore **a qualidade do serviço, a cobertura da rede e a experiência do cliente** para reduzir o cancelamento por insatisfação.")
+
+    # Cancelamento relacionado ao atendimento ao cliente
+    st.markdown("#### 🤝 **Cancelamento devido ao atendimento ao cliente**")
+    st.write("**Estratégia:** Invista em **formação regional para equipas de suporte** e **otimização do atendimento ao cliente**.")
+
+    # Cancelamento baseado na localização
+    st.markdown("#### 🌍 **Tendências de cancelamento por localização**")
+    st.write("**Estratégia:** Implemente **ofertas de retenção baseadas na localização**, direcionadas para áreas urbanas com altas taxas de cancelamento.")
+
+    # Preocupações com preços
+    st.markdown("#### 💰 **Preocupações com preços e perceção de valor**")
+    st.write("**Estratégia:** Introduza **planos de preços ** e ** descontos regionais específicos** para melhorar a acessibilidade e retenção.")
+
+    # Retenção de clientes de alto valor
+    st.markdown("#### 🏆 **Retenção de clientes de alto valor e longo prazo**")
+    st.write("**Estratégia:** Ofereça **benefícios de lealdade, linhas de suporte VIP ou upgrades de dispositivos** para premiar e reter estes clientes valiosos.")
+
 st.write('---')
+
