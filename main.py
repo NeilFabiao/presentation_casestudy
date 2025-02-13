@@ -353,11 +353,11 @@ if df_filtered.empty:
 else:
     def age_category(age):
         if age < 30:
-            return 'Young Adults'
+            return 'Young Adults (<30)'
         elif 30 <= age < 50:
-            return 'Middle-Aged Adults'
+            return 'Middle-Aged Adults (30-50)'
         else:
-            return 'Seniors'
+            return 'Seniors(50>)'
 
     df_filtered['Age Group'] = df_filtered['Age'].apply(age_category)
 
