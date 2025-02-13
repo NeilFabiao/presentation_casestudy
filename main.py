@@ -103,8 +103,7 @@ df = load_data('telco.csv')
 st.title("Telco Churn Analysis 📊")
 
 st.write(
-    "Bem-vindo ao **Dashboard de Análise Churn (Rotatividade) de Telecomunicações!** 🚀" 
-    "Este relatório interativo explora insights importantes sobre a rotatividade de clientes, 
+    "Bem-vindo ao **Dashboard de Análise Churn (Rotatividade) de Telecomunicações!** 🚀 Este relatório interativo explora insights importantes sobre a rotatividade de clientes, 
     ajudando-nos a compreender as tendências, desafios e estratégias para melhorar a retenção. 
     (Para filtrar os dados, clique na opção à esquerda.)"
 )
