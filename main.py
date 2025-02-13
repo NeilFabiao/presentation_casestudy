@@ -53,34 +53,45 @@ def preprocess_data(df):
 # CLTV Trend Plot (Line Color Changed to Gold)
 # ----------------------------------------------------
 def plot_cltv_trend(df):
-    # Suppose df has columns ["Tenure Group", "CLTV"] already aggregated, or we groupby below.
+    # Ensure Tenure Group is in the correct (ordered) categorical format
+    df["Tenure Group"] = pd.Categorical(
+        df["Tenure Group"],
+        categories=TENURE_LABELS,
+        ordered=True
+    )
+    cltv_by_tenure = df.groupby("Tenure Group")["CLTV"].mean().reset_index()
 
-    # 1) Build your plotly figure.
+    # Create the figure
     fig = px.line(
-        df, 
-        x="Tenure Group", 
-        y="CLTV", 
-        markers=True, 
-        title="📈 CLTV Trend by Tenure Group"
+        cltv_by_tenure,
+        x="Tenure Group",
+        y="CLTV",
+        markers=True,
+        title="📈 CLTV Trend by Tenure Group",
+        labels={"CLTV": "Average CLTV", "Tenure Group": "Tenure Group"}
     )
     fig.update_traces(line=dict(color="gold", width=3))
     fig.update_xaxes(tickangle=-45)
 
-    # 2) Build a small DataFrame for the legend table
-    df_legend = pd.DataFrame({
-        "Tenure Group": list(TENURE_LEGEND.keys()),
-        "Approx. Years": list(TENURE_LEGEND.values())
-    })
+    # Use two columns: one for the chart, one for the legend
+    col_chart, col_legend = st.columns([4, 1])  # To Adjust width ratio 
 
-    # 3) Place legend table on the LEFT, chart on the RIGHT
-    col_left, col_right = st.columns(2)
-
-    with col_left:
-        st.markdown("### Tenure Groups & Approx. Years")
-        st.table(df_legend)
-
-    with col_right:
+    with col_chart:
         st.plotly_chart(fig, use_container_width=True)
+
+    with col_legend:
+        st.markdown(
+            """
+            **Tenure Group Legend**  
+            - 0-6 months = ~0-0.5 yr  
+            - 7-12 months = ~0.5-1 yr  
+            - 13-24 months = 1-2 yrs  
+            - 25-36 months = 2-3 yrs  
+            - 37-48 months = 3-4 yrs  
+            - 49-60 months = 4-5 yrs  
+            - 61+ months = 5+ yrs
+            """
+        )
 
 
 # Load Data
