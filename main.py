@@ -348,42 +348,18 @@ with st.expander("🌍 Clique para ver insights do Mapa de Distribuição Geogr�
 # ----------------------------------------------------
 st.subheader("Questão 3: Qual deve ser a estratégia para reduzir o cancelamento?")
 
-# Ensure df_filtered exists (replace 'df' with your actual DataFrame variable)
-if not df_filtered.empty:
-    # Categorizing Age Groups
+if df_filtered.empty:
+    st.warning("No churned customers found based on the selected filters. Try adjusting the filters.")
+else:
     def age_category(age):
         if age < 30:
-            return 'Young Adults'
+            return 'Young Adults (<30)'
         elif 30 <= age < 50:
-            return 'Middle-Aged Adults'
+            return 'Middle-Aged Adults (30-50)'
         else:
-            return 'Seniors'
+            return 'Seniors(50>)'
 
     df_filtered['Age Group'] = df_filtered['Age'].apply(age_category)
-
-    # Count churned customers per Age Group
-    churn_counts_by_age = df_filtered['Age Group'].value_counts().reset_index()
-    churn_counts_by_age.columns = ['Age Group', 'Churn Count']
-
-    # Create Bubble Chart with Actual Data
-    fig = px.scatter(
-        churn_counts_by_age,
-        x="Age Group",
-        y="Churn Count",
-        size="Churn Count",  # Bubble size is based on churn count
-        color="Age Group",
-        text="Churn Count",  # Display count inside bubbles
-        size_max=100,  # Control max bubble size
-        title="📊 Churned Customers by Age Group"
-    )
-
-    fig.update_traces(textposition="middle center")
-
-    # Display in Streamlit
-    st.subheader("🔵 Churned Customers by Age Group")
-    st.plotly_chart(fig, use_container_width=True)
-else:
-    st.warning("No churned customers found based on the selected filters. Try adjusting the filters.")
 
     # Creating Streamlit layout
     st.subheader("📊 Churn Category by Age Group")
@@ -495,4 +471,3 @@ with st.expander("💡 Clique para ver sugestões detalhadas de estratégia"):
     st.write("**Estratégia:** Ofereça **benefícios de lealdade, linhas de suporte VIP ou upgrades de dispositivos** para premiar e reter estes clientes valiosos.")
 
 st.write('---')
-
