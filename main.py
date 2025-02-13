@@ -361,6 +361,27 @@ else:
 
     df_filtered['Age Group'] = df_filtered['Age'].apply(age_category)
 
+    df_bubble = df_filtered.copy()
+
+    st.subheader("🔵 Churned Customers by Age Group")
+    
+    # Create Bubble Chart
+    fig = px.scatter(
+        df_bubble,
+        x="Age Group",
+        y="Churn Count",
+        size="Churn Count",  # Bubble size is based on churn count
+        color="Age Group",
+        text="Churn Count",  # Display count inside bubbles
+        size_max=100,  # Control max bubble size
+        title="📊 Churned Customers by Age Group"
+    )
+    
+    fig.update_traces(textposition="middle center")
+    
+    # Display in Streamlit
+    st.plotly_chart(fig, use_container_width=True)
+
     # Creating Streamlit layout
     st.subheader("📊 Churn Category by Age Group")
     
