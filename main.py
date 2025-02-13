@@ -348,16 +348,16 @@ with st.expander("🌍 Clique para ver insights do Mapa de Distribuição Geogr�
 # ----------------------------------------------------
 st.subheader("Questão 3: Qual deve ser a estratégia para reduzir o cancelamento?")
 
-if df_filtered.empty:
-    st.warning("No churned customers found based on the selected filters. Try adjusting the filters.")
-else:
+# Ensure df_filtered exists (replace 'df' with your actual DataFrame variable)
+if not df_filtered.empty:
+    # Categorizing Age Groups
     def age_category(age):
         if age < 30:
-            return 'Young Adults (<30)'
+            return 'Young Adults'
         elif 30 <= age < 50:
-            return 'Middle-Aged Adults (30-50)'
+            return 'Middle-Aged Adults'
         else:
-            return 'Seniors(50>)'
+            return 'Seniors'
 
     df_filtered['Age Group'] = df_filtered['Age'].apply(age_category)
 
