@@ -343,6 +343,8 @@ with st.expander("🌍 Clique para ver insights do Mapa de Distribuição Geogr�
     st.write("**Observação:** Os pontos verdes (Preço) estão amplamente distribuídos no mapa.")
 
 
+st.write("---")
+
 # ----------------------------------------------------
 # Section 3: Understanding Churned Customers
 # ----------------------------------------------------
@@ -419,32 +421,32 @@ with st.expander("💡 Clique para ver insights sobre cancelamento por idade e m
              "enquanto os adultos de meia-idade podem ser **mais sensíveis ao preço**.")
 
     
-    st.write('---')
+st.write('---')
     
-    # Preprocess data for Tenure Group
-    df_filtered = preprocess_data(df_filtered)
+# Preprocess data for Tenure Group
+df_filtered = preprocess_data(df_filtered)
 
-    # Display the gold line chart
-    plot_cltv_trend(df_filtered)
+# Display the gold line chart
+plot_cltv_trend(df_filtered)
 
-    # Adicionar um expansor com insights adicionais sobre CLTV por grupo de tempo de permanência
-    with st.expander("🔍 Clique para ver insights sobre CLTV por grupo de permanência"):
-    
-        st.subheader("⚡ CLTV de curta permanência (0–6 meses)")
-        st.write("**Observação:** Clientes recém-chegados (0–6 meses) tendem a ter um CLTV mais baixo—"
-            "isto pode refletir ciclos de faturação curtos, ofertas introdutórias ou utilização limitada.")
-    
-        st.subheader("📈 CLTV de média permanência (7–36 meses)")
-        st.write("**Observação:** O CLTV tende a aumentar gradualmente entre os 7 e 36 meses, à medida que os clientes "
-            "adotam mais serviços ou opções de pacotes.")
-    
-        st.subheader("🏆 CLTV de longa permanência (49–60 meses)")
-        st.write("**Observação:** Há frequentemente um pico na faixa dos 49–60 meses, indicando que "
-            "os clientes de longa duração veem mais valor e gastam mais.")
-    
-        st.subheader("🔄 Estabilização ou ligeira queda após 61+ meses")
-        st.write("**Observação:** Alguns clientes mais antigos podem estabilizar ou reduzir ligeiramente os gastos—"
-            "podem já não precisar de serviços adicionais ou estar a explorar alternativas.")
+# Adicionar um expansor com insights adicionais sobre CLTV por grupo de tempo de permanência
+with st.expander("🔍 Clique para ver insights sobre CLTV por grupo de permanência"):
+
+    st.subheader("⚡ CLTV de curta permanência (0–6 meses)")
+    st.write("**Observação:** Clientes recém-chegados (0–6 meses) tendem a ter um CLTV mais baixo—"
+        "isto pode refletir ciclos de faturação curtos, ofertas introdutórias ou utilização limitada.")
+
+    st.subheader("📈 CLTV de média permanência (7–36 meses)")
+    st.write("**Observação:** O CLTV tende a aumentar gradualmente entre os 7 e 36 meses, à medida que os clientes "
+        "adotam mais serviços ou opções de pacotes.")
+
+    st.subheader("🏆 CLTV de longa permanência (49–60 meses)")
+    st.write("**Observação:** Há frequentemente um pico na faixa dos 49–60 meses, indicando que "
+        "os clientes de longa duração veem mais valor e gastam mais.")
+
+    st.subheader("🔄 Estabilização ou ligeira queda após 61+ meses")
+    st.write("**Observação:** Alguns clientes mais antigos podem estabilizar ou reduzir ligeiramente os gastos—"
+        "podem já não precisar de serviços adicionais ou estar a explorar alternativas.")
 
 st.write('### 📌 Qual deve ser a estratégia para reduzir o cancelamento?')
 
