@@ -7,7 +7,7 @@ import plotly.graph_objects as go
 # 1. Set Page Configuration (Must Be First Streamlit Command)
 # ----------------------------------------------------
 st.set_page_config(
-    page_title="Telco Churn Analysis - Section 1",
+    page_title="Telco Churn Analysis - Vodacom interview",
     page_icon="📊",
     layout="wide",
     initial_sidebar_state="expanded"
