@@ -64,20 +64,6 @@ def plot_cltv_trend(df):
     )
     fig.update_traces(line=dict(color="gold", width=3))
     fig.update_xaxes(tickangle=-45)
-    
-    # ---------------------------
-    # 1) Add annotation for your custom "legend" inside the figure
-    # ---------------------------
-    legend_text = (
-        "<b>Tenure Legend</b><br>"
-        "0-6 months: ~0–0.5 yrs<br>"
-        "7-12 months: ~0.5–1 yrs<br>"
-        "13-24 months: 1–2 yrs<br>"
-        "25-36 months: 2–3 yrs<br>"
-        "37-48 months: 3–4 yrs<br>"
-        "49-60 months: 4–5 yrs<br>"
-        "61+ months: 5+ yrs"
-    )
 
     # Plot in Streamlit
     st.plotly_chart(fig, use_container_width=True)
