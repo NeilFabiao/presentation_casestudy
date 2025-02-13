@@ -201,7 +201,7 @@ else:
         df_top_reasons.columns = ['Churn Reason', 'Count']
         st.dataframe(df_top_reasons, hide_index=True)
 
-     with col5:
+    with col5:
         st.markdown("### 🏆 Top 5 Churn Categories")
         df_top_categories = top_churn_categories.reset_index()
         df_top_categories.columns = ['Churn Category', 'Count']
