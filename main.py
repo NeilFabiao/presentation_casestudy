@@ -196,7 +196,7 @@ with col2:
         st.info("No data available to plot. Try changing your filters.")
 
 # Expansor para insights
-with st.expander("💡 Clique para ver informação sobre a rotatividade por serviço""):
+with st.expander("💡 Clique para ver informação sobre a rotatividade por serviço"):
     st.subheader("📌 Tendências gerais de cancelamento")
     st.write("**Conclusão:** Os serviços com as maiores taxas de cancelamento são Internet, Dados Ilimitados e Serviços de Streaming.")
 
