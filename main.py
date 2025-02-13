@@ -343,13 +343,13 @@ else:
         fig2.update_layout(title="📜 Churned Customers by Contract Type")
         st.plotly_chart(fig2)
 
+    st.write('---')
+    
     # Preprocess data for Tenure Group
     df_filtered = preprocess_data(df_filtered)
 
     # Display the gold line chart
-    col9, _ = st.columns([1, 0.2])
-    with col9:
-        plot_cltv_trend(df_filtered)
+    plot_cltv_trend(df_filtered)
 
     # Add an expander with additional insights for CLTV by Tenure Group
     with st.expander("🔍 Click to View Insights on CLTV by Tenure Group"):
