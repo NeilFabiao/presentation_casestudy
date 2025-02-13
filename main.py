@@ -126,8 +126,8 @@ with st.sidebar:
     st.write("🔍 **Filtre os dados para explorar as tendências de rotatividade por género e o estado de rotatividade.** " 
              "Ajuste as opções abaixo para analisar grupos específicos de clientes.")
     
-    gender_filter = st.radio("Seleccionar género", options=["Todos", "Masculino", "Feminino"], index=0)
-    churn_filter = st.radio("Seleccionar estado de rotatividade", options=["Sim", "Não"], index=0)
+    gender_filter = st.radio("Seleccionar género", options=["All", "Male", "Female"], index=0)
+    churn_filter = st.radio("Seleccionar estado de rotatividade", options=["Yes", "No"], index=0)
 
 # ----------------------------------------------------
 # 5. Filter the Data Based on Sidebar Selections
