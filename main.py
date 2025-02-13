@@ -107,7 +107,7 @@ st.write(
     "Este relatório interativo explora insights importantes sobre a rotatividade de clientes, 
     ajudando-nos a compreender as tendências, desafios e estratégias para melhorar a retenção. 
     (Para filtrar os dados, clique na opção à esquerda.)"
-    )
+)
 
 st.markdown(
     "### 🔍 Principais descobertas:\n"
