@@ -196,7 +196,7 @@ else:
     # Top Churn Categories
     top_churn_categories = churned_data_filtered['Churn Category'].value_counts().head(5)
 
-    col3, col4, col5 = st.columns(3)
+    col3, col4 = st.columns(2)
 
     with col3:
         st.markdown("### 🏆 Top 5 Churn Reasons")
@@ -205,12 +205,6 @@ else:
         st.dataframe(df_top_reasons, hide_index=True)
 
     with col4:
-        st.markdown("### 🏆 Top 5 Churn Categories")
-        df_top_categories = top_churn_categories.reset_index()
-        df_top_categories.columns = ['Churn Category', 'Count']
-        st.dataframe(df_top_categories, hide_index=True)
-
-    with col5:
         st.markdown("### 🌍 Geographical Distribution of Top 5 Churn Reasons")
         if 'Latitude' in df_filtered.columns and 'Longitude' in df_filtered.columns:
             top_reason_data = df_filtered[df_filtered['Churn Reason'].isin(top_churn_reasons.index)]
@@ -266,7 +260,11 @@ else:
 
     col5, col6 = st.columns(2)
 
-   
+    with col5:
+        st.markdown("### 🏆 Top 5 Churn Categories")
+        df_top_categories = top_churn_categories.reset_index()
+        df_top_categories.columns = ['Churn Category', 'Count']
+        st.dataframe(df_top_categories, hide_index=True)
 
     with col6:
         st.markdown("### 🌍 Geographical Distribution of Top 5 Churn Categories")
