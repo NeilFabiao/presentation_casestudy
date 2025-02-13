@@ -370,10 +370,14 @@ if not df_filtered.empty:
     # Calculate churn percentage for each Age Group
     churn_counts_by_age['Churn Percentage'] = (churn_counts_by_age['Churn Count'] / total_churned) * 100
 
-    # Display churn percentage breakdown
+    # Create a single-line summary with percentages side by side
+    churn_summary = " | ".join(
+        [f"✅ **{row['Age Group']}**: {row['Churn Percentage']:.2f}%" for _, row in churn_counts_by_age.iterrows()]
+    )
+
+    # Display the summary in a single line
     st.subheader("📊 Churn Rate by Age Group")
-    for index, row in churn_counts_by_age.iterrows():
-        st.write("✅ **{row['Age Group']}**: {row['Churn Percentage']:.2f}% of all churned customers.")
+    st.markdown(f"**{churn_summary}**")
 
 else:
     st.warning("No churned customers found based on the selected filters. Try adjusting the filters.")
