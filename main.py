@@ -437,6 +437,23 @@ st.write('---')
 # Preprocess data for Tenure Group
 df_filtered = preprocess_data(df_filtered)
 
+# Ensure 'Contract' column exists before processing
+if 'Contract' in df_filtered.columns:
+    # Count churned customers per Contract Type
+    churn_counts_by_contract = df_filtered['Contract'].value_counts().reset_index()
+    churn_counts_by_contract.columns = ['Contract Type', 'Churn Count']
+
+    # Calculate churn percentage for each Contract Type
+    churn_counts_by_contract['Churn Percentage'] = (churn_counts_by_contract['Churn Count'] / total_churned) * 100
+
+    # Create a single-line summary for Contract Types
+    churn_summary_contract = " | ".join(
+        [f"📜 **{row['Contract Type']}**: {row['Churn Percentage']:.2f}%" for _, row in churn_counts_by_contract.iterrows()]
+    )
+
+    # Display the combined summary
+    st.markdown(f"📜 **By Contract Type:** {churn_summary_contract}")
+    
 # Display the gold line chart
 plot_cltv_trend(df_filtered)
 
