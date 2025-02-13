@@ -495,7 +495,7 @@ with st.expander("💡 Clique para ver sugestões detalhadas de estratégia"):
 
     # Preocupações com preços
     st.markdown("#### 💰 **Preocupações com preços e perceção de valor**")
-    st.write("**Estratégia:** **Introduza **planos de preços ** e ** descontos regionais específicos** para melhorar a acessibilidade e retenção.")
+    st.write("**Estratégia:** Introduza **planos de preços** e **descontos regionais específicos** para melhorar a acessibilidade e retenção.")
 
     # Retenção de clientes de alto valor
     st.markdown("#### 🏆 **Retenção de clientes de alto valor e longo prazo**")
