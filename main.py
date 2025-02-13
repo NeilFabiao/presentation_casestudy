@@ -183,20 +183,13 @@ with col2:
 # Expander for insights
 with st.expander("💡 Click to View Churn Insights by Service"):
     st.subheader("📌 Overall Churn Trends")
-    st.write(
-        "**Takeaway:** Services with the highest churn rates are Internet Service, Unlimited Data, and Streaming Services. "
-    )
+    st.write("**Takeaway:** Services with the highest churn rates are Internet Service, Unlimited Data, and Streaming Services. ")
 
     st.subheader("📌 Internet & Data Churn")
-    st.write(
-        "**Takeaway:** Customers using Internet Service (31.83%) and Unlimited Data (31.65%) churn at the highest rates. "
-       
-    )
+    st.write("**Takeaway:** Customers using Internet Service (31.83%) and Unlimited Data (31.65%) churn at the highest rates. ")
 
     st.subheader("📌 Streaming Services Churn")
-    st.write(
-        "**Takeaway:** Streaming TV (30.07%), Streaming Movies (29.94%), and Streaming Music (29.26%) have high churn rates. "
-    )
+    st.write("**Takeaway:** Streaming TV (30.07%), Streaming Movies (29.94%), and Streaming Music (29.26%) have high churn rates. ")
 
 st.write("---")
 
@@ -251,13 +244,13 @@ else:
 
     with st.expander("💡 Click to View Churn Category Insights"):
         st.subheader("📌 Overall Churn Trends")
-        st.write("**Takeaway:** Competitor influence is the primary churn category...")
+        st.write("**Takeaway:** Competitor influence is the primary churn category")
 
         st.subheader("📌 Male Churn Trends")
-        st.write("**Takeaway:** Male customers churn mainly due to competitor influence and dissatisfaction...")
+        st.write("**Takeaway:** Male customers churn mainly due to competitor influence and dissatisfaction")
 
         st.subheader("📌 Female Churn Trends")
-        st.write("**Takeaway:** Female customers are more likely to churn due to competitor influence and pricing...")
+        st.write("**Takeaway:** Female customers are more likely to churn due to competitor influence and pricing")
 
 col3, col4 = st.columns(2)
 
@@ -296,30 +289,26 @@ with col4:
 
 with st.expander("🌍 Click to View Insights from the Geographical Churn Distribution Map"):
     st.subheader("📍 High Churn Clusters in Urban Areas")
-    st.write("**Observation:** The majority of churn points are concentrated in highly populated cities...")
-    st.write("**Strategy:** Implement location-based retention offers...")
+    st.write("**Observation:** The majority of churn points are concentrated in highly populated cities")
 
     st.subheader("🏆 Competitor Influence is a Key Factor Across Regions")
-    st.write("**Observation:** The most frequent churn category is 'Competitor'...")
-    st.write("**Strategy:** Strengthen loyalty programs...")
+    st.write("**Observation:** The most frequent churn category is 'Competitor'")
 
     st.subheader("📞 Dissatisfaction and Customer Service Issues Vary by Location")
-    st.write("**Observation:** Purple (Attitude) and Blue (Dissatisfaction) dots are spread throughout...")
-    st.write("**Strategy:** Focus on service training improvements...")
+    st.write("**Observation:** Purple (Attitude) and Blue (Dissatisfaction) dots are spread throughout")
 
     st.subheader("💰 Pricing Concerns Are More Evenly Distributed")
-    st.write("**Observation:** Green dots (Price) are widely spread across the map...")
-    st.write("**Strategy:** Introduce tiered pricing plans...")
+    st.write("**Observation:** Green dots (Price) are widely spread across the map")
 
 with st.expander("💡 Click to View Gender-Based Churn Insights"):
     st.subheader("📌 Female Churn")
-    st.write("**Takeaway:** Women primarily leave due to competitor pricing and device quality...")
+    st.write("**Takeaway:** Women primarily leave due to competitor pricing and device quality")
 
     st.subheader("📌 Male Churn")
-    st.write("**Takeaway:** Device quality is the biggest concern for male customers...")
+    st.write("**Takeaway:** Device quality is the biggest concern for male customers")
 
     st.subheader("📌 Overall Churn")
-    st.write("**Takeaway:** Device quality and pricing are the biggest churn drivers...")
+    st.write("**Takeaway:** Device quality and pricing are the biggest churn drivers")
 
 # ----------------------------------------------------
 # Section 3: Understanding Churned Customers
@@ -374,44 +363,20 @@ else:
     # Add an expander with additional insights for CLTV by Tenure Group
     with st.expander("🔍 Click to View Insights on CLTV by Tenure Group"):
         st.subheader("⚡ Early Tenure CLTV (0–6 months)")
-        st.write(
-            "**Observation:** Newly joined customers (0–6 months) often have lower CLTV—"
-            "this can reflect short billing cycles, introductory offers, or limited usage."
-        )
-        st.write(
-            "**Strategy:** Provide strong onboarding experiences and early engagement offers. "
-            "Consider quick-win promotions to build brand loyalty from Day 1."
-        )
+        st.write("**Observation:** Newly joined customers (0–6 months) often have lower CLTV—"
+            "this can reflect short billing cycles, introductory offers, or limited usage.")
 
         st.subheader("📈 Mid-Tenure CLTV (7–36 months)")
-        st.write(
-            "**Observation:** CLTV tends to gradually increase through 7–36 months as customers "
-            "adopt more services or bundling options."
-        )
-        st.write(
-            "**Strategy:** Encourage cross-selling of additional services, offer mid-contract "
-            "upgrades or loyalty rewards to further increase customer value."
-        )
+        st.write("**Observation:** CLTV tends to gradually increase through 7–36 months as customers "
+            "adopt more services or bundling options.")
 
         st.subheader("🏆 Late Tenure CLTV (49–60 months)")
-        st.write(
-            "**Observation:** There is often a spike in the 49–60 months bracket, indicating "
-            "long-term customers who remain see higher value and spend more."
-        )
-        st.write(
-            "**Strategy:** Provide loyalty perks, VIP support lines, or device upgrades to reward "
-            "and retain these valuable customers."
-        )
+        st.write("**Observation:** There is often a spike in the 49–60 months bracket, indicating "
+            "long-term customers who remain see higher value and spend more.")
 
         st.subheader("🔄 61+ Months Plateau or Slight Dip")
-        st.write(
-            "**Observation:** Some seasoned customers might plateau or slightly reduce spend—"
-            "they may no longer need add-on services or could be exploring alternatives."
-        )
-        st.write(
-            "**Strategy:** Consider re-engagement campaigns, special senior/family offers, or "
-            "long-term discount bundles to maintain high-value customers."
-        )
+        st.write("**Observation:** Some seasoned customers might plateau or slightly reduce spend—"
+            "they may no longer need add-on services or could be exploring alternatives.")
 
     st.write('### 📌 What Should Be the Strategy to Reduce Churn?')
 
