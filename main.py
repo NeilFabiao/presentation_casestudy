@@ -410,17 +410,34 @@ with st.expander("💡 Clique para ver insights sobre cancelamento por idade e m
 
     # **Tendências gerais de cancelamento**
     st.subheader("📌 Tendências gerais de cancelamento")
-    st.write("**Conclusão:** A maioria dos clientes que cancelam pertencem ao grupo etário **Seniores (50%)**, "
-             "e o principal motivo de cancelamento é **Concorrência**, seguido por **Preço** e **Insatisfação**.")
-    
-    # **Cancelamento por faixa etária**
-    st.subheader("📊 Cancelamento por faixa etária")
-    st.write("**Conclusão:** Os seniores apresentam a taxa de cancelamento mais alta, seguidos pelos adultos de meia-idade. "
-             "Os jovens adultos são os que menos cancelam.")
-    st.write("**Observação:** Os seniores podem enfrentar **barreiras na adoção de tecnologia, insatisfação ou influência da concorrência**, "
-             "enquanto os adultos de meia-idade podem ser **mais sensíveis ao preço**.")
+    st.write(
+        "**Conclusão:** A maioria dos clientes que cancelam pertencem ao grupo etário **Seniores (~50%)**, "
+        "com o principal motivo sendo **Concorrência**, seguido por **Preço** e **Insatisfação**."
+    )
 
-    
+    # **Cancelamento por faixa etária**
+    st.subheader("📊 Cancelamento por Faixa Etária")
+
+    st.markdown("""
+    - **Seniores (50+ anos)**: Apresentam a maior taxa de cancelamento (~50%). Os principais motivos incluem:
+        - Dificuldade na adoção de tecnologia.
+        - Influência da concorrência com ofertas mais atrativas.
+        - Insatisfação com a experiência do serviço.
+
+    - **Adultos de Meia-Idade (30-50 anos)**: Representam cerca de **33%** dos cancelamentos, sendo mais sensíveis a:
+        - Preços elevados e busca por planos mais baratos.
+        - Qualidade do serviço e atendimento impactando a decisão de troca.
+
+    - **Jovens Adultos (<30 anos)**: São os que menos cancelam (~16%), mas ainda assim enfrentam:
+        - Maior propensão a trocar de provedor frequentemente.
+        - Preferência por planos flexíveis e sem fidelização.
+    """)
+
+    # **Observações Finais**
+    st.subheader("🔍 Observações Finais")
+    st.write("Clientes **seniores e adultos de meia-idade** são os mais propensos a cancelar devido à concorrência e à insatisfação com o serviço. "
+        "Já os **jovens adultos** buscam maior flexibilidade, preferindo contratos de curto prazo.")
+ 
 st.write('---')
     
 # Preprocess data for Tenure Group
