@@ -149,8 +149,8 @@ service_churn_df = pd.DataFrame(service_churn_dict, index=["Churn Percentage"]).
 col1, col2 = st.columns(2)
 
 with col1:
-    st.markdown("### Top 5 Services by Churn Rate")
-    top_5_services = service_churn_df.sort_values(by="Churn Percentage", ascending=False).head(5)
+    st.markdown("### Top 10 Services by Churn Rate")
+    top_5_services = service_churn_df.sort_values(by="Churn Percentage", ascending=False).head(10)
     st.dataframe(top_5_services)
 
 with col2:
