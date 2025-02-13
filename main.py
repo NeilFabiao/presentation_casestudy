@@ -372,6 +372,28 @@ else:
         fig2.update_layout(title="📜 Churned Customers by Contract Type")
         st.plotly_chart(fig2)
 
+    with st.expander("💡 Click to View Churn Insights by Age & Contract Type"):
+
+    # Overall Churn Trends
+    st.subheader("📌 Overall Churn Trends")
+    st.write("**Takeaway:** The majority of churned customers fall into the **Seniors age group (50%+)**, "
+        "while **Month-to-Month contracts account for nearly 90% of all churn**.")
+
+    # Churn by Age Group
+    st.subheader("📊 Churn by Age Group")
+    st.write("**Takeaway:** Seniors (50.2%) have the highest churn, followed by Middle-Aged Adults (33.5%). "
+        "Young Adults (16.3%) churn the least.")
+    st.write(
+        "**Observation:** Seniors may face **technology adoption barriers, dissatisfaction, or competitor influence**, "
+        "while Middle-Aged Adults might be **more price-sensitive**.")
+
+    # Churn by Contract Type
+    st.subheader("📜 Churn by Contract Type")
+    st.write("**Takeaway:** The vast majority of churn (88-89%) comes from customers on **Month-to-Month contracts**, "
+        "while **One-Year (8-9%) and Two-Year (2-3%) contracts have significantly lower churn rates**.")
+    st.write("**Observation:** Customers in **short-term contracts** are **more likely to leave** for better offers, "
+        "whereas those in **long-term contracts are more committed**.")
+    
     st.write('---')
     
     # Preprocess data for Tenure Group
