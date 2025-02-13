@@ -191,7 +191,10 @@ if df_filtered.empty:
     st.warning("No churned customers found based on the selected filters. Try adjusting the filters.")
 else:
     churned_data_filtered = df_filtered[df_filtered['Churn Reason'] != 'Unknown'].copy()
+    
     top_churn_reasons = churned_data_filtered['Churn Reason'].value_counts().head(5)
+    # Top Churn Categories
+    top_churn_categories = churned_data_filtered['Churn Category'].value_counts().head(5)
 
     col3, col4, col5 = st.columns(3)
 
@@ -260,9 +263,6 @@ else:
 
         st.subheader("📌 Overall Churn")
         st.write("**Takeaway:** Device quality and pricing are the biggest churn drivers...")
-
-    # Top Churn Categories
-    top_churn_categories = churned_data_filtered['Churn Category'].value_counts().head(5)
 
     col5, col6 = st.columns(2)
 
