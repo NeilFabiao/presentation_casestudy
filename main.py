@@ -79,21 +79,6 @@ def plot_cltv_trend(df):
         "61+ months: 5+ yrs"
     )
 
-    fig.add_annotation(
-        x=1.02,       # Just a bit to the right of the plotting area
-        y=1,          # Up near the top
-        xref="paper",
-        yref="paper",
-        text=legend_text,
-        showarrow=False,
-        align="left",
-        bordercolor="white",       # or "black" if you want a visible border
-        borderwidth=1,
-        borderpad=8,
-        bgcolor="rgba(0, 0, 0, 0.2)",  # a translucent background if you like
-        font=dict(color="white")   # Adjust if you have a dark or light theme
-    )
-
     # Plot in Streamlit
     st.plotly_chart(fig, use_container_width=True)
 
