@@ -101,9 +101,20 @@ df = load_data('telco.csv')
 # 3. Main Title and Description
 # ----------------------------------------------------
 st.title("Telco Churn Analysis 📊")
-st.write( "**Focus**: - Which services tend to have high churn?" 
-         "- What would we do to reduce churn?" 
-        "- What should be the strategy to employ to reduce churn in the future")
+
+st.write(
+    "Welcome to the **Telco Churn Analysis Dashboard!** 🚀 "
+    "This interactive report explores key insights into customer churn, helping us "
+    "understand trends, challenges, and strategies for improving retention."
+)
+
+st.markdown(
+    "### 🔍 Key Findings:\n"
+    "- **High-Churn Services**: Internet Service, Unlimited Data, and Streaming Services have the highest churn rates.\n"
+    "- **Demographic Trends**: Seniors and month-to-month contract customers are the most likely to churn.\n"
+    "- **Retention Strategies**: Loyalty programs, competitive pricing, and customer engagement can help reduce churn."
+)
+
 st.write("---")
 
 # ----------------------------------------------------
