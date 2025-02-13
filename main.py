@@ -88,12 +88,6 @@ def plot_cltv_trend(df):
         ]
     })
 
-    # Create two columns of equal width
-    col_legend, col_chart = st.columns(2)
-
-    with col_legend:
-        st.markdown("### Tenure Group Legend")
-        st.table(df_legend)
 
     with col_chart:
         st.plotly_chart(fig, use_container_width=True)
