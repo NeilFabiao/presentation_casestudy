@@ -201,13 +201,13 @@ else:
         df_top_reasons.columns = ['Churn Reason', 'Count']
         st.dataframe(df_top_reasons, hide_index=True)
 
-    with col5:
+    with col4:
         st.markdown("### 🏆 Top 5 Churn Categories")
         df_top_categories = top_churn_categories.reset_index()
         df_top_categories.columns = ['Churn Category', 'Count']
         st.dataframe(df_top_categories, hide_index=True)
 
-    with col4:
+    with col5:
         st.markdown("### 🌍 Geographical Distribution of Top 5 Churn Reasons")
         if 'Latitude' in df_filtered.columns and 'Longitude' in df_filtered.columns:
             top_reason_data = df_filtered[df_filtered['Churn Reason'].isin(top_churn_reasons.index)]
