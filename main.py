@@ -373,7 +373,7 @@ if not df_filtered.empty:
     # Display churn percentage breakdown
     st.subheader("📊 Churn Rate by Age Group")
     for index, row in churn_counts_by_age.iterrows():
-        st.write(f"✅ **{row['Age Group']}**: {row['Churn Percentage']:.2f}% of all churned customers.")
+        st.write("✅ **{row['Age Group']}**: {row['Churn Percentage']:.2f}% of all churned customers.")
 
 else:
     st.warning("No churned customers found based on the selected filters. Try adjusting the filters.")
