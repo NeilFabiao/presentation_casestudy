@@ -13,6 +13,24 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
+# --------------------
+# 1.1. Add Custom CSS for Light Grey Background
+# --------------------
+page_bg_style = """
+<style>
+/* Main App Background */
+[data-testid="stAppViewContainer"] {
+    background-color: #f5f5f5;
+}
+
+/* Sidebar Background (optional) */
+[data-testid="stSidebar"] {
+    background-color: #f5f5f5;
+}
+</style>
+"""
+st.markdown(page_bg_style, unsafe_allow_html=True)
+
 # ----------------------------------------------------
 # 2. Load and Clean the Dataset
 # ----------------------------------------------------
