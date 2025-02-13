@@ -252,6 +252,26 @@ else:
         st.subheader("📌 Female Churn Trends")
         st.write("**Takeaway:** Female customers are more likely to churn due to competitor influence and pricing")
 
+    with st.expander("🌍 Click to View Insights from the Geographical Churn Distribution Map"):
+
+    st.subheader("📍 High Churn Clusters in Urban Areas")
+    st.write("**Observation:** The majority of churn points are concentrated in highly populated cities, "
+        "indicating that urban customers are more likely to switch providers due to increased competition.")
+
+    st.subheader("🏆 Competitor Influence is a Key Factor Across Regions")
+    st.write("**Observation:** The most frequent churn category is '**Competitor**' (orange dots), suggesting "
+        "that many customers are leaving for alternative service providers.")
+    
+
+    st.subheader("📞 Dissatisfaction and Customer Service Issues Vary by Location")
+    st.write("**Observation:** Purple (Attitude) and Blue (Dissatisfaction) churn reasons are spread throughout different regions, "
+        "suggesting that **service quality and customer interactions vary by location**.")
+   
+
+    st.subheader("💰 Pricing Concerns Are More Evenly Distributed")
+    st.write("**Observation:** Green dots (Price) are evenly distributed across the map, "
+        "indicating that **price sensitivity is not restricted to a specific location**.")
+
 col3, col4 = st.columns(2)
 
 with col3:
@@ -287,6 +307,16 @@ with col4:
     else:
         st.info("No geographical data available for mapping.")
 
+with st.expander("💡 Click to View Gender-Based Churn Insights"):
+    st.subheader("📌 Female Churn")
+    st.write("**Takeaway:** Women primarily leave due to competitor pricing and device quality")
+
+    st.subheader("📌 Male Churn")
+    st.write("**Takeaway:** Device quality is the biggest concern for male customers")
+
+    st.subheader("📌 Overall Churn")
+    st.write("**Takeaway:** Device quality and pricing are the biggest churn drivers")
+
 with st.expander("🌍 Click to View Insights from the Geographical Churn Distribution Map"):
     st.subheader("📍 High Churn Clusters in Urban Areas")
     st.write("**Observation:** The majority of churn points are concentrated in highly populated cities")
@@ -299,16 +329,6 @@ with st.expander("🌍 Click to View Insights from the Geographical Churn Distri
 
     st.subheader("💰 Pricing Concerns Are More Evenly Distributed")
     st.write("**Observation:** Green dots (Price) are widely spread across the map")
-
-with st.expander("💡 Click to View Gender-Based Churn Insights"):
-    st.subheader("📌 Female Churn")
-    st.write("**Takeaway:** Women primarily leave due to competitor pricing and device quality")
-
-    st.subheader("📌 Male Churn")
-    st.write("**Takeaway:** Device quality is the biggest concern for male customers")
-
-    st.subheader("📌 Overall Churn")
-    st.write("**Takeaway:** Device quality and pricing are the biggest churn drivers")
 
 # ----------------------------------------------------
 # Section 3: Understanding Churned Customers
