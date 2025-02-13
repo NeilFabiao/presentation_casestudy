@@ -113,7 +113,7 @@ st.markdown(
     "### 🔍 Principais descobertas:\n"
  "- **Serviços de alta rotatividade**: Os serviços de Internet, dados ilimitados e streaming apresentam as taxas de cancelamento mais elevadas. \n"
  "- **Tendências demográficas**: Os idosos e os clientes com contratos mensais são os mais propensos a cancelar o serviço. \n"
- "- ** Programas de lealdade, preços competitivos com base na localização e uma comunicação eficaz com o cliente podem ajudar a reduzir a rotatividade."
+ "- ** Programas de lealdade**:: preços competitivos com base na localização e uma comunicação eficaz com o cliente podem ajudar a reduzir a rotatividade."
 )
 
 st.write("---")
