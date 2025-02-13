@@ -361,52 +361,29 @@ else:
 
     df_filtered['Age Group'] = df_filtered['Age'].apply(age_category)
 
-    # Pie charts
-    age_group_counts = df_filtered['Age Group'].value_counts()
-    contract_counts = df_filtered['Contract'].value_counts()
-
-    col7, col8 = st.columns(2)
-
-    with col7:
-        fig1 = go.Figure(go.Pie(
-            labels=age_group_counts.index, 
-            values=age_group_counts,
-            marker=dict(colors=['#ff9999','#66b3ff','#99ff99'])
-        ))
-        fig1.update_layout(title="📊 Churned Customers by Age Group")
-        st.plotly_chart(fig1)
-
-    with col8:
-        fig2 = go.Figure(go.Pie(
-            labels=contract_counts.index, 
-            values=contract_counts,
-            marker=dict(colors=['#ffcc99','#ff6666','#66b3ff'])
-        ))
-        fig2.update_layout(title="📜 Churned Customers by Contract Type")
-        st.plotly_chart(fig2)
-
-    with st.expander("💡 Clique para ver insights sobre cancelamento por idade e tipo de contrato"):
-
-        # Tendências gerais de cancelamento
-        st.subheader("📌 Tendências gerais de cancelamento")
-        st.write("**Conclusão:** A maioria dos clientes que cancelam pertencem ao grupo etário **Seniores (50%)**, "
-            "enquanto os **contratos mensais representam quase 90% de todos os cancelamentos**.")
+    # Creating Streamlit layout
+    st.subheader("📊 Churn Reasons by Age Group")
+    
+    # Creating Pie Charts
+    age_groups = df_filtered['Age Group'].unique()
+    cols = st.columns(len(age_groups))
+    
+    for i, age_group in enumerate(age_groups):
+        churn_reasons = df_filtered[df_filtered['Age Group'] == age_group]['Churn Reason'].value_counts()
         
-        # Cancelamento por faixa etária
-        st.subheader("📊 Cancelamento por faixa etária")
-        st.write("**Conclusão:** Os seniores (50,2%) apresentam a taxa de cancelamento mais alta, seguidos pelos adultos de meia-idade (33,5%). "
-            "Os jovens adultos (16,3%) são os que menos cancelam.")
-        
-        st.write("**Observação:** Os seniores podem enfrentar **barreiras na adoção de tecnologia, insatisfação ou influência da concorrência**, "
-            "enquanto os adultos de meia-idade podem ser **mais sensíveis ao preço**.")
-        
-        # Cancelamento por tipo de contrato
-        st.subheader("📜 Cancelamento por tipo de contrato")
-        st.write("**Conclusão:** A grande maioria dos cancelamentos (88-89%) vem de clientes com **contratos mensais**, "
-            "enquanto os contratos de **um ano (8-9%) e dois anos (2-3%) têm taxas de cancelamento significativamente mais baixas**.")
-        st.write("**Observação:** Clientes com **contratos de curto prazo** têm **maior probabilidade de mudar** para ofertas melhores, "
-            "enquanto aqueles com **contratos de longo prazo demonstram maior compromisso**.")
-
+        if not churn_reasons.empty:
+            fig = go.Figure(
+                go.Pie(
+                    labels=churn_reasons.index,
+                    values=churn_reasons.values,
+                    hole=0.4,  # Donut-style
+                    marker=dict(colors=['#ff9999', '#66b3ff', '#99ff99']),
+                )
+            )
+            fig.update_layout(title=f"Churn Reasons - {age_group}")
+    
+            with cols[i]:
+                st.plotly_chart(fig, use_container_width=True)
     
     st.write('---')
     
