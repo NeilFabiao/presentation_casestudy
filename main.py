@@ -362,14 +362,14 @@ else:
     df_filtered['Age Group'] = df_filtered['Age'].apply(age_category)
 
     # Creating Streamlit layout
-    st.subheader("📊 Churn Reasons by Age Group")
+    st.subheader("📊 Churn Category by Age Group")
     
     # Creating Pie Charts
     age_groups = df_filtered['Age Group'].unique()
     cols = st.columns(len(age_groups))
     
     for i, age_group in enumerate(age_groups):
-        churn_reasons = df_filtered[df_filtered['Age Group'] == age_group]['Churn Reason'].value_counts()
+        churn_reasons = df_filtered[df_filtered['Age Group'] == age_group]['Churn Category'].value_counts()
         
         if not churn_reasons.empty:
             fig = go.Figure(
