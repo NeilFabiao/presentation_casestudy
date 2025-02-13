@@ -10,7 +10,7 @@ st.set_page_config(
     page_title="Telco Churn - Entrevista Vodacom",
     page_icon="📊",
     layout="wide",
-    initial_sidebar_state="expanded"
+    initial_sidebar_state="collapsed"
 )
 
 # ----------------------------------------------------
