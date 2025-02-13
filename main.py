@@ -16,29 +16,30 @@ st.set_page_config(
 # ----------------------------------------------------
 # 2. Load and Clean the Dataset
 # ----------------------------------------------------
-@st.cache_data  # Use st.cache_data for caching (ensure Streamlit version supports this)
+@st.cache_data
 def load_data(file_path: str) -> pd.DataFrame:
     """
     Loads the telco dataset from a CSV file and fills specified columns' NaN with 'Unknown'.
     """
     df_ = pd.read_csv(file_path)
-    
-    # Replace NaN with 'Unknown' in certain categorical columns
     cols_to_change = ['Churn Reason', 'Churn Category', 'Internet Type', 'Offer']
     df_[cols_to_change] = df_[cols_to_change].fillna('Unknown')
-
     return df_
 
 # ----------------------------------------------------
 # Tenure Bin Definitions
 # ----------------------------------------------------
-# If you want 7 tenure groups, you need 8 bin edges:
-# [0, 6, 12, 24, 36, 48, 60, <some_upper_bound>]
-# We can use float('inf') to include any value > 60
 TENURE_BINS = [0, 6, 12, 24, 36, 48, 60, float('inf')]
-TENURE_LABELS = ["0-6 months","7-12 months","13-24 months","25-36 months","37-48 months","49-60 months","61+ months"]
+TENURE_LABELS = [
+    "0-6 months",
+    "7-12 months",
+    "13-24 months",
+    "25-36 months",
+    "37-48 months",
+    "49-60 months",
+    "61+ months"
+]
 
-# Define tenure ranges
 def preprocess_data(df):
     df["Tenure Group"] = pd.cut(
         df["Tenure in Months"],
@@ -48,7 +49,9 @@ def preprocess_data(df):
     )
     return df
 
-# CLTV Trend Plot
+# ----------------------------------------------------
+# CLTV Trend Plot (Line Color Changed to Gold)
+# ----------------------------------------------------
 def plot_cltv_trend(df):
     # Ensure Tenure Group is in the correct (ordered) categorical format
     df["Tenure Group"] = pd.Categorical(
@@ -60,16 +63,21 @@ def plot_cltv_trend(df):
 
     fig = px.line(
         cltv_by_tenure, 
-        x="Tenure Group", y="CLTV", markers=True, 
+        x="Tenure Group", 
+        y="CLTV", 
+        markers=True, 
         title="📈 CLTV Trend by Tenure Group",
         labels={"CLTV": "Average CLTV", "Tenure Group": "Tenure Group"}
     )
-    fig.update_traces(line=dict(color="blue", width=3))
+    # --- Set the line to gold, make it 3px wide ---
+    fig.update_traces(line=dict(color="gold", width=3))
     fig.update_xaxes(tickangle=-45)
     
     st.plotly_chart(fig, use_container_width=True)
 
-df = load_data('telco.csv')  
+
+# Load Data
+df = load_data('telco.csv')
 
 # ----------------------------------------------------
 # 3. Main Title and Description
@@ -83,18 +91,13 @@ st.write("---")
 # ----------------------------------------------------
 with st.sidebar:
     st.header("Select Filters")
-    
-    # Gender filter
     gender_filter = st.radio("Select Gender", options=["All", "Male", "Female"], index=0)
-    
-    # Churn status filter (Only 'Yes' or 'No')
     churn_filter = st.radio("Select Churn Status", options=["Yes", "No"], index=0)
 
 # ----------------------------------------------------
 # 5. Filter the Data Based on Sidebar Selections
 # ----------------------------------------------------
-
-df_filtered = df.copy()  # Work with a copy
+df_filtered = df.copy()
 
 if gender_filter != "All":
     df_filtered = df_filtered[df_filtered["Gender"] == gender_filter].copy()
@@ -114,13 +117,10 @@ service_columns = [
 ]
 
 service_churn_dict = {}
-
 for service in service_columns:
-    # Among those service users, how many are churned?
     service_users = df_filtered[df_filtered[service] == 'Yes']
     churn_count = service_users.shape[0]  # Already filtered to churn = Yes
     total_users = df[df[service] == 'Yes'].shape[0]
-    
     churn_percentage = (churn_count / total_users * 100) if total_users > 0 else 0
     service_churn_dict[service] = churn_percentage
 
@@ -235,6 +235,7 @@ else:
         st.subheader("📌 Overall Churn")
         st.write("**Takeaway:** Device quality and pricing are the biggest churn drivers...")
 
+    # Top Churn Categories
     top_churn_categories = churned_data_filtered['Churn Category'].value_counts().head(5)
 
     col5, col6 = st.columns(2)
@@ -327,9 +328,52 @@ else:
     # Preprocess data for Tenure Group
     df_filtered = preprocess_data(df_filtered)
 
+    # Display the gold line chart
     col9, _ = st.columns([1, 0.2])
     with col9:
         plot_cltv_trend(df_filtered)
+
+    # Add an expander with additional insights for CLTV by Tenure Group
+    with st.expander("🔍 Click to View Insights on CLTV by Tenure Group"):
+        st.subheader("⚡ Early Tenure CLTV (0–6 months)")
+        st.write(
+            "**Observation:** Newly joined customers (0–6 months) often have lower CLTV—"
+            "this can reflect short billing cycles, introductory offers, or limited usage."
+        )
+        st.write(
+            "**Strategy:** Provide strong onboarding experiences and early engagement offers. "
+            "Consider quick-win promotions to build brand loyalty from Day 1."
+        )
+
+        st.subheader("📈 Mid-Tenure CLTV (7–36 months)")
+        st.write(
+            "**Observation:** CLTV tends to gradually increase through 7–36 months as customers "
+            "adopt more services or bundling options."
+        )
+        st.write(
+            "**Strategy:** Encourage cross-selling of additional services, offer mid-contract "
+            "upgrades or loyalty rewards to further increase customer value."
+        )
+
+        st.subheader("🏆 Late Tenure CLTV (49–60 months)")
+        st.write(
+            "**Observation:** There is often a spike in the 49–60 months bracket, indicating "
+            "long-term customers who remain see higher value and spend more."
+        )
+        st.write(
+            "**Strategy:** Provide loyalty perks, VIP support lines, or device upgrades to reward "
+            "and retain these valuable customers."
+        )
+
+        st.subheader("🔄 61+ Months Plateau or Slight Dip")
+        st.write(
+            "**Observation:** Some seasoned customers might plateau or slightly reduce spend—"
+            "they may no longer need add-on services or could be exploring alternatives."
+        )
+        st.write(
+            "**Strategy:** Consider re-engagement campaigns, special senior/family offers, or "
+            "long-term discount bundles to maintain high-value customers."
+        )
 
     st.write('### 📌 What Should Be the Strategy to Reduce Churn?')
 
