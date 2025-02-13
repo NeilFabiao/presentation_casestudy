@@ -53,17 +53,52 @@ def preprocess_data(df):
 # CLTV Trend Plot (Line Color Changed to Gold)
 # ----------------------------------------------------
 def plot_cltv_trend(df):
-    # Suppose df has ["Tenure Group", "CLTV"] columns or you do a groupby...
+    # 1) Build your plotly figure.
     fig = px.line(
-        df,
-        x="Tenure Group",
-        y="CLTV",
-        markers=True,
-        title="📈 CLTV Trend by Tenure Group",
-        labels={"CLTV": "Average CLTV", "Tenure Group": "Tenure Group"}
+        df, 
+        x="Tenure Group", 
+        y="CLTV", 
+        markers=True, 
+        title="📈 CLTV Trend by Tenure Group"
     )
     fig.update_traces(line=dict(color="gold", width=3))
     fig.update_xaxes(tickangle=-45)
+    
+    # ---------------------------
+    # 2) Add annotation for your custom "legend" inside the figure
+    # ---------------------------
+    legend_text = (
+        "<b>Tenure Legend</b><br>"
+        "0-6 months: ~0–0.5 yrs<br>"
+        "7-12 months: ~0.5–1 yrs<br>"
+        "13-24 months: 1–2 yrs<br>"
+        "25-36 months: 2–3 yrs<br>"
+        "37-48 months: 3–4 yrs<br>"
+        "49-60 months: 4–5 yrs<br>"
+        "61+ months: 5+ yrs"
+    )
+
+    fig.add_annotation(
+        x=1.02,       # Just a bit to the right of the plotting area
+        y=1,          # Up near the top
+        xref="paper",
+        yref="paper",
+        text=legend_text,
+        showarrow=False,
+        align="left",
+        bordercolor="white",       # or "black" if you want a visible border
+        borderwidth=1,
+        borderpad=8,
+        bgcolor="rgba(0, 0, 0, 0.2)",  # a translucent background if you like
+        font=dict(color="white")   # Adjust if you have a dark or light theme
+    )
+
+    # ---------------------------
+    # 3) Adjust layout so there's enough space for the annotation
+    # ---------------------------
+    fig.update_layout(
+        margin=dict(r=150),  # give extra space on the right if needed
+    )
 
     # Plot in Streamlit
     st.plotly_chart(fig, use_container_width=True)
