@@ -180,6 +180,24 @@ with col2:
     else:
         st.info("No data available to plot. Try changing your filters.")
 
+# Expander for insights
+with st.expander("💡 Click to View Churn Insights by Service"):
+    st.subheader("📌 Overall Churn Trends")
+    st.write(
+        "**Takeaway:** Services with the highest churn rates are Internet Service, Unlimited Data, and Streaming Services. "
+    )
+
+    st.subheader("📌 Internet & Data Churn")
+    st.write(
+        "**Takeaway:** Customers using Internet Service (31.83%) and Unlimited Data (31.65%) churn at the highest rates. "
+       
+    )
+
+    st.subheader("📌 Streaming Services Churn")
+    st.write(
+        "**Takeaway:** Streaming TV (30.07%), Streaming Movies (29.94%), and Streaming Music (29.26%) have high churn rates. "
+    )
+
 st.write("---")
 
 # ----------------------------------------------------
