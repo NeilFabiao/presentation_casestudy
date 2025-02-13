@@ -7,7 +7,7 @@ import plotly.graph_objects as go
 # 1. Set Page Configuration (Must Be First Streamlit Command)
 # ----------------------------------------------------
 st.set_page_config(
-    page_title="Telco Churn data - Vodacom interview",
+    page_title="Telco Churn - Entrevista Vodacom",
     page_icon="📊",
     layout="wide",
     initial_sidebar_state="expanded"
@@ -103,16 +103,16 @@ df = load_data('telco.csv')
 st.title("Telco Churn Analysis 📊")
 
 st.write(
-    "Welcome to the **Telco Churn Analysis Dashboard!** 🚀 "
-    "This interactive report explores key insights into customer churn, helping us "
-    "understand trends, challenges, and strategies for improving retention."
+    "Bem-vindo ao **Dashboard de Análise Churn (Rotatividade) de Telecomunicações!** 🚀 "
+ "Este relatório interativo explora importantes insights sobre a rotatividade de clientes, ajudando-nos"
+ "compreender as tendências, desafios e estratégias para melhorar a retenção."
 )
 
 st.markdown(
-    "### 🔍 Key Findings:\n"
-    "- **High-Churn Services**: Internet Service, Unlimited Data, and Streaming Services have the highest churn rates.\n"
-    "- **Demographic Trends**: Seniors and month-to-month contract customers are the most likely to churn.\n"
-    "- **Retention Strategies**: Loyalty programs, competitive pricing, and customer engagement can help reduce churn."
+    "### 🔍 Principais descobertas:\n"
+ "- **Serviços de alta rotatividade**: Os serviços de Internet, dados ilimitados e streaming apresentam as taxas de cancelamento mais elevadas. \n"
+ "- **Tendências demográficas**: Os idosos e os clientes com contratos mensais são os mais propensos a cancelar o serviço. \n"
+ "- **Estratégias de retenção**: Programas de lealdade, preços competitivos e uma comunicação eficaz com o cliente podem ajudar a reduzir a rotatividade."
 )
 
 st.write("---")
