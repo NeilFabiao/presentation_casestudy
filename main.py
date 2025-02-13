@@ -196,7 +196,7 @@ with col2:
         st.info("No data available to plot. Try changing your filters.")
 
 # Expansor para insights
-with st.expander("💡 Clique para visualizar informação sobre a rotatividade por serviço""):
+with st.expander("💡 Clique para ver informação sobre a rotatividade por serviço""):
     st.subheader("📌 Tendências gerais de cancelamento")
     st.write("**Conclusão:** Os serviços com as maiores taxas de cancelamento são Internet, Dados Ilimitados e Serviços de Streaming.")
 
@@ -211,7 +211,7 @@ st.write("---")
 # ----------------------------------------------------
 # Section 2: "What would we do to reduce churn?"
 # ----------------------------------------------------
-st.subheader("Question 2: What would we do to reduce churn?")
+st.subheader("Questão 2: O que faríamos para reduzir a churn?")
 
 if df_filtered.empty:
     st.warning("No churned customers found based on the selected filters. Try adjusting the filters.")
@@ -225,13 +225,13 @@ else:
     col5, col6 = st.columns(2)
 
     with col5:
-        st.markdown("### 🏆 Top 5 Churn Categories")
+        st.markdown("### 🏆 5 principais categorias de churn")
         df_top_categories = top_churn_categories.reset_index()
         df_top_categories.columns = ['Churn Category', 'Count']
         st.dataframe(df_top_categories, hide_index=True)
 
     with col6:
-        st.markdown("### 🌍 Geographical Distribution of Top 5 Churn Categories")
+        st.markdown("### 🌍 Distribuição geográfica das 5 principais categorias de churn")
         if 'Latitude' in df_filtered.columns and 'Longitude' in df_filtered.columns:
             top_category_data = df_filtered[df_filtered['Churn Category'].isin(top_churn_categories.index)]
             if not top_category_data.empty:
@@ -257,46 +257,46 @@ else:
         else:
             st.info("No geographical data available for mapping.")
 
-    with st.expander("💡 Click to View Churn Category Insights"):
-        st.subheader("📌 Overall Churn Trends")
-        st.write("**Takeaway:** Competitor influence is the primary churn category")
-
-        st.subheader("📌 Male Churn Trends")
-        st.write("**Takeaway:** Male customers churn mainly due to competitor influence and dissatisfaction")
-
-        st.subheader("📌 Female Churn Trends")
-        st.write("**Takeaway:** Female customers are more likely to churn due to competitor influence and pricing")
-
-    with st.expander("🌍 Click to View Insights from the Geographical Churn Distribution Map"):
-
-        st.subheader("📍 High Churn Clusters in Urban Areas")
-        st.write("**Observation:** The majority of churn points are concentrated in highly populated cities, "
-            "indicating that urban customers are more likely to switch providers due to increased competition.")
+    with st.expander("💡 Clique para ver insights sobre categorias de churn"):
+        st.subheader("📌 Tendências gerais de churn")
+        st.write("**Conclusão:** A influência da concorrência é a principal razão para o cancelamento.")
     
-        st.subheader("🏆 Competitor Influence is a Key Factor Across Regions")
-        st.write("**Observation:** The most frequent churn category is '**Competitor**' (orange dots), suggesting "
-            "that many customers are leaving for alternative service providers.")
+        st.subheader("📌 Tendências de cancelamento entre homens")
+        st.write("**Conclusão:** Os clientes do sexo masculino cancelam principalmente devido à influência da concorrência e insatisfação dos serviços.")
+    
+        st.subheader("📌 Tendências de cancelamento entre mulheres")
+        st.write("**Conclusão:** As clientes do sexo feminino têm maior probabilidade de cancelar devido à influência da concorrência e aos preços.")
+
+
+    with st.expander("🌍 Clique para ver insights do Mapa de Distribuição Geográfica do Cancelamento"):
+
+        st.subheader("📍 Concentração elevada de cancelamentos em áreas urbanas")
+        st.write("**Observação:** A maioria dos cancelamentos está concentrada em cidades altamente povoadas, "
+            "indicando que os clientes urbanos têm maior probabilidade de mudar de fornecedor devido ao aumento da concorrência.")
         
-    
-        st.subheader("📞 Dissatisfaction and Customer Service Issues Vary by Location")
-        st.write("**Observation:** Purple (Attitude) and Blue (Dissatisfaction) churn reasons are spread throughout different regions, "
-            "suggesting that **service quality and customer interactions vary by location**.")
-       
-    
-        st.subheader("💰 Pricing Concerns Are More Evenly Distributed")
-        st.write("**Observation:** Green dots (Price) are evenly distributed across the map, "
-            "indicating that **price sensitivity is not restricted to a specific location**.")
+        st.subheader("🏆 Influência da concorrência é um fator-chave em todas as regiões")
+        st.write("**Observação:** A categoria de cancelamento mais frequente é '**Concorrência**' (pontos laranja), sugerindo "
+            "que muitos clientes estão a mudar para outros fornecedores de serviço.")
+        
+        st.subheader("📞 Insatisfação e problemas com o atendimento ao cliente variam por localização")
+        st.write("**Observação:** Os pontos roxos (Atitude) e azuis (Insatisfação) estão distribuídos por várias regiões, "
+            "indicando que **a qualidade do serviço e as interações com os clientes variam conforme a localização**.")
+        
+        st.subheader("💰 Preocupações com preços estão mais uniformemente distribuídas")
+        st.write("**Observação:** Os pontos verdes (Preço) estão distribuídos de forma homogénea no mapa, "
+            "indicando que **a sensibilidade ao preço não está restrita a uma localização específica**.")
+
 
 col3, col4 = st.columns(2)
 
 with col3:
-    st.markdown("### 🏆 Top 10 Churn Reasons")
+    st.markdown("### 🏆 10 principais motivos de churn")
     df_top_reasons = top_churn_reasons.reset_index()
     df_top_reasons.columns = ['Churn Reason', 'Count']
     st.dataframe(df_top_reasons, hide_index=True)
 
 with col4:
-    st.markdown("### 🌍 Geographical Distribution of Top 5 Churn Reasons")
+    st.markdown("### 🌍 Distribuição geográfica das 5 principais motivos de churn")
     if 'Latitude' in df_filtered.columns and 'Longitude' in df_filtered.columns:
         top_reason_data = df_filtered[df_filtered['Churn Reason'].isin(top_churn_reasons.index)]
         if not top_reason_data.empty:
@@ -322,28 +322,26 @@ with col4:
     else:
         st.info("No geographical data available for mapping.")
 
-with st.expander("💡 Click to View Gender-Based Churn Insights"):
-    st.subheader("📌 Female Churn")
-    st.write("**Takeaway:** Women primarily leave due to competitor pricing and device quality")
+with st.expander("💡 Clique para ver insights sobre cancelamento por género"):
+    st.subheader("📌 Cancelamento entre mulheres")
+    st.write("**Conclusão:** As mulheres cancelam principalmente devido aos preços da concorrência e à qualidade dos dispositivos.")
 
-    st.subheader("📌 Male Churn")
-    st.write("**Takeaway:** Device quality is the biggest concern for male customers")
+    st.subheader("📌 Cancelamento entre homens")
+    st.write("**Conclusão:** A qualidade dos dispositivos é a principal preocupação dos clientes do sexo masculino.")
 
-    st.subheader("📌 Overall Churn")
-    st.write("**Takeaway:** Device quality and pricing are the biggest churn drivers")
+with st.expander("🌍 Clique para ver insights do Mapa de Distribuição Geográfica do Cancelamento"):
+    st.subheader("📍 Concentração elevada de cancelamentos em áreas urbanas")
+    st.write("**Observação:** A maioria dos cancelamentos está concentrada em cidades altamente povoadas.")
 
-with st.expander("🌍 Click to View Insights from the Geographical Churn Distribution Map"):
-    st.subheader("📍 High Churn Clusters in Urban Areas")
-    st.write("**Observation:** The majority of churn points are concentrated in highly populated cities")
+    st.subheader("🏆 Influência da concorrência é um fator-chave em todas as regiões")
+    st.write("**Observação:** A categoria de cancelamento mais frequente é 'Concorrência'.")
 
-    st.subheader("🏆 Competitor Influence is a Key Factor Across Regions")
-    st.write("**Observation:** The most frequent churn category is 'Competitor'")
+    st.subheader("📞 Insatisfação e problemas com o atendimento ao cliente variam por localização")
+    st.write("**Observação:** Os pontos roxos (Atitude) e azuis (Insatisfação) estão espalhados por diferentes regiões.")
 
-    st.subheader("📞 Dissatisfaction and Customer Service Issues Vary by Location")
-    st.write("**Observation:** Purple (Attitude) and Blue (Dissatisfaction) dots are spread throughout")
+    st.subheader("💰 Preocupações com preços estão mais uniformemente distribuídas")
+    st.write("**Observação:** Os pontos verdes (Preço) estão amplamente distribuídos no mapa.")
 
-    st.subheader("💰 Pricing Concerns Are More Evenly Distributed")
-    st.write("**Observation:** Green dots (Price) are widely spread across the map")
 
 # ----------------------------------------------------
 # Section 3: Understanding Churned Customers
