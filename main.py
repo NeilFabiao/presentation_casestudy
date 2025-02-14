@@ -112,7 +112,7 @@ st.write(
 st.markdown(
     "### 🔍 Principais descobertas:\n"
  "- **Serviços de alta rotatividade**: Os serviços de Internet, dados ilimitados e streaming apresentam as taxas de cancelamento mais elevadas. \n"
- "- **Tendências demográficas**: Os idosos e os clientes com contratos mensais são os mais propensos a cancelar o serviço. \n"
+ "- **Tendências demográficas**: Maiores de 50 anos e os clientes com contratos mensais são os mais propensos a cancelar o serviço. \n"
  "- **Programas de lealdade**: preços competitivos com base na localização e uma comunicação eficaz com o cliente podem ajudar a reduzir a rotatividade."
 )
 
@@ -353,12 +353,12 @@ st.subheader("Questão 3: Qual deve ser a estratégia para reduzir o cancelament
 if not df_filtered.empty:
     # Categorizing Age Groups
     def age_category(age):
-        if age < 30:
-            return 'Jovens (Menores que 30 anos)'
-        elif 30 <= age < 50:
-            return 'Adultos (Entre 30-50 anos)'
+        if age < 35:
+            return '(Menores de 30 anos)'
+        elif 35 <= age < 50:
+            return '(Entre 30-50 anos)'
         else:
-            return 'Seniors(Maiores de 50 anos)'
+            return '(Maiores de 50 anos)'
 
     df_filtered['Age Group'] = df_filtered['Age'].apply(age_category)
 
