@@ -419,15 +419,15 @@ with st.expander("💡 Clique para ver insights sobre cancelamento por idade e m
     st.subheader("📊 Cancelamento por Faixa Etária")
 
     st.markdown("""
-    - **Seniores (50+ anos)**: Apresentam a maior taxa de cancelamento (~50%). Os principais motivos incluem:
+    - **(50+ anos)**: Apresentam a maior taxa de cancelamento (~50%). Os principais motivos incluem:
         - Influência da concorrência com ofertas mais atrativas.
         - Insatisfação com a experiência do serviço.
 
-    - **Adultos (30-50 anos)**: Representam cerca de **33%** dos cancelamentos, sendo mais sensíveis a:
+    - **(30-50 anos)**: Representam cerca de **33%** dos cancelamentos, sendo mais sensíveis a:
         - Preços elevados e busca por planos mais baratos.
         - Qualidade do serviço e atendimento impactando a decisão de troca.
 
-    - **Jovens (<30 anos)**: São os que menos cancelam (~16%), mas ainda assim enfrentam:
+    - **(<30 anos)**: São os que menos cancelam (~16%), mas ainda assim enfrentam:
         - Maior propensão a trocar de provedor frequentemente.
         - Preferência por planos flexíveis e sem fidelização.
     """)
