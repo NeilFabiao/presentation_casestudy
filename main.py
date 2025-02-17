@@ -225,15 +225,15 @@ else:
     # Top Churn Categories
     top_churn_categories = churned_data_filtered['Churn Category'].value_counts().head(5)
 
-    col5, col6 = st.columns(2)
+    col3, col4 = st.columns(2)
 
-    with col5:
+    with col3:
         st.markdown("### 🏆 Top 5 categories of churn")
         df_top_categories = top_churn_categories.reset_index()
         df_top_categories.columns = ['Churn Category', 'Count']
         st.dataframe(df_top_categories, hide_index=True)
 
-    with col6:
+    with col4:
         st.markdown("### 🌍 Geographic distribution of the top 5 churn categories")
         if 'Latitude' in df_filtered.columns and 'Longitude' in df_filtered.columns:
             top_category_data = df_filtered[df_filtered['Churn Category'].isin(top_churn_categories.index)]
@@ -288,15 +288,15 @@ with st.expander("🌍 Click to view insights from the Geographic Churn Distribu
     st.write("**Observation:** Green points (Price) are evenly distributed on the map, "
              "indicating that **price sensitivity is not restricted to a specific location**.")
 
-col3, col4 = st.columns(2)
+col5, col6 = st.columns(2)
 
-with col3:
+with col5:
     st.markdown("### 🏆 Top 10 Reasons for Churn")
     df_top_reasons = top_churn_reasons.reset_index()
     df_top_reasons.columns = ['Churn Reason', 'Count']
     st.dataframe(df_top_reasons, hide_index=True)
 
-with col4:
+with col6:
     st.markdown("### 🌍 Geographic Distribution of the Top 5 Reasons for Churn")
     if 'Latitude' in df_filtered.columns and 'Longitude' in df_filtered.columns:
         top_reason_data = df_filtered[df_filtered['Churn Reason'].isin(top_churn_reasons.index)]
@@ -451,23 +451,33 @@ df_filtered['Age Group'] = df_filtered['Age'].apply(age_category)
 # Filter churn cases where the reason is "Competition"
 df_competition = df_filtered[df_filtered["Churn Reason"].str.contains("Competitor", na=False)].copy()
 
-# Define a function to generate maps and tables for each age group
-def generate_churn_analysis(age_group_name, df_group):
-    st.subheader(f"Churn Analysis for Age Group: {age_group_name}")
+# --- Layout for Tables ---
+st.subheader("📊 Churn Reasons by Age Group")
+col7, col8, col9 = st.columns(3)
 
-    # Count churn reasons within the selected age group
-    top_churn_reasons = df_group["Churn Reason"].value_counts().head(5).reset_index()
-    top_churn_reasons.columns = ["Churn Reason", "Count"]
+for col, age_group in zip([col7, col8, col9], ["Under 30", "30-50", "50+"]):
+    df_group = df_competition[df_competition["Age Group"] == age_group]
+    
+    with col:
+        st.markdown(f"### 🏆 {age_group}")
+        if not df_group.empty:
+            df_table = df_group["Churn Reason"].value_counts().head(5).reset_index()
+            df_table.columns = ["Churn Reason", "Count"]
+            st.dataframe(df_table, hide_index=True)
+        else:
+            st.info(f"No data available for {age_group}")
 
-    # Create two columns for table and map
-    col1, col2 = st.columns(2)
+st.write("---")
 
-    with col1:
-        st.markdown(f"### 🏆 Top Churn Reasons in Age Group: {age_group_name}")
-        st.dataframe(top_churn_reasons, hide_index=True)
+# --- Layout for Maps ---
+st.subheader("🌍 Geographic Distribution of Churn by Age Group")
+col10, col11, col12 = st.columns(3)
 
-    with col2:
-        st.markdown(f"### 🌍 Geographic Distribution of Churn in Age Group: {age_group_name}")
+for col, age_group in zip([col10, col11, col12], ["Under 30", "30-50", "50+"]):
+    df_group = df_competition[df_competition["Age Group"] == age_group]
+    
+    with col:
+        st.markdown(f"### 🌍 {age_group}")
         if not df_group.empty:
             lat_center = df_group["Latitude"].mean()
             lon_center = df_group["Longitude"].mean()
@@ -487,14 +497,7 @@ def generate_churn_analysis(age_group_name, df_group):
             )
             st.plotly_chart(fig_map, use_container_width=True)
         else:
-            st.info(f"No geographical data available for Age Group: {age_group_name}.")
-
-# Generate churn analysis for each age group
-age_groups = ["Under 30", "30-50", "50+"]
-for age_group in age_groups:
-    df_group = df_competition[df_competition["Age Group"] == age_group]
-    generate_churn_analysis(age_group, df_group)
-
+            st.info(f"No geographical data available for {age_group}")
 
 st.write('---')
     
