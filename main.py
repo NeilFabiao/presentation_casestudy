@@ -345,9 +345,6 @@ with st.expander("🌍 Click to view insights from the Geographic Churn Distribu
 
 st.write("---")
 
-st.write("Testing")
-
-st.write('---')
 # ----------------------------------------------------
 # Section 3: Understanding Churned Customers
 # ----------------------------------------------------
@@ -435,6 +432,10 @@ with st.expander("💡 Click to view insights on churn by age and reason"):
         - Preference for flexible plans with no long-term commitment.
     """)
 
+
+st.write('---')
+
+st.write("Testing be patient")
 
 st.write('---')
     
