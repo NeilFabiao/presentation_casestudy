@@ -213,7 +213,7 @@ st.write("---")
 # ----------------------------------------------------
 # Section 2: "What would we do to reduce churn?"
 # ----------------------------------------------------
-st.subheader("Questão 2: What would we do to reduce churn?")
+st.subheader("Question 2: What would we do to reduce churn?")
 
 if df_filtered.empty:
     st.warning("No churned customers found based on the selected filters. Try adjusting the filters.")
@@ -227,13 +227,13 @@ else:
     col5, col6 = st.columns(2)
 
     with col5:
-        st.markdown("### 🏆 5 principais categorias de churn")
+        st.markdown("### 🏆 Top 5 categories of churn")
         df_top_categories = top_churn_categories.reset_index()
         df_top_categories.columns = ['Churn Category', 'Count']
         st.dataframe(df_top_categories, hide_index=True)
 
     with col6:
-        st.markdown("### 🌍 Distribuição geográfica das 5 principais categorias de churn")
+        st.markdown("### 🌍 Geographic distribution of the top 5 churn categories")
         if 'Latitude' in df_filtered.columns and 'Longitude' in df_filtered.columns:
             top_category_data = df_filtered[df_filtered['Churn Category'].isin(top_churn_categories.index)]
             if not top_category_data.empty:
@@ -290,13 +290,13 @@ with st.expander("🌍 Click to view insights from the Geographic Churn Distribu
 col3, col4 = st.columns(2)
 
 with col3:
-    st.markdown("### 🏆 10 principais motivos de churn")
+    st.markdown("### 🏆 Top 10 Reasons for Churn")
     df_top_reasons = top_churn_reasons.reset_index()
     df_top_reasons.columns = ['Churn Reason', 'Count']
     st.dataframe(df_top_reasons, hide_index=True)
 
 with col4:
-    st.markdown("### 🌍 Distribuição geográfica das 5 principais motivos de churn")
+    st.markdown("### 🌍 Geographic Distribution of the Top 5 Reasons for Churn")
     if 'Latitude' in df_filtered.columns and 'Longitude' in df_filtered.columns:
         top_reason_data = df_filtered[df_filtered['Churn Reason'].isin(top_churn_reasons.index)]
         if not top_reason_data.empty:
@@ -322,25 +322,25 @@ with col4:
     else:
         st.info("No geographical data available for mapping.")
 
-with st.expander("💡 Clique para ver insights sobre cancelamento por género"):
-    st.subheader("📌 Cancelamento entre mulheres")
-    st.write("**Conclusão:** As mulheres cancelam principalmente devido aos preços da concorrência e à qualidade dos dispositivos.")
+with st.expander("💡 Click to view insights on churn by gender"):
+    st.subheader("📌 Churn Among Women")
+    st.write("**Conclusion:** Women primarily cancel due to competitor pricing and device quality.")
 
-    st.subheader("📌 Cancelamento entre homens")
-    st.write("**Conclusão:** A qualidade dos dispositivos é a principal preocupação dos clientes do sexo masculino.")
+    st.subheader("📌 Churn Among Men")
+    st.write("**Conclusion:** Device quality is the main concern for male customers.")
 
-with st.expander("🌍 Clique para ver insights do Mapa de Distribuição Geográfica do Cancelamento"):
-    st.subheader("📍 Concentração elevada de cancelamentos em áreas urbanas")
-    st.write("**Observação:** A maioria dos cancelamentos está concentrada em cidades altamente povoadas (San francisco, Los angeles e San Diego).")
+with st.expander("🌍 Click to view insights from the Geographic Churn Distribution Map"):
+    st.subheader("📍 High Concentration of Cancellations in Urban Areas")
+    st.write("**Observation:** Most cancellations are concentrated in highly populated cities (San Francisco, Los Angeles, and San Diego).")
 
-    st.subheader("🏆 Influência da concorrência é um fator-chave em todas as regiões")
-    st.write("**Observação:** A categoria de cancelamento mais frequente é 'Concorrência'.")
+    st.subheader("🏆 Competition Influence is a Key Factor Across All Regions")
+    st.write("**Observation:** The most frequent churn category is 'Competition'.")
 
-    st.subheader("📞 Insatisfação e problemas com o atendimento ao cliente variam por localização")
-    st.write("**Observação:** Os pontos roxos (Atitude) e azuis (Insatisfação) estão espalhados por diferentes regiões.")
+    st.subheader("📞 Dissatisfaction and Customer Service Issues Vary by Location")
+    st.write("**Observation:** Purple points (Attitude) and blue points (Dissatisfaction) are spread across different regions.")
 
-    st.subheader("💰 Preocupações com preços estão mais uniformemente distribuídas")
-    st.write("**Observação:** Os pontos verdes (Preço) estão amplamente distribuídos no mapa.")
+    st.subheader("💰 Price Concerns Are More Evenly Distributed")
+    st.write("**Observation:** Green points (Price) are widely distributed across the map.")
 
 
 st.write("---")
@@ -348,7 +348,7 @@ st.write("---")
 # ----------------------------------------------------
 # Section 3: Understanding Churned Customers
 # ----------------------------------------------------
-st.subheader("Questão 3: Qual deve ser a estratégia para reduzir o cancelamento?")
+st.subheader("Question 3: What should be the strategy to reduce churn?")
 
 if not df_filtered.empty:
     # Categorizing Age Groups
@@ -406,31 +406,32 @@ for i, age_group in enumerate(age_groups):
             st.plotly_chart(fig, use_container_width=True)
 
 # Expander Section for Insights
-with st.expander("💡 Clique para ver insights sobre cancelamento por idade e motivo"):
+with st.expander("💡 Click to view insights on churn by age and reason"):
 
-    # **Tendências gerais de cancelamento**
-    st.subheader("📌 Tendências gerais de cancelamento")
+    # **General Churn Trends**
+    st.subheader("📌 General Churn Trends")
     st.write(
-        "**Conclusão:** A maioria dos clientes que cancelam pertencem ao grupo etário **Seniores (~50%)**, "
-        "com o principal motivo sendo **Concorrência**, seguido por **Preço** e **Insatisfação**."
+        "**Conclusion:** The majority of customers who cancel belong to the **Senior age group (~50%)**, "
+        "with the main reason being **Competition**, followed by **Price** and **Dissatisfaction**."
     )
 
-    # **Cancelamento por faixa etária**
-    st.subheader("📊 Cancelamento por Faixa Etária")
+    # **Churn by Age Group**
+    st.subheader("📊 Churn by Age Group")
 
     st.markdown("""
-    - **(50+ anos)**: Apresentam a maior taxa de cancelamento (50.19%%). Os principais motivos incluem:
-        - Influência da concorrência com ofertas mais atrativas.
-        - Insatisfação com a experiência do serviço.
+    - **(50+ years old)**: Have the highest churn rate (50.19%). The main reasons include:
+        - Influence of competitors with more attractive offers.
+        - Dissatisfaction with the service experience.
 
-    - **(30-50 anos)**: Representam cerca de **25.20%** dos cancelamentos, sendo mais sensíveis a:
-        - Preços elevados e busca por planos mais baratos.
-        - Qualidade do serviço e atendimento impactando a decisão de troca.
+    - **(30-50 years old)**: Represent about **25.20%** of cancellations, mainly due to:
+        - High prices and the search for cheaper plans.
+        - Service quality and customer support influencing their decision to switch.
 
-    - **(<30 anos)**: São os que menos cancelam (24.61%%), mas ainda assim enfrentam:
-        - Maior propensão a trocar de provedor frequentemente.
-        - Preferência por planos flexíveis e sem fidelização.
+    - **(<30 years old)**: Have the lowest churn rate (24.61%), but still face:
+        - A higher tendency to frequently switch providers.
+        - Preference for flexible plans with no long-term commitment.
     """)
+
 
 st.write('---')
     
@@ -452,76 +453,76 @@ if 'Contract' in df_filtered.columns:
     )
 
     # Display the combined summary
-    st.markdown(f"📞 **Churn rate por tipo de contracto:** {churn_summary_contract}")
+    st.markdown(f"📞 **Churn Rate by Contract Type:** {churn_summary_contract}")
     
 # Display the gold line chart
 plot_cltv_trend(df_filtered)
 
-# Adicionar um expansor com insights adicionais sobre CLTV por grupo de tempo de permanência
-with st.expander("🔍 Clique para ver insights sobre CLTV por grupo de permanência"):
+# Add an expander with additional insights on CLTV by tenure group
+with st.expander("🔍 Click to view insights on CLTV by tenure group"):
 
-    st.subheader("⚡ CLTV de curta permanência (0–6 meses)")
-    st.write("**Observação:** Clientes recém-chegados (0–6 meses) tendem a ter um CLTV mais baixo—"
-        "isto pode refletir ciclos de faturação curtos, ofertas introdutórias ou utilização limitada.")
+    st.subheader("⚡ CLTV for Short-Term Customers (0–6 months)")
+    st.write("**Observation:** Newly acquired customers (0–6 months) tend to have a lower CLTV—"
+             "this may reflect short billing cycles, introductory offers, or limited usage.")
 
-    st.subheader("📈 CLTV de média permanência (7–36 meses)")
-    st.write("**Observação:** O CLTV tende a aumentar gradualmente entre os 7 e 36 meses, à medida que os clientes "
-        "adotam mais serviços ou opções de pacotes.")
+    st.subheader("📈 CLTV for Medium-Term Customers (7–36 months)")
+    st.write("**Observation:** CLTV gradually increases between 7 and 36 months as customers "
+             "adopt more services or bundled options.")
 
-    st.subheader("🏆 CLTV de longa permanência (49–60 meses)")
-    st.write("**Observação:** Há frequentemente um pico na faixa dos 49–60 meses, indicando que "
-        "os clientes de longa duração veem mais valor e gastam mais.")
+    st.subheader("🏆 CLTV for Long-Term Customers (49–60 months)")
+    st.write("**Observation:** There is often a peak in the 49–60 month range, indicating that "
+             "long-term customers perceive more value and spend more.")
 
-    st.subheader("🔄 Estabilização ou ligeira queda após 61+ meses")
-    st.write("**Observação:** Alguns clientes mais antigos podem estabilizar ou reduzir ligeiramente os gastos—"
-        "podem já não precisar de serviços adicionais ou estar a explorar alternativas.")
+    st.subheader("🔄 Stabilisation or Slight Decline After 61+ Months")
+    st.write("**Observation:** Some older customers may stabilise or slightly reduce their spending—"
+             "they may no longer need additional services or could be exploring alternatives.")
 
-st.write('### 📌 Qual deve ser a estratégia para reduzir o cancelamento?')
+st.write('### 📌 What should be the strategy to reduce churn?')
 
-with st.expander("💡 Clique para ver sugestões detalhadas de estratégia"):
+with st.expander("💡 Click to view detailed strategy suggestions"):
 
-    st.markdown("## **Visão geral das recomendações**")
+    st.markdown("## **Overview of Recommendations**")
 
-    # Insights sobre cancelamento por faixa etária
-    st.subheader("📌 Insights sobre cancelamento por faixa etária")
-    st.write("**Estratégia:** Considere **campanhas de ofertas especiais para seniores/famílias ou pacotes com descontos de longo prazo** para manter clientes de alto valor.")
+    # Insights on churn by age group
+    st.subheader("📌 Insights on Churn by Age Group")
+    st.write("**Strategy:** Consider **special offer campaigns for seniors/families or long-term discounted bundles** to retain high-value customers.")
 
-    # Insights sobre cancelamento por tipo de contrato
-    st.subheader("📌 Insights sobre cancelamento por tipo de contrato")
-    st.write("**Estratégia:** Ofereça **experiências de onboarding eficazes e incentivos iniciais** para clientes com contratos mensais, promovendo a lealdade desde o início.")
-    st.write("**Estratégia:** Incentive **a venda cruzada de serviços adicionais, upgrades a meio do contrato ou recompensas de lealdade** para aumentar o valor do cliente.")
+    # Insights on churn by contract type
+    st.subheader("📌 Insights on Churn by Contract Type")
+    st.write("**Strategy:** Provide **effective onboarding experiences and initial incentives** for customers with monthly contracts, promoting loyalty from the start.")
+    st.write("**Strategy:** Encourage **cross-selling of additional services, mid-contract upgrades, or loyalty rewards** to increase customer value.")
 
-    # Fatores-chave do cancelamento e estratégias
-    st.markdown("### **Fatores-chave do cancelamento e estratégias para os mitigar**")
+    # Key churn factors and strategies
+    st.markdown("### **Key Churn Factors and Strategies to Mitigate Them**")
 
-    # Cancelamento motivado pela concorrência
-    st.markdown("#### ✔️ **Cancelamento devido à concorrência**")
-    st.write("**Estratégia:** Reforce **os programas de lealdade** e ofereça **pacotes competitivos** para reter clientes.")
+    # Churn due to competition
+    st.markdown("#### ✔️ **Churn Due to Competition**")
+    st.write("**Strategy:** Strengthen **loyalty programmes** and offer **competitive bundles** to retain customers.")
 
-    # Cancelamento por insatisfação
-    st.markdown("#### 📉 **Cancelamento devido à insatisfação**")
-    st.write("**Estratégia:** Melhore **a qualidade do serviço, a cobertura da rede e a experiência do cliente** para reduzir o cancelamento por insatisfação.")
+    # Churn due to dissatisfaction
+    st.markdown("#### 📉 **Churn Due to Dissatisfaction**")
+    st.write("**Strategy:** Improve **service quality, network coverage, and customer experience** to reduce churn caused by dissatisfaction.")
 
-    # Cancelamento relacionado ao atendimento ao cliente
-    st.markdown("#### 🤝 **Cancelamento devido ao atendimento ao cliente**")
-    st.write("**Estratégia:** Invista em **formação regional para equipas de suporte** e **otimização do atendimento ao cliente**.")
+    # Churn related to customer service
+    st.markdown("#### 🤝 **Churn Due to Customer Service**")
+    st.write("**Strategy:** Invest in **regional training for support teams** and **optimise customer service**.")
 
-    # Cancelamento baseado na localização
-    st.markdown("#### 🌍 **Tendências de cancelamento por localização**")
-    st.write("**Estratégia:** Implemente **ofertas de retenção baseadas na localização**, direcionadas para áreas urbanas com altas taxas de cancelamento.")
+    # Churn based on location
+    st.markdown("#### 🌍 **Churn Trends by Location**")
+    st.write("**Strategy:** Implement **location-based retention offers**, targeting urban areas with high churn rates.")
 
-    # Preocupações com preços
-    st.markdown("#### 💰 **Preocupações com preços e perceção de valor**")
-    st.write("**Estratégia:** Introduza **planos de preços** e **descontos regionais específicos** para melhorar a acessibilidade e retenção.")
+    # Price concerns
+    st.markdown("#### 💰 **Price Concerns and Perceived Value**")
+    st.write("**Strategy:** Introduce **pricing plans** and **region-specific discounts** to improve affordability and retention.")
 
-    # Retenção de clientes de alto valor
-    st.markdown("#### 🏆 **Retenção de clientes de alto valor e longo prazo**")
-    st.write("**Estratégia:** Ofereça **benefícios de lealdade, linhas de suporte VIP ou upgrades de dispositivos** para premiar e reter estes clientes valiosos.")
+    # Retaining high-value customers
+    st.markdown("#### 🏆 **Retention of High-Value and Long-Term Customers**")
+    st.write("**Strategy:** Offer **loyalty benefits, VIP support lines, or device upgrades** to reward and retain these valuable customers.")
 
-    # **Observações Finais**
-    st.subheader("🔍 Observações Finais")
-    st.write("Clientes **seniores e adultos de meia-idade** são os mais propensos a cancelar devido à concorrência e à insatisfação com o serviço. "
-        "Já os **jovens adultos** buscam maior flexibilidade, preferindo contratos de curto prazo.")
+    # **Final Observations**
+    st.subheader("🔍 Final Observations")
+    st.write("**Senior and middle-aged customers** are the most likely to cancel due to competition and dissatisfaction with the service. "
+             "Meanwhile, **young adults** seek greater flexibility, preferring short-term contracts.")
  
 
 st.write('---')
