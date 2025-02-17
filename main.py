@@ -354,10 +354,10 @@ st.subheader("Question 3: What should be the strategy to reduce churn?")
 if not df_filtered.empty:
     # Categorizing Age Groups (First approach)
     def age_category(age):
-        if age < 35:
-            return '(Under 35 years)'
-        elif 35 <= age < 50:
-            return '(35-50 years)'
+        if age < 30:
+            return '(Under 30 years)'
+        elif 30 <= age < 50:
+            return '(30-50 years)'
         else:
             return '(Over 50 years)'
 
@@ -420,11 +420,11 @@ with st.expander("💡 Click to view insights on churn by age and reason"):
         - More attractive offers from competitors.
         - Dissatisfaction with the service experience.
 
-    - **(35-50 years)**: Represent around 25% of cancellations, mainly due to:
+    - **(30-50 years)**: Represent around 25% of cancellations, mainly due to:
         - High prices and seeking cheaper plans.
         - Service quality and customer support influencing decisions to switch.
 
-    - **(Under 35 years)**: Although the lowest churn rate, they still:
+    - **(Under 30 years)**: Although the lowest churn rate, they still:
         - Tend to switch providers more frequently.
         - Prefer flexible plans with no long-term commitment.
     """)
