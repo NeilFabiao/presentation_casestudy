@@ -1,19 +1,19 @@
-# Bem-vindo ao Notebook para 'Caso de Estudo' com o Dataset `telco.csv`
+# Welcome to the Notebook for 'Case Study' with the `telco.csv` Dataset
 
-## Objetivo
-Este repo tem como objetivo analisar os dados da `telco.csv`, extrair insights relevantes e apresentar visualizações em um formato estruturado de relatório.
+## Objective
+This repository aims to analyse the `telco.csv` data, extract relevant insights, and present visualisations in a structured report format.
 
-## Perguntas Orientadoras
-Algumas questões-chave para guiar a análise:
+## Guiding Questions
+Some key questions to guide the analysis:
 
-- **Quais serviços apresentam maior taxa de churn?**
-- **Que ações podem ser tomadas para reduzir o churn?**
-- **Quais estratégias de longo prazo podem ser implementadas para minimizar o churn no futuro?**
+- **Which services have the highest churn rate?**
+- **What actions can be taken to reduce churn?**
+- **What long-term strategies can be implemented to minimise churn in the future?**
 
-## Passos a seguir
-O resultado esperado é um relatório estruturado contendo:
+## Steps to Follow
+The expected outcome is a structured report containing:
 
-1. **Visualizações**: Gráficos que ilustrem as principais descobertas e ajudar a comunicar  de forma clara.
-2. **Insights e Recomendações**: Conclusões baseadas na análise para ajudar a reduzir o churn.
+1. **Visualisations**: Graphs that illustrate key findings and help communicate insights clearly.
+2. **Insights and Recommendations**: Conclusions based on the analysis to help reduce churn.
 
-Seguindo essas objectivos, busco extrair insights valiosos que possam apoiar decisões estratégicas para retenção de clientes.
+By following these objectives, I aim to extract valuable insights that can support strategic decision-making for customer retention.
