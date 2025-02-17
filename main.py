@@ -93,52 +93,7 @@ def plot_cltv_trend(df):
             """
         )
 
-# Define segmentation based on population density
-def classify_region(population):
-    if population >= 40000:
-        return "Urban"
-    elif 10000 <= population < 40000:
-        return "Suburban"
-    else:
-        return "Rural"
 
-# Define a function to generate maps and tables for each region
-def generate_churn_analysis(region_name, df_region):
-    st.subheader(f"Churn Analysis for {region_name} Areas")
-
-    # Count churn reasons within the selected region
-    top_churn_reasons = df_region["Churn Reason"].value_counts().head(5).reset_index()
-    top_churn_reasons.columns = ["Churn Reason", "Count"]
-
-    # Create two columns for table and map
-    col1, col2 = st.columns(2)
-
-    with col1:
-        st.markdown(f"### 🏆 Top Churn Reasons in {region_name} Areas")
-        st.dataframe(top_churn_reasons, hide_index=True)
-
-    with col2:
-        st.markdown(f"### 🌍 Geographic Distribution of Churn in {region_name} Areas")
-        if not df_region.empty:
-            lat_center = df_region["Latitude"].mean()
-            lon_center = df_region["Longitude"].mean()
-
-            fig_map = px.scatter_mapbox(
-                df_region,
-                lat="Latitude", lon="Longitude",
-                color="Churn Reason",
-                hover_name="Customer ID",
-                hover_data=["Age", "Contract"],
-                color_discrete_sequence=px.colors.qualitative.Set1,
-                zoom=5
-            )
-            fig_map.update_layout(
-                mapbox_style="carto-positron",
-                mapbox_center={"lat": lat_center, "lon": lon_center}
-            )
-            st.plotly_chart(fig_map, use_container_width=True)
-        else:
-            st.info(f"No geographical data available for {region_name} areas.")
 
 # Load Data
 df = load_data('telco.csv')
@@ -483,17 +438,66 @@ st.write('---')
 
 st.write("Testing be patient")
 
-# Apply classification to the dataset
-df["Region"] = df["Population"].apply(classify_region)
+if not df_filtered.empty:
+    # Categorizing Age Groups
+    def age_category(age):
+        if age < 35:
+            return '(Menores de 30 anos)'
+        elif 35 <= age < 50:
+            return '(Entre 30-50 anos)'
+        else:
+            return '(Maiores de 50 anos)'
 
-# Filter churn cases where the reason is "Competition"
-df_competition = df[df["Churn Reason"].str.contains("Competitor", na=False)].copy()
+    # Apply classification to the dataset
+    df_filtered['Age Group'] = df_filtered['Age'].apply(age_category)
+    
+    # Filter churn cases where the reason is "Competition"
+    df_competition = df_filtered[df_filtered["Churn Reason"].str.contains("Competitor", na=False)].copy()
 
-# Generate churn analysis for Urban, Suburban, and Rural areas
-regions = ["Urban", "Suburban", "Rural"]
-for region in regions:
-    df_region = df_competition[df_competition["Region"] == region]
-    generate_churn_analysis(region, df_region)
+    # Define a function to generate maps and tables for each age group
+    def generate_churn_analysis(age_group_name, df_group):
+        st.subheader(f"Churn Analysis for Age Group: {age_group_name}")
+    
+        # Count churn reasons within the selected age group
+        top_churn_reasons = df_group["Churn Reason"].value_counts().head(5).reset_index()
+        top_churn_reasons.columns = ["Churn Reason", "Count"]
+    
+        # Create two columns for table and map
+        col1, col2 = st.columns(2)
+    
+        with col1:
+            st.markdown(f"### 🏆 Top Churn Reasons in Age Group: {age_group_name}")
+            st.dataframe(top_churn_reasons, hide_index=True)
+    
+        with col2:
+            st.markdown(f"### 🌍 Geographic Distribution of Churn in Age Group: {age_group_name}")
+            if not df_group.empty:
+                lat_center = df_group["Latitude"].mean()
+                lon_center = df_group["Longitude"].mean()
+    
+                fig_map = px.scatter_mapbox(
+                    df_group,
+                    lat="Latitude", lon="Longitude",
+                    color="Churn Reason",
+                    hover_name="Customer ID",
+                    hover_data=["Age", "Contract"],
+                    color_discrete_sequence=px.colors.qualitative.Set1,
+                    zoom=5
+                )
+                fig_map.update_layout(
+                    mapbox_style="carto-positron",
+                    mapbox_center={"lat": lat_center, "lon": lon_center}
+                )
+                st.plotly_chart(fig_map, use_container_width=True)
+            else:
+                st.info(f"No geographical data available for Age Group: {age_group_name}.")
+
+    # Generate churn analysis for each age group
+    age_groups = ["Under 30", "30-50", "50+"]
+    for age_group in age_groups:
+        df_group = df_competition[df_competition["Age Group"] == age_group]
+        generate_churn_analysis(age_group, df_group)
+
 
 st.write('---')
     
