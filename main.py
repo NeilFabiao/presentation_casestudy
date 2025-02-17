@@ -103,17 +103,19 @@ df = load_data('telco.csv')
 st.title("Telco Churn Analysis 📊")
 
 st.write(
-    "Bem-vindo ao **Dashboard de Análise Churn (Rotatividade) de Telecomunicações!** 🚀" 
-    "Este relatório interativo explora insights importantes sobre a rotatividade de clientes," 
-    "ajudando-nos a compreender as tendências, desafios e estratégias para melhorar a retenção." 
-    "(Para filtrar os dados, clique na opção à esquerda.)"
+    "Welcome to the **Telecommunications Churn Analysis Dashboard!** 🚀 "
+    "This interactive report explores key insights about customer churn, "
+    "helping us understand trends, challenges, and strategies to improve retention. "
+    "(To filter the data, click on the option on the left.)"
 )
 
 st.markdown(
-    "### 🔍 Principais descobertas:\n"
- "- **Serviços de alta rotatividade**: Os serviços de Internet, dados ilimitados e streaming apresentam as taxas de cancelamento mais elevadas. \n"
- "- **Tendências demográficas**: Maiores de 50 anos e os clientes com contratos mensais são os mais propensos a cancelar o serviço. \n"
- "- **Programas de lealdade**: preços competitivos com base na localização e uma comunicação eficaz com o cliente podem ajudar a reduzir a rotatividade."
+    """
+    ### 🔍 Key Insights:
+    - **High Churn Services**: Internet services, unlimited data, and streaming have the highest cancellation rates.  
+    - **Demographic Trends**: Customers over 50 and those with monthly contracts are more likely to cancel.  
+    - **Loyalty Programmes**: Competitive pricing based on location and effective customer communication can help reduce churn.  
+    """
 )
 
 st.write("---")
