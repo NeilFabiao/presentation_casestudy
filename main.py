@@ -451,6 +451,11 @@ df_filtered['Age Group'] = df_filtered['Age'].apply(age_category)
 # Filter churn cases where the reason is "Competition"
 df_competition = df_filtered[df_filtered["Churn Reason"].str.contains("Competitor", na=False)].copy()
 
+# Define fixed color mapping for churn reasons
+unique_reasons = df_competition["Churn Reason"].unique()
+fixed_colors = px.colors.qualitative.Set1  # Choose a consistent color scheme
+color_mapping = {reason: fixed_colors[i % len(fixed_colors)] for i, reason in enumerate(unique_reasons)}
+
 # --- Layout for Tables ---
 st.subheader("📊 Churn Reasons by Age Group")
 col7, col8, col9 = st.columns(3)
@@ -473,7 +478,7 @@ st.write("---")
 st.subheader("🌍 Geographic Distribution of Churn by Age Group")
 col10, col11, col12 = st.columns(3)
 
-for col, age_group in zip([col10, col11, col12], ["Under 30", "30-50", "50+"]):
+for i, (col, age_group) in enumerate(zip([col10, col11, col12], ["Under 30", "30-50", "50+"])):
     df_group = df_competition[df_competition["Age Group"] == age_group]
     
     with col:
@@ -488,13 +493,23 @@ for col, age_group in zip([col10, col11, col12], ["Under 30", "30-50", "50+"]):
                 color="Churn Reason",
                 hover_name="Customer ID",
                 hover_data=["Age", "Contract"],
-                color_discrete_sequence=px.colors.qualitative.Set1,
+                color_discrete_map=color_mapping,  # Apply fixed colors
                 zoom=5
             )
-            fig_map.update_layout(
-                mapbox_style="carto-positron",
-                mapbox_center={"lat": lat_center, "lon": lon_center}
-            )
+
+            # Show legend only for the first map, hide for others
+            if i == 0:
+                fig_map.update_layout(
+                    mapbox_style="carto-positron",
+                    mapbox_center={"lat": lat_center, "lon": lon_center}
+                )
+            else:
+                fig_map.update_layout(
+                    mapbox_style="carto-positron",
+                    mapbox_center={"lat": lat_center, "lon": lon_center},
+                    showlegend=False  # Hide legend for other maps
+                )
+
             st.plotly_chart(fig_map, use_container_width=True)
         else:
             st.info(f"No geographical data available for {age_group}")
