@@ -447,8 +447,18 @@ def age_category(age):
     else:
         return "50+"
 
+# Define segmentation based on population density
+def classify_region(population):
+    if population >= 40000:
+        return "Urban"
+    elif 10000 <= population < 40000:
+        return "Suburban"
+    else:
+        return "Rural"
+
 # Apply classification to the dataset
 df_filtered['Age Group'] = df_filtered['Age'].apply(age_category)
+df_filtered["Region"] = df_filtered["Population"].apply(classify_region)
 
 # Filter churn cases where the reason is "Competition"
 df_competition = df_filtered[df_filtered["Churn Reason"].str.contains("Competitor", na=False)].copy()
@@ -456,6 +466,13 @@ df_competition = df_filtered[df_filtered["Churn Reason"].str.contains("Competito
 # Define a function to generate maps and tables for each age group
 def generate_churn_analysis(age_group_name, df_group):
     st.subheader(f"Churn Analysis for Age Group: {age_group_name}")
+
+    # Debugging to check data availability
+    st.write(f"Debugging {age_group_name}: {df_group.shape[0]} records found")
+    if not df_group.empty:
+        st.write(df_group[["Latitude", "Longitude", "Region"]].head())
+    else:
+        st.warning(f"No data found for age group: {age_group_name}")
 
     # Count churn reasons within the selected age group
     top_churn_reasons = df_group["Churn Reason"].value_counts().head(5).reset_index()
@@ -479,10 +496,23 @@ def generate_churn_analysis(age_group_name, df_group):
                 lat="Latitude", lon="Longitude",
                 color="Churn Reason",
                 hover_name="Customer ID",
-                hover_data=["Age", "Contract"],
+                hover_data=["Age", "Contract", "Region"],
                 color_discrete_sequence=px.colors.qualitative.Set1,
                 zoom=5
             )
+
+            # Add region markers (Urban, Suburban, Rural)
+            region_centers = df_group.groupby("Region")["Latitude", "Longitude"].mean().reset_index()
+            for _, row in region_centers.iterrows():
+                fig_map.add_trace(go.Scattermapbox(
+                    lat=[row["Latitude"]],
+                    lon=[row["Longitude"]],
+                    mode="markers+text",
+                    marker=dict(size=12, color="red"),
+                    text=row["Region"],
+                    textposition="top right"
+                ))
+            
             fig_map.update_layout(
                 mapbox_style="carto-positron",
                 mapbox_center={"lat": lat_center, "lon": lon_center}
