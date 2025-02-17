@@ -120,8 +120,8 @@ def generate_churn_analysis(region_name, df_region):
     with col2:
         st.markdown(f"### 🌍 Geographic Distribution of Churn in {region_name} Areas")
         if not df_region.empty:
-            lat_center = df_region["Latitude"].mean()
-            lon_center = df_region["Longitude"].mean()
+            lat_center = df_region["Latitude"]
+            lon_center = df_region["Longitude"]
 
             fig_map = px.scatter_mapbox(
                 df_region,
