@@ -345,6 +345,9 @@ with st.expander("🌍 Click to view insights from the Geographic Churn Distribu
 
 st.write("---")
 
+st.write("Testing")
+
+st.write('---')
 # ----------------------------------------------------
 # Section 3: Understanding Churned Customers
 # ----------------------------------------------------
