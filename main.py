@@ -441,21 +441,18 @@ st.write("Testing be patient")
 # Categorizing Age Groups
 def age_category(age):
     if age < 35:
-        return '(Menores de 30 anos)'
+        return "Under 30"
     elif 35 <= age < 50:
-        return '(Entre 30-50 anos)'
+        return "30-50"
     else:
-        return '(Maiores de 50 anos)'
+        return "50+"
 
 # Apply classification to the dataset
 df_filtered['Age Group'] = df_filtered['Age'].apply(age_category)
 
-st.write(df_filtered.head(5))
-
 # Filter churn cases where the reason is "Competition"
 df_competition = df_filtered[df_filtered["Churn Reason"].str.contains("Competitor", na=False)].copy()
 
-st.write(df_competition.head(5))
 
 # Define a function to generate maps and tables for each age group
 def generate_churn_analysis(age_group_name, df_group):
