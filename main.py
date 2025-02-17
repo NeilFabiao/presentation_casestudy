@@ -93,6 +93,52 @@ def plot_cltv_trend(df):
             """
         )
 
+# Define segmentation based on population density
+def classify_region(population):
+    if population >= 40000:
+        return "Urban"
+    elif 10000 <= population < 40000:
+        return "Suburban"
+    else:
+        return "Rural"
+
+# Define a function to generate maps and tables for each region
+def generate_churn_analysis(region_name, df_region):
+    st.subheader(f"Churn Analysis for {region_name} Areas")
+
+    # Count churn reasons within the selected region
+    top_churn_reasons = df_region["Churn Reason"].value_counts().head(5).reset_index()
+    top_churn_reasons.columns = ["Churn Reason", "Count"]
+
+    # Create two columns for table and map
+    col1, col2 = st.columns(2)
+
+    with col1:
+        st.markdown(f"### 🏆 Top Churn Reasons in {region_name} Areas")
+        st.dataframe(top_churn_reasons, hide_index=True)
+
+    with col2:
+        st.markdown(f"### 🌍 Geographic Distribution of Churn in {region_name} Areas")
+        if not df_region.empty:
+            lat_center = df_region["Latitude"].mean()
+            lon_center = df_region["Longitude"].mean()
+
+            fig_map = px.scatter_mapbox(
+                df_region,
+                lat="Latitude", lon="Longitude",
+                color="Churn Reason",
+                hover_name="Customer ID",
+                hover_data=["Age", "Contract"],
+                color_discrete_sequence=px.colors.qualitative.Set1,
+                zoom=5
+            )
+            fig_map.update_layout(
+                mapbox_style="carto-positron",
+                mapbox_center={"lat": lat_center, "lon": lon_center}
+            )
+            st.plotly_chart(fig_map, use_container_width=True)
+        else:
+            st.info(f"No geographical data available for {region_name} areas.")
 
 # Load Data
 df = load_data('telco.csv')
@@ -436,6 +482,18 @@ with st.expander("💡 Click to view insights on churn by age and reason"):
 st.write('---')
 
 st.write("Testing be patient")
+
+# Apply classification to the dataset
+df["Region"] = df["Population"].apply(classify_region)
+
+# Filter churn cases where the reason is "Competition"
+df_competition = df[df["Churn Reason"].str.contains("Competitor", na=False)].copy()
+
+# Generate churn analysis for Urban, Suburban, and Rural areas
+regions = ["Urban", "Suburban", "Rural"]
+for region in regions:
+    df_region = df_competition[df_competition["Region"] == region]
+    generate_churn_analysis(region, df_region)
 
 st.write('---')
     
