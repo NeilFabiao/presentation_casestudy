@@ -492,11 +492,11 @@ if not df_filtered.empty:
             else:
                 st.info(f"No geographical data available for Age Group: {age_group_name}.")
 
-    # Generate churn analysis for each age group
-    age_groups = ["Under 30", "30-50", "50+"]
-    for age_group in age_groups:
-        df_group = df_competition[df_competition["Age Group"] == age_group]
-        generate_churn_analysis(age_group, df_group)
+# Generate churn analysis for each age group
+age_groups = ["Under 30", "30-50", "50+"]
+for age_group in age_groups:
+    df_group = df_competition[df_competition["Age Group"] == age_group]
+    generate_churn_analysis(age_group, df_group)
 
 
 st.write('---')
