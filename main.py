@@ -497,25 +497,17 @@ for i, (col, age_group) in enumerate(zip([col10, col11, col12], ["Under 30", "30
                 zoom=5
             )
 
-            # Move legend to the bottom and show it only for the first map
-            if i == 0:
-                fig_map.update_layout(
-                    mapbox_style="carto-positron",
-                    mapbox_center={"lat": lat_center, "lon": lon_center},
-                    legend=dict(
-                        orientation="h",  # Horizontal legend
-                        y=-0.2,  # Move legend below the map
-                        x=0.5,  # Center the legend
-                        xanchor="center",
-                    )
+            
+            fig_map.update_layout(
+                mapbox_style="carto-positron",
+                mapbox_center={"lat": lat_center, "lon": lon_center},
+                legend=dict(
+                    orientation="h",  # Horizontal legend
+                    y=-0.2,  # Move legend below the map
+                    x=0.5,  # Center the legend
+                    xanchor="center",
                 )
-            else:
-                fig_map.update_layout(
-                    mapbox_style="carto-positron",
-                    mapbox_center={"lat": lat_center, "lon": lon_center},
-                    showlegend=False  # Hide legend for other maps
                 )
-
             st.plotly_chart(fig_map, use_container_width=True)
         else:
             st.info(f"No geographical data available for {age_group}")
