@@ -502,7 +502,7 @@ def generate_churn_analysis(age_group_name, df_group):
             )
 
             # Add region markers (Urban, Suburban, Rural)
-            region_centers = df_group.groupby("Region")["Latitude", "Longitude"].mean().reset_index()
+            region_centers = df_group.groupby("Region")[["Latitude", "Longitude"]].mean().reset_index()
             for _, row in region_centers.iterrows():
                 fig_map.add_trace(go.Scattermapbox(
                     lat=[row["Latitude"]],
