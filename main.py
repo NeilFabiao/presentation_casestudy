@@ -450,8 +450,12 @@ def age_category(age):
 # Apply classification to the dataset
 df_filtered['Age Group'] = df_filtered['Age'].apply(age_category)
 
+st.write(df_filtered.head(5))
+
 # Filter churn cases where the reason is "Competition"
 df_competition = df_filtered[df_filtered["Churn Reason"].str.contains("Competitor", na=False)].copy()
+
+st.write(df_competition.head(5))
 
 # Define a function to generate maps and tables for each age group
 def generate_churn_analysis(age_group_name, df_group):
